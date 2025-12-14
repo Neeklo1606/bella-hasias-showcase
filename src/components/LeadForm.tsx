@@ -93,18 +93,18 @@ const LeadForm = () => {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-[hsl(30,8%,15%)] text-background">
+    <section id="contact" className="py-24 md:py-32 bg-graphite text-cream">
       <div className="container mx-auto px-6 md:px-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12 md:mb-16">
-            <p className="font-sans text-magnolia text-sm tracking-[0.3em] uppercase mb-4">
+          <div className="text-center mb-14 md:mb-18">
+            <p className="font-sans text-gold text-xs tracking-[0.4em] uppercase mb-5">
               Связаться
             </p>
-            <h2 className="font-serif text-background text-3xl md:text-4xl lg:text-5xl mb-4">
+            <h2 className="font-serif text-cream text-3xl md:text-4xl lg:text-5xl mb-5 tracking-[0.05em]">
               Запишитесь на консультацию
             </h2>
-            <p className="font-sans text-background/60 max-w-lg mx-auto leading-relaxed">
+            <p className="font-sans text-cream/50 max-w-lg mx-auto leading-relaxed">
               Готова обсудить ваш проект и помочь воплотить идеи в жизнь
             </p>
           </div>
@@ -185,7 +185,7 @@ const LeadForm = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full md:w-auto px-12 py-4 bg-primary text-primary-foreground font-sans text-sm tracking-wider uppercase hover:bg-magnolia hover:text-foreground transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[52px]"
+                  className="w-full md:w-auto px-12 py-4 bg-gold text-deep-black font-sans text-sm tracking-[0.15em] uppercase rounded-full hover:bg-gold/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[52px]"
                 >
                   {isSubmitting ? (
                     'Отправка...'
@@ -201,11 +201,11 @@ const LeadForm = () => {
 
             {/* Contact Info */}
             <div className="lg:pl-8">
-              <h3 className="font-serif text-background text-2xl mb-8">
+              <h3 className="font-serif text-cream text-2xl mb-8 tracking-wide">
                 Или свяжитесь напрямую
               </h3>
 
-              <div className="space-y-6 mb-10">
+              <div className="space-y-5 mb-10">
                 {contactInfo.map((item) => (
                   <a
                     key={item.label}
@@ -214,14 +214,14 @@ const LeadForm = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 border border-background/20 flex items-center justify-center group-hover:border-magnolia transition-colors">
-                      <item.icon className="w-5 h-5 text-background/60 group-hover:text-magnolia transition-colors" strokeWidth={1.5} />
+                    <div className="w-12 h-12 rounded-full border border-cream/20 flex items-center justify-center group-hover:border-gold group-hover:bg-gold/10 transition-all duration-300">
+                      <item.icon className="w-5 h-5 text-cream/60 group-hover:text-gold transition-colors" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <p className="font-sans text-background/50 text-xs tracking-widest uppercase mb-1">
+                      <p className="font-sans text-cream/40 text-xs tracking-[0.15em] uppercase mb-1">
                         {item.label}
                       </p>
-                      <p className="font-sans text-background group-hover:text-magnolia transition-colors">
+                      <p className="font-sans text-cream group-hover:text-gold transition-colors">
                         {item.value}
                       </p>
                     </div>
@@ -229,7 +229,7 @@ const LeadForm = () => {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 text-background/40 pt-6 border-t border-background/10">
+              <div className="flex items-center gap-2 text-cream/30 pt-6 border-t border-cream/10">
                 <MapPin size={16} />
                 <span className="font-sans text-sm">Москва, Россия</span>
               </div>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import stylistImage from '@/assets/service-stylist.jpg';
 import ugcImage from '@/assets/service-ugc.jpg';
 import photographerImage from '@/assets/service-photographer.jpg';
@@ -17,7 +18,7 @@ const Services = () => {
     {
       id: 'ugc',
       image: ugcImage,
-      title: 'Контент Креатор / UGC',
+      title: 'UGC Креатор',
       description: 'Создание видео-контента, UGC съёмки, реклама TikTok/Instagram',
       price: 'от 8000 ₽',
       priceLabel: 'за проект',
@@ -26,7 +27,7 @@ const Services = () => {
     {
       id: 'photographer',
       image: photographerImage,
-      title: 'Контент Фотограф',
+      title: 'Фотограф',
       description: 'Fashion съёмка, lifestyle фото, портфолио фотосессии',
       price: 'от 7000 ₽',
       priceLabel: 'за съёмку',
@@ -35,66 +36,70 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 md:py-28 bg-background">
+    <section id="services" className="py-24 md:py-32 bg-cream">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="text-center mb-12 md:mb-16">
-          <p className="font-sans text-primary text-sm tracking-[0.3em] uppercase mb-4">
+        <div className="text-center mb-16 md:mb-20">
+          <p className="font-sans text-gold text-xs tracking-[0.4em] uppercase mb-5">
             Услуги
           </p>
-          <h2 className="font-serif text-foreground text-3xl md:text-4xl lg:text-5xl">
+          <h2 className="font-serif text-deep-black text-3xl md:text-4xl lg:text-5xl tracking-[0.05em]">
             Чем могу помочь
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {services.map((service) => (
             <div
               key={service.id}
-              className="group relative bg-card border border-border rounded-sm overflow-hidden transition-shadow duration-300 hover:shadow-xl"
+              className="group relative bg-background rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-hover"
             >
-              {/* Image Container - 70% height */}
-              <div className="relative h-[320px] md:h-[380px] overflow-hidden">
+              {/* Image Container */}
+              <div className="relative h-[340px] md:h-[400px] overflow-hidden">
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-foreground/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
-                  <p className="text-background font-sans text-base md:text-lg leading-relaxed mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-deep-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* Hover Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end p-8 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <p className="text-cream/90 font-sans text-sm leading-relaxed text-center mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     {service.description}
-                  </p>
-                  <p className="text-magnolia font-serif text-2xl mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                    {service.price}
-                  </p>
-                  <p className="text-background/70 font-sans text-sm mb-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                    {service.priceLabel}
                   </p>
                   <Link
                     to={service.link}
-                    className="px-8 py-3 bg-primary text-primary-foreground font-sans text-sm tracking-wider uppercase hover:bg-foreground transition-colors duration-300 transform translate-y-4 group-hover:translate-y-0 delay-150"
+                    className="btn-primary rounded-full px-8 py-3 text-xs tracking-[0.15em] uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75"
                   >
                     Подробнее
+                    <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>
 
-              {/* Text Content - 30% */}
+              {/* Text Content */}
               <div className="p-6 md:p-8">
-                <h3 className="font-serif text-xl md:text-2xl text-foreground mb-2">
+                <h3 className="font-serif text-xl md:text-2xl text-foreground tracking-wide mb-2">
                   {service.title}
                 </h3>
-                <p className="font-sans text-grotto text-lg font-medium">
-                  {service.price}
-                </p>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-sans text-gold text-lg font-medium">
+                    {service.price}
+                  </span>
+                  <span className="font-sans text-muted-foreground text-sm">
+                    {service.priceLabel}
+                  </span>
+                </div>
                 
-                {/* Mobile Button - visible only on mobile */}
+                {/* Mobile Button */}
                 <Link
                   to={service.link}
-                  className="mt-4 w-full block text-center py-3 bg-primary text-primary-foreground font-sans text-sm tracking-wider uppercase hover:bg-foreground transition-colors duration-300 md:hidden"
+                  className="mt-5 w-full flex items-center justify-center gap-2 py-3 bg-gold text-deep-black font-sans text-sm tracking-wider rounded-full hover:bg-gold/90 transition-colors duration-300 md:hidden"
                 >
                   Подробнее
+                  <ArrowRight size={14} />
                 </Link>
               </div>
             </div>
