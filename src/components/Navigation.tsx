@@ -74,15 +74,15 @@ const Navigation = () => {
             {/* Logo */}
             <Link
               to="/"
-              className={`font-serif text-xl md:text-2xl font-medium tracking-wider transition-colors duration-300 ${
-                isScrolled ? 'text-primary' : 'text-background'
+              className={`font-serif text-lg md:text-xl tracking-[0.15em] transition-colors duration-300 ${
+                isScrolled ? 'text-foreground' : 'text-cream'
               }`}
             >
               BELLA HASIAS
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-10">
               {/* Services Dropdown */}
               <div 
                 className="relative"
@@ -90,26 +90,26 @@ const Navigation = () => {
                 onMouseLeave={() => setIsServicesOpen(false)}
               >
                 <button
-                  className={`font-sans text-sm tracking-widest uppercase flex items-center gap-1.5 transition-colors duration-300 hover:text-primary ${
-                    isScrolled ? 'text-foreground' : 'text-background'
+                  className={`font-sans text-xs tracking-[0.2em] uppercase flex items-center gap-1.5 transition-colors duration-300 hover:text-gold ${
+                    isScrolled ? 'text-foreground' : 'text-cream'
                   }`}
                 >
                   Услуги
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {/* Dropdown Menu */}
                 <div 
-                  className={`absolute top-full left-0 pt-2 transition-all duration-200 ${
+                  className={`absolute top-full left-0 pt-3 transition-all duration-200 ${
                     isServicesOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                   }`}
                 >
-                  <div className="bg-card border border-border shadow-lg py-2 min-w-[200px]">
+                  <div className="bg-background border border-border rounded-xl shadow-lg py-2 min-w-[220px]">
                     {services.map((service) => (
                       <Link
                         key={service.href}
                         to={service.href}
-                        className="block px-4 py-2.5 font-sans text-sm text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                        className="block px-5 py-3 font-sans text-sm text-foreground hover:text-gold hover:bg-muted/50 transition-colors"
                       >
                         {service.label}
                       </Link>
@@ -126,8 +126,8 @@ const Navigation = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className={`font-sans text-sm tracking-widest uppercase transition-colors duration-300 hover:text-primary ${
-                    isScrolled ? 'text-foreground' : 'text-background'
+                  className={`font-sans text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:text-gold ${
+                    isScrolled ? 'text-foreground' : 'text-cream'
                   }`}
                 >
                   {link.label}

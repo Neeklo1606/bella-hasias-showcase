@@ -73,33 +73,28 @@ const Portfolio = () => {
 
   return (
     <>
-      <section id="portfolio" className="py-20 md:py-28 bg-card">
-        {/* Top divider */}
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="h-px bg-primary/30 mb-16 md:mb-20" />
-        </div>
-
+      <section id="portfolio" className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-6 md:px-12">
           {/* Header */}
-          <div className="text-center mb-10 md:mb-14">
-            <p className="font-sans text-primary text-sm tracking-[0.3em] uppercase mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="font-sans text-gold text-xs tracking-[0.4em] uppercase mb-5">
               Портфолио
             </p>
-            <h2 className="font-serif text-foreground text-3xl md:text-4xl lg:text-5xl">
+            <h2 className="font-serif text-foreground text-3xl md:text-4xl lg:text-5xl tracking-[0.05em]">
               Мои работы
             </h2>
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-10 md:mb-14">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-12 md:mb-16">
             {filters.map((filter) => (
               <button
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
-                className={`px-5 py-2.5 font-sans text-sm tracking-wider uppercase transition-all duration-300 border ${
+                className={`px-6 py-2.5 font-sans text-xs tracking-[0.15em] uppercase transition-all duration-300 rounded-full ${
                   activeFilter === filter.key
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-transparent text-foreground border-border hover:border-primary hover:text-primary'
+                    ? 'bg-gold text-deep-black'
+                    : 'bg-transparent text-foreground border border-border hover:border-gold hover:text-gold'
                 }`}
               >
                 {filter.label}
@@ -108,35 +103,30 @@ const Portfolio = () => {
           </div>
 
           {/* Gallery Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 onClick={() => setSelectedImage(project.id)}
-                className="group relative aspect-[3/4] overflow-hidden cursor-pointer"
+                className="group relative aspect-[3/4] overflow-hidden cursor-pointer rounded-xl"
               >
                 {/* Image */}
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 
-                {/* Hover Overlay - Desktop */}
-                <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
-                  <Eye className="w-8 h-8 text-background mb-3 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300" />
-                  <p className="font-serif text-background text-lg md:text-xl text-center px-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-deep-black/80 via-deep-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-end pb-6">
+                  <Eye className="w-6 h-6 text-cream mb-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500" />
+                  <p className="font-serif text-cream text-base md:text-lg text-center px-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 tracking-wide">
                     {project.title}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Bottom divider */}
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="h-px bg-primary/30 mt-16 md:mt-20" />
         </div>
       </section>
 

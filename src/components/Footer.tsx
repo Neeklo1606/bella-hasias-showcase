@@ -40,29 +40,29 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-foreground text-background">
+    <footer className="bg-deep-black text-cream">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-6 md:px-12 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+      <div className="container mx-auto px-6 md:px-12 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Left Column - Logo & Tagline */}
           <div className="text-center md:text-left">
-            <Link to="/" className="font-serif text-2xl md:text-3xl tracking-wider text-background">
+            <Link to="/" className="font-serif text-xl md:text-2xl tracking-[0.15em] text-cream">
               BELLA HASIAS
             </Link>
-            <p className="font-sans text-background/60 text-sm mt-3 leading-relaxed">
+            <p className="font-sans text-cream/50 text-sm mt-4 leading-relaxed">
               Стилист | Контент-креатор | Фотограф
             </p>
-            <p className="font-sans text-background/40 text-sm mt-4 max-w-xs mx-auto md:mx-0">
+            <p className="font-sans text-cream/30 text-sm mt-4 max-w-xs mx-auto md:mx-0">
               Создаю уникальный визуальный стиль для брендов и личностей
             </p>
           </div>
 
           {/* Middle Column - Quick Links */}
           <div className="text-center">
-            <h3 className="font-sans text-xs tracking-[0.3em] uppercase text-background/50 mb-5">
+            <h3 className="font-sans text-xs tracking-[0.3em] uppercase text-cream/40 mb-6">
               Навигация
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   {link.href.startsWith('#') ? (
@@ -72,14 +72,14 @@ const Footer = () => {
                         e.preventDefault();
                         scrollToSection(link.href);
                       }}
-                      className="font-sans text-background/70 hover:text-magnolia transition-colors"
+                      className="font-sans text-cream/60 hover:text-gold transition-colors"
                     >
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       to={link.href}
-                      className="font-sans text-background/70 hover:text-magnolia transition-colors"
+                      className="font-sans text-cream/60 hover:text-gold transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -91,22 +91,22 @@ const Footer = () => {
 
           {/* Right Column - Social & Contact */}
           <div className="text-center md:text-right">
-            <h3 className="font-sans text-xs tracking-[0.3em] uppercase text-background/50 mb-5">
+            <h3 className="font-sans text-xs tracking-[0.3em] uppercase text-cream/40 mb-6">
               Контакты
             </h3>
 
             {/* Social Icons */}
-            <div className="flex items-center justify-center md:justify-end gap-4 mb-6">
+            <div className="flex items-center justify-center md:justify-end gap-3 mb-8">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 md:w-9 md:h-9 border border-background/20 flex items-center justify-center text-background/60 hover:text-magnolia hover:border-magnolia transition-colors"
+                  className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/50 hover:text-gold hover:border-gold transition-all duration-300"
                   aria-label={social.label}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
@@ -115,16 +115,16 @@ const Footer = () => {
             <div className="space-y-3">
               <a
                 href="mailto:bella@bellahasias.com"
-                className="flex items-center justify-center md:justify-end gap-2 text-background/70 hover:text-magnolia transition-colors group"
+                className="flex items-center justify-center md:justify-end gap-2 text-cream/60 hover:text-gold transition-colors group"
               >
-                <Mail className="w-4 h-4 text-background/40 group-hover:text-magnolia" />
+                <Mail className="w-4 h-4 text-cream/40 group-hover:text-gold" />
                 <span className="font-sans text-sm">bella@bellahasias.com</span>
               </a>
               <a
                 href="tel:+79991234567"
-                className="flex items-center justify-center md:justify-end gap-2 text-background/70 hover:text-magnolia transition-colors group"
+                className="flex items-center justify-center md:justify-end gap-2 text-cream/60 hover:text-gold transition-colors group"
               >
-                <Phone className="w-4 h-4 text-background/40 group-hover:text-magnolia" />
+                <Phone className="w-4 h-4 text-cream/40 group-hover:text-gold" />
                 <span className="font-sans text-sm">+7 (999) 123-45-67</span>
               </a>
             </div>
@@ -133,13 +133,13 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-background/10">
+      <div className="border-t border-cream/10">
         <div className="container mx-auto px-6 md:px-12 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="font-sans text-background/40 text-sm text-center md:text-left">
+            <p className="font-sans text-cream/30 text-sm text-center md:text-left">
               © {new Date().getFullYear()} Bella Hasias. Все права защищены.
             </p>
-            <p className="font-sans text-background/30 text-xs">
+            <p className="font-sans text-cream/20 text-xs">
               Москва, Россия
             </p>
           </div>
