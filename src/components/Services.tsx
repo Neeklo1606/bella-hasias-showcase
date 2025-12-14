@@ -12,6 +12,7 @@ const Services = () => {
       description: 'Персональный стиль, подбор образов, создание капсульного гардероба и консультации по имиджу.',
       image: serviceStylist,
       href: '/services/stylist',
+      accentColor: 'bg-mint',
     },
     {
       title: 'UGC Контент',
@@ -20,6 +21,7 @@ const Services = () => {
       description: 'Создание аутентичного контента для брендов: фото, видео, сторис и рекламные материалы.',
       image: serviceUgc,
       href: '/services/ugc',
+      accentColor: 'bg-lavender',
     },
     {
       title: 'Фотосъёмка',
@@ -28,6 +30,7 @@ const Services = () => {
       description: 'Профессиональная фотосъёмка для портфолио, каталогов, лукбуков и рекламных кампаний.',
       image: servicePhotographer,
       href: '/services/photographer',
+      accentColor: 'bg-lemon',
     },
   ];
 
@@ -37,7 +40,7 @@ const Services = () => {
         {/* Section Header - Left aligned */}
         <div className="mb-10 md:mb-14">
           <h2 className="font-serif text-[28px] md:text-[36px] lg:text-[42px] text-deep-black tracking-[-0.01em] font-normal">
-            Services
+            Услуги
           </h2>
         </div>
 
@@ -46,16 +49,18 @@ const Services = () => {
           {services.map((service) => (
             <div
               key={service.title}
-              className="group bg-[#fefbf8] border border-[#e8e3d8] p-7 md:p-9 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(26,26,26,0.08)] hover:border-gold"
+              className="group bg-white border border-border-light p-7 md:p-9 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(26,26,26,0.08)] hover:border-deep-black/20 rounded-2xl"
             >
-              {/* Image */}
-              <div className="relative aspect-[16/10] overflow-hidden mb-6">
+              {/* Image with accent overlay */}
+              <div className="relative aspect-[16/10] overflow-hidden mb-6 rounded-xl">
                 <img
                   src={service.image}
                   alt={service.title}
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
+                {/* Accent color overlay on hover */}
+                <div className={`absolute inset-0 ${service.accentColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
               </div>
 
               {/* Title */}
@@ -64,9 +69,9 @@ const Services = () => {
               </h3>
 
               {/* Price */}
-              <p className="font-sans text-base font-medium text-gold mb-4">
+              <p className="font-sans text-base font-medium text-deep-black mb-4">
                 {service.price}{' '}
-                <span className="text-graphite/60 font-normal text-sm">
+                <span className="text-graphite font-normal text-sm">
                   {service.priceLabel}
                 </span>
               </p>
@@ -79,7 +84,7 @@ const Services = () => {
               {/* Button */}
               <Link
                 to={service.href}
-                className="inline-block w-full md:w-auto text-center px-7 py-3 border border-gold text-deep-black font-sans text-xs tracking-[0.12em] uppercase rounded-full transition-all duration-300 hover:bg-gold hover:text-white"
+                className={`inline-block w-full md:w-auto text-center px-7 py-3 ${service.accentColor} text-deep-black font-sans text-xs tracking-[0.12em] uppercase rounded-full transition-all duration-300 hover:opacity-80`}
               >
                 Подробнее
               </Link>

@@ -11,7 +11,7 @@ const HeroMasonry = () => {
         <div className="hidden md:block relative overflow-hidden">
           <img
             src={heroLeft}
-            alt="Fashion styling work"
+            alt="Работа стилиста"
             className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
           />
         </div>
@@ -20,36 +20,36 @@ const HeroMasonry = () => {
         <div className="relative overflow-hidden h-screen md:h-auto">
           <img
             src={heroCenter}
-            alt="Bella Hasias styling"
+            alt="Bella Hasias стилист"
             className="w-full h-full object-cover"
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-deep-black/40" />
+          {/* Overlay with gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-lavender/60 via-transparent to-mint/40" />
           
           {/* Text Content */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
             {/* Decorative line */}
-            <div className="w-10 h-[2px] bg-cream/60 mb-8" />
+            <div className="w-10 h-[2px] bg-deep-black/40 mb-8" />
             
             {/* Name */}
-            <p className="font-sans text-cream/70 text-xs tracking-[0.4em] uppercase mb-4">
+            <p className="font-sans text-deep-black/70 text-xs tracking-[0.4em] uppercase mb-4">
               BELLA HASIAS
             </p>
             
-            <h1 className="font-sans text-cream text-2xl md:text-3xl lg:text-4xl font-light tracking-[0.08em] uppercase mb-6">
+            <h1 className="font-sans text-deep-black text-2xl md:text-3xl lg:text-4xl font-light tracking-[0.08em] uppercase mb-6">
               Стилист & Креатор
             </h1>
             
-            <p className="font-sans text-cream/80 text-sm md:text-base max-w-md leading-relaxed mb-4">
+            <p className="font-sans text-deep-black/80 text-sm md:text-base max-w-md leading-relaxed mb-4">
               Готовы к персональному стилю?
             </p>
-            <p className="font-sans text-cream/60 text-xs md:text-sm max-w-lg leading-relaxed mb-10">
+            <p className="font-sans text-deep-black/60 text-xs md:text-sm max-w-lg leading-relaxed mb-10">
               Создаю уникальный визуальный образ для брендов и личностей
             </p>
             
             <a
               href="#services"
-              className="inline-block px-8 py-3 bg-graphite/80 hover:bg-graphite text-cream font-sans text-xs tracking-[0.2em] uppercase rounded-full transition-all duration-300"
+              className="inline-block px-8 py-3 bg-lemon hover:bg-lemon/80 text-deep-black font-sans text-xs tracking-[0.2em] uppercase rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Смотреть услуги
             </a>
@@ -60,7 +60,7 @@ const HeroMasonry = () => {
         <div className="hidden md:block relative overflow-hidden">
           <img
             src={heroRight}
-            alt="Editorial fashion"
+            alt="Редакционная мода"
             className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
           />
         </div>

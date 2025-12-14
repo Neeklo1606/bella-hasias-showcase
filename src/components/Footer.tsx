@@ -11,19 +11,19 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 md:py-16 px-5 md:px-8 bg-cream border-t border-border-light">
+    <footer className="py-12 md:py-16 px-5 md:px-8 bg-lavender/40 border-t border-border-light">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo */}
           <Link
             to="/"
-            className="font-serif text-lg tracking-[0.02em] text-deep-black hover:text-gold transition-colors duration-300"
+            className="font-sans text-base tracking-[0.15em] uppercase text-deep-black hover:text-graphite transition-colors duration-300 font-medium"
           >
             BELLA HASIAS
           </Link>
 
           {/* Social Links */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {socialLinks.map((link) => (
               <a
                 key={link.label}
@@ -31,7 +31,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.label}
-                className="text-graphite/50 hover:text-gold transition-colors duration-300"
+                className="w-10 h-10 flex items-center justify-center bg-mint rounded-full text-deep-black hover:bg-lemon transition-colors duration-300"
               >
                 <link.icon size={18} />
               </a>
@@ -39,7 +39,7 @@ const Footer = () => {
           </div>
 
           {/* Copyright */}
-          <p className="font-sans text-xs text-graphite/40">
+          <p className="font-sans text-xs text-graphite">
             © {currentYear} Bella Hasias. Все права защищены.
           </p>
         </div>

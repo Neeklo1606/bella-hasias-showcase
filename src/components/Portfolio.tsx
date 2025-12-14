@@ -30,27 +30,26 @@ const Portfolio = () => {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const filters = [
-    { id: 'all', label: 'All' },
-    { id: 'styling', label: 'Styling' },
-    { id: 'editorial', label: 'Editorial' },
+    { id: 'all', label: 'Все' },
+    { id: 'styling', label: 'Стилистика' },
+    { id: 'editorial', label: 'Редакционная' },
     { id: 'ugc', label: 'UGC' },
-    { id: 'photo', label: 'Photography' },
+    { id: 'photo', label: 'Фотография' },
   ];
 
-  // Portfolio items with varied aspect ratios for dynamic masonry
   const portfolioItems: PortfolioItem[] = [
-    { src: work1, category: 'styling', alt: 'Styling work', title: 'Business Look', aspect: 'portrait' },
-    { src: work2, category: 'editorial', alt: 'Editorial shoot', title: 'Editorial Campaign', aspect: 'square' },
-    { src: work3, category: 'photo', alt: 'Photography', title: 'Fashion Portrait', aspect: 'portrait' },
-    { src: work4, category: 'styling', alt: 'Fashion styling', title: 'Personal Styling', aspect: 'landscape' },
-    { src: work5, category: 'ugc', alt: 'UGC content', title: 'Brand Content', aspect: 'portrait' },
-    { src: work6, category: 'photo', alt: 'Editorial photo', title: 'Studio Session', aspect: 'portrait' },
-    { src: work7, category: 'styling', alt: 'Personal styling', title: 'Capsule Wardrobe', aspect: 'square' },
-    { src: work8, category: 'editorial', alt: 'Brand content', title: 'Lookbook', aspect: 'portrait' },
-    { src: work9, category: 'photo', alt: 'Portrait photography', title: 'Beauty Editorial', aspect: 'portrait' },
-    { src: work10, category: 'ugc', alt: 'Social content', title: 'Social Campaign', aspect: 'landscape' },
-    { src: work11, category: 'editorial', alt: 'Lifestyle portrait', title: 'Lifestyle Shoot', aspect: 'portrait' },
-    { src: work12, category: 'photo', alt: 'Fashion photography', title: 'Commercial Work', aspect: 'square' },
+    { src: work1, category: 'styling', alt: 'Работа стилиста', title: 'Деловой образ', aspect: 'portrait' },
+    { src: work2, category: 'editorial', alt: 'Редакционная съёмка', title: 'Редакционная кампания', aspect: 'square' },
+    { src: work3, category: 'photo', alt: 'Фотография', title: 'Fashion портрет', aspect: 'portrait' },
+    { src: work4, category: 'styling', alt: 'Fashion стилистика', title: 'Персональный стиль', aspect: 'landscape' },
+    { src: work5, category: 'ugc', alt: 'UGC контент', title: 'Контент для бренда', aspect: 'portrait' },
+    { src: work6, category: 'photo', alt: 'Редакционное фото', title: 'Студийная сессия', aspect: 'portrait' },
+    { src: work7, category: 'styling', alt: 'Персональный стиль', title: 'Капсульный гардероб', aspect: 'square' },
+    { src: work8, category: 'editorial', alt: 'Контент для бренда', title: 'Лукбук', aspect: 'portrait' },
+    { src: work9, category: 'photo', alt: 'Портретная съёмка', title: 'Beauty редакционная', aspect: 'portrait' },
+    { src: work10, category: 'ugc', alt: 'Социальный контент', title: 'Социальная кампания', aspect: 'landscape' },
+    { src: work11, category: 'editorial', alt: 'Лайфстайл портрет', title: 'Лайфстайл съёмка', aspect: 'portrait' },
+    { src: work12, category: 'photo', alt: 'Fashion фотография', title: 'Коммерческая работа', aspect: 'square' },
   ];
 
   const filteredItems = activeFilter === 'all'
@@ -73,7 +72,6 @@ const Portfolio = () => {
     setSelectedImage(nextIndex);
   }, [selectedImage, filteredItems.length]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedImage === null) return;
@@ -96,25 +94,25 @@ const Portfolio = () => {
 
   return (
     <>
-      <section id="portfolio" className="py-20 md:py-28 px-5 md:px-8 lg:px-12 bg-cream">
+      <section id="portfolio" className="py-20 md:py-28 px-5 md:px-8 lg:px-12 bg-lavender/30">
         <div className="max-w-[1400px] mx-auto">
-          {/* Section Header - Left aligned like DOSA */}
+          {/* Section Header */}
           <div className="mb-10 md:mb-12">
             <h2 className="font-serif text-[28px] md:text-[36px] lg:text-[42px] text-deep-black tracking-[-0.01em] font-normal">
-              Portfolio
+              Портфолио
             </h2>
           </div>
 
-          {/* Filters - Outline style buttons */}
+          {/* Filters */}
           <div className="flex flex-wrap gap-3 mb-10 md:mb-14">
             {filters.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`px-5 py-2.5 font-sans text-xs tracking-[0.08em] uppercase transition-all duration-300 ${
+                className={`px-5 py-2.5 font-sans text-xs tracking-[0.08em] uppercase transition-all duration-300 rounded-full ${
                   activeFilter === filter.id
-                    ? 'bg-gold text-white border border-gold'
-                    : 'bg-transparent text-deep-black border border-deep-black/20 hover:border-deep-black/50'
+                    ? 'bg-lemon text-deep-black'
+                    : 'bg-white text-deep-black border border-border-light hover:border-deep-black/30'
                 }`}
               >
                 {filter.label}
@@ -128,14 +126,10 @@ const Portfolio = () => {
               <div
                 key={`${item.src}-${index}`}
                 onClick={() => setSelectedImage(index)}
-                className="group relative mb-4 md:mb-5 break-inside-avoid cursor-pointer overflow-hidden"
-                style={{
-                  transition: 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                }}
+                className="group relative mb-4 md:mb-5 break-inside-avoid cursor-pointer overflow-hidden rounded-xl"
               >
-                {/* Loading placeholder */}
                 {!loadedImages.has(index) && (
-                  <div className={`absolute inset-0 bg-[#f0eded] ${getAspectClass(item.aspect)}`} />
+                  <div className={`absolute inset-0 bg-mint/20 ${getAspectClass(item.aspect)}`} />
                 )}
                 
                 <div className={`${getAspectClass(item.aspect)} overflow-hidden`}>
@@ -150,27 +144,19 @@ const Portfolio = () => {
                   />
                 </div>
 
-                {/* Hover overlay with gold accent line */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold" />
-                </div>
-
-                {/* Shadow on hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-[350ms] pointer-events-none"
-                  style={{ boxShadow: '0 8px 24px rgba(26, 26, 26, 0.15)' }}
-                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-lavender/0 group-hover:bg-lavender/20 transition-all duration-300 pointer-events-none rounded-xl" />
               </div>
             ))}
           </div>
 
-          {/* View More CTA */}
+          {/* CTA */}
           <div className="mt-14 md:mt-20">
             <a
               href="#contact"
-              className="inline-block font-sans text-xs tracking-[0.15em] uppercase text-deep-black border-b border-deep-black pb-1 hover:text-gold hover:border-gold transition-colors duration-300"
+              className="inline-block font-sans text-xs tracking-[0.15em] uppercase text-deep-black border-b border-deep-black pb-1 hover:text-graphite hover:border-graphite transition-colors duration-300"
             >
-              Book a Session
+              Заказать съёмку
             </a>
           </div>
         </div>
@@ -180,34 +166,27 @@ const Portfolio = () => {
       <Dialog open={selectedImage !== null} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-[95vw] md:max-w-5xl lg:max-w-6xl p-0 bg-deep-black border-none">
           <div className="relative min-h-[50vh]">
-            {/* Close button */}
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 z-20 p-3 text-cream/60 hover:text-cream transition-colors bg-deep-black/50 rounded-full"
-              aria-label="Close"
+              className="absolute top-4 right-4 z-20 p-3 text-white/60 hover:text-white transition-colors bg-deep-black/50 rounded-full"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Previous button */}
             <button
               onClick={handlePrev}
-              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 p-3 text-cream/60 hover:text-cream transition-colors bg-deep-black/50 rounded-full"
-              aria-label="Previous image"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 p-3 text-white/60 hover:text-white transition-colors bg-deep-black/50 rounded-full"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
 
-            {/* Next button */}
             <button
               onClick={handleNext}
-              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 p-3 text-cream/60 hover:text-cream transition-colors bg-deep-black/50 rounded-full"
-              aria-label="Next image"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 p-3 text-white/60 hover:text-white transition-colors bg-deep-black/50 rounded-full"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Image */}
             {selectedImage !== null && filteredItems[selectedImage] && (
               <div className="flex flex-col items-center justify-center">
                 <img
@@ -216,10 +195,10 @@ const Portfolio = () => {
                   className="w-full max-h-[85vh] object-contain"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-deep-black/80 to-transparent">
-                  <p className="font-serif text-cream text-lg md:text-xl text-center">
+                  <p className="font-serif text-white text-lg md:text-xl text-center">
                     {filteredItems[selectedImage].title}
                   </p>
-                  <p className="font-sans text-cream/50 text-xs tracking-[0.15em] uppercase text-center mt-2">
+                  <p className="font-sans text-white/50 text-xs tracking-[0.15em] uppercase text-center mt-2">
                     {selectedImage + 1} / {filteredItems.length}
                   </p>
                 </div>

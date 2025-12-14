@@ -47,14 +47,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom colors
-        cream: "hsl(38 47% 97%)",
-        gold: "hsl(30 52% 64%)",
-        "gold-light": "hsl(30 44% 63%)",
-        sage: "hsl(153 14% 54%)",
-        graphite: "hsl(0 0% 40%)",
-        "deep-black": "hsl(0 0% 10%)",
-        "border-light": "hsl(40 24% 88%)",
+        // Custom colors - Pastel Palette
+        mint: "#B1E4E3",
+        lavender: "#EBDEFC",
+        lemon: "#FED141",
+        cream: "#FAFAFA",
+        "deep-black": "#1a1a1a",
+        graphite: "#666666",
+        "border-light": "#E5E5E5",
       },
       fontFamily: {
         serif: ["'Playfair Display'", "'Cormorant Garamond'", "serif"],
