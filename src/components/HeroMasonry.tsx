@@ -31,22 +31,27 @@ const HeroMasonry = () => {
             {/* Decorative line */}
             <div className="w-10 h-[2px] bg-cream/60 mb-8" />
             
-            <h1 className="font-serif text-cream text-3xl md:text-4xl lg:text-5xl italic font-light tracking-wide mb-6">
-              Luxury Fashion Stylist
+            {/* Name */}
+            <p className="font-sans text-cream/70 text-xs tracking-[0.4em] uppercase mb-4">
+              BELLA HASIAS
+            </p>
+            
+            <h1 className="font-sans text-cream text-2xl md:text-3xl lg:text-4xl font-light tracking-[0.08em] uppercase mb-6">
+              Стилист & Креатор
             </h1>
             
             <p className="font-sans text-cream/80 text-sm md:text-base max-w-md leading-relaxed mb-4">
-              Interested in embarking on a customized style journey?
+              Готовы к персональному стилю?
             </p>
             <p className="font-sans text-cream/60 text-xs md:text-sm max-w-lg leading-relaxed mb-10">
-              Discover comprehensive insights into our process, pricing structure, and outlined strategy below.
+              Создаю уникальный визуальный образ для брендов и личностей
             </p>
             
             <a
               href="#services"
-              className="inline-block px-8 py-3 bg-graphite/80 hover:bg-graphite text-cream font-sans text-xs tracking-[0.15em] uppercase rounded-full transition-all duration-300"
+              className="inline-block px-8 py-3 bg-graphite/80 hover:bg-graphite text-cream font-sans text-xs tracking-[0.2em] uppercase rounded-full transition-all duration-300"
             >
-              View Our Services
+              Смотреть услуги
             </a>
           </div>
         </div>
