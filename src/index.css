@@ -192,21 +192,139 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-[56px];
+    font-weight: 400;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-[42px] mb-6;
+    font-weight: 400;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+    font-weight: 500;
+  }
+
+  p {
+    @apply text-base leading-relaxed text-muted-foreground mb-4;
   }
 }
 
 @layer components {
   .font-serif {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', 'Cormorant Garamond', serif;
   }
 
   .font-sans {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', 'Poppins', sans-serif;
+  }
+
+  /* Button Styles - Rounded */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-[32px] border-none px-9 py-3.5 text-sm font-medium cursor-pointer transition-all duration-300 min-h-[48px];
+    letter-spacing: 0.5px;
+    touch-action: manipulation;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground shadow-sm;
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-0.5;
+    background-color: hsl(var(--accent-gold-light));
+    box-shadow: 0 8px 24px rgba(26, 26, 26, 0.12);
+  }
+
+  .btn-secondary {
+    @apply bg-foreground text-background shadow-sm;
+  }
+
+  .btn-secondary:hover {
+    @apply -translate-y-0.5;
+    background-color: hsl(var(--graphite));
+    box-shadow: 0 8px 24px rgba(26, 26, 26, 0.12);
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-foreground border border-border;
+  }
+
+  .btn-ghost:hover {
+    @apply border-primary bg-primary/5;
+  }
+
+  /* Card Styles */
+  .card-elegant {
+    @apply bg-white border border-secondary rounded-xl p-8 shadow-sm transition-all duration-300;
+  }
+
+  .card-elegant:hover {
+    @apply shadow-md border-primary;
+  }
+
+  /* Divider */
+  .divider {
+    @apply h-px my-16;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsl(var(--border)) 20%, 
+      hsl(var(--border)) 80%, 
+      transparent);
+  }
+
+  /* Portfolio Grid */
+  .portfolio-grid {
+    @apply grid gap-5 mt-10;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .portfolio-item {
+    @apply aspect-[3/4] overflow-hidden rounded-lg relative;
+  }
+
+  .portfolio-item img {
+    @apply w-full h-full object-cover transition-transform duration-500;
+  }
+
+  .portfolio-item:hover img {
+    @apply scale-105;
+  }
+
+  /* Gradient Overlay */
+  .gradient-overlay {
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, 
+      hsla(30, 52%, 64%, 0.1) 0%, 
+      hsla(153, 14%, 54%, 0.1) 100%);
+  }
+
+  .portfolio-item:hover .gradient-overlay {
+    @apply opacity-100;
+  }
+
+  /* Form Styling */
+  .input-elegant {
+    @apply w-full px-4 py-3.5 border border-secondary rounded-lg text-base transition-all duration-300 bg-white;
+  }
+
+  .input-elegant:focus {
+    @apply outline-none border-primary ring-[3px];
+    --tw-ring-color: hsla(30, 52%, 64%, 0.1);
   }
 
   /* Gradient Button Styles */
@@ -366,8 +484,50 @@
     animation-delay: 0.6s;
   }
 
+  /* Slide animations */
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .slide-in-left {
+    animation: slide-in-left 0.5s ease forwards;
+  }
+
   /* Smooth scroll */
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Responsive containers */
+  .section {
+    @apply py-20 px-6;
+  }
+
+  @media (max-width: 768px) {
+    .section {
+      @apply py-12 px-5;
+    }
+  }
+
+  /* Focus visible for accessibility */
+  button:focus-visible, 
+  a:focus-visible {
+    @apply outline-2 outline-primary outline-offset-2;
   }
 }
