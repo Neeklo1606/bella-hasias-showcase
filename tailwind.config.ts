@@ -56,8 +56,8 @@ export default {
         "deep-black": "hsl(0 0% 10%)",
       },
       fontFamily: {
-        serif: ["'Playfair Display'", "'Cormorant Garamond'", "serif"],
-        sans: ["'Inter'", "'Poppins'", "system-ui", "sans-serif"],
+        serif: ["'Cinzel'", "'Libre Baskerville'", "serif"],
+        sans: ["'Montserrat'", "system-ui", "sans-serif"],
       },
       fontSize: {
         'display': ['56px', { lineHeight: '1.1', letterSpacing: '-0.02em' }],

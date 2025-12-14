@@ -1,11 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
-import About from '@/components/About';
 import Portfolio from '@/components/Portfolio';
 import Services from '@/components/Services';
 import LeadForm from '@/components/LeadForm';
-import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -28,11 +26,9 @@ const Index = () => {
       <main className="min-h-screen bg-background">
         <Navigation />
         <Hero />
-        <About />
         <Services />
         <Portfolio />
         <LeadForm />
-        <FAQ />
         <Footer />
       </main>
     </>
