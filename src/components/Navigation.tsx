@@ -56,16 +56,17 @@ const Navigation = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-sm border-b border-border-light'
+            ? 'bg-white/95 backdrop-blur-sm border-b border-[#e5e5e5]'
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-[1400px] mx-auto px-5 md:px-8">
-          <div className="flex items-center justify-between h-[56px] md:h-[60px]">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="flex items-center justify-between h-[56px] md:h-[64px]">
             {/* Logo */}
             <Link
               to="/"
-              className="font-sans text-sm md:text-base tracking-[0.15em] uppercase text-deep-black hover:text-graphite transition-colors duration-300 font-medium"
+              className="text-xs md:text-sm tracking-[0.15em] uppercase text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300 font-semibold"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               BELLA HASIAS
             </Link>
@@ -80,7 +81,8 @@ const Navigation = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className="font-sans text-[13px] tracking-[0.1em] uppercase font-normal text-deep-black hover:text-graphite transition-colors duration-300"
+                  className="text-[11px] tracking-[0.12em] uppercase font-medium text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {link.label}
                 </a>
@@ -90,10 +92,10 @@ const Navigation = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-deep-black"
+              className="md:hidden p-2 text-[#1a1a1a] hover:text-[#FF3333] transition-colors"
               aria-label="Переключить меню"
             >
-              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -101,7 +103,7 @@ const Navigation = () => {
 
       {/* Full-screen Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-mint transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 z-40 bg-white transition-all duration-300 ${
           isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
       >
@@ -116,7 +118,8 @@ const Navigation = () => {
                   e.preventDefault();
                   scrollToSection(link.href);
                 }}
-                className="font-sans text-2xl tracking-[0.1em] uppercase text-deep-black hover:text-graphite transition-colors duration-300"
+                className="text-2xl tracking-[0.1em] uppercase text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300 font-semibold"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 {link.label}
               </a>
@@ -131,7 +134,8 @@ const Navigation = () => {
                 e.preventDefault();
                 scrollToSection('#contact');
               }}
-              className="inline-block px-8 py-3 bg-lemon text-deep-black font-sans text-xs tracking-[0.15em] uppercase rounded-full hover:bg-lemon/80 transition-colors duration-300"
+              className="inline-block px-8 py-3 bg-[#FF3333] text-white text-xs tracking-[0.15em] uppercase font-semibold hover:bg-[#1a1a1a] transition-colors duration-300"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Связаться
             </a>

@@ -35,27 +35,29 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 md:py-28 px-5 md:px-8 lg:px-16 bg-[#fafafa]">
+    <section id="services" className="py-16 md:py-24 px-6 md:px-10 lg:px-16 bg-[#f5f5f5] border-t-2 border-b-2 border-[#FF3333]">
       <div className="max-w-[1600px] mx-auto">
-        {/* Section Header - Bold Editorial */}
-        <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        {/* Section Header */}
+        <div className="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <span className="text-sm font-sans text-[#666666] mb-4 block">
-              <span className="text-[#1a1a1a] font-medium">03</span>/УСЛУГИ
+            <span 
+              className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#666666] mb-4 block"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
+            >
+              <span className="text-[#FF3333]">03</span> / УСЛУГИ
             </span>
             <h2 
-              className="text-[48px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-black uppercase leading-[0.85] tracking-[-0.03em] text-[#1a1a1a]"
-              style={{ fontFamily: "'Montserrat', 'Franklin Gothic', 'Impact', sans-serif" }}
+              className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-black uppercase leading-[0.85] tracking-[-0.03em] text-[#1a1a1a]"
+              style={{ fontFamily: "'Montserrat', 'Poppins', sans-serif" }}
             >
-              УСЛУ
-              <br className="md:hidden" />
-              ГИ.
+              УСЛУГИ.
             </h2>
           </div>
           
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold uppercase tracking-wider text-[#FF3333] hover:bg-[#FF3333] hover:text-white px-4 py-2 transition-all duration-300 border border-[#FF3333] group self-start md:self-auto"
+            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#FF3333] hover:bg-[#FF3333] hover:text-white px-5 py-3 transition-all duration-300 border-2 border-[#FF3333] group self-start md:self-auto"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             <span>Связаться</span>
             <svg 
@@ -70,11 +72,11 @@ const Services = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {services.map((service) => (
             <div
               key={service.title}
-              className="group bg-white border border-[#e5e5e5] transition-all duration-300 hover:shadow-[0_16px_40px_rgba(26,26,26,0.1)] hover:border-[#FF3333]"
+              className="group bg-white border border-[#e5e5e5] transition-all duration-300 hover:border-[#FF3333] hover:shadow-[0_16px_40px_rgba(26,26,26,0.08)]"
             >
               {/* Image */}
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -84,41 +86,47 @@ const Services = () => {
                   loading="lazy"
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-[1.03]"
                 />
-                {/* Number overlay */}
                 <div className="absolute top-4 left-4">
-                  <span className="text-[10px] font-sans text-white/80 tracking-wider">{service.number}</span>
+                  <span 
+                    className="text-[10px] font-semibold text-white/90 tracking-wider"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    {service.number}
+                  </span>
                 </div>
-                {/* Red accent overlay on hover */}
                 <div className="absolute inset-0 bg-[#FF3333]/0 group-hover:bg-[#FF3333]/5 transition-all duration-300" />
               </div>
 
               {/* Content */}
-              <div className="p-6 md:p-8">
-                {/* Title */}
+              <div className="p-5 md:p-6">
                 <h3 
-                  className="text-xl md:text-2xl font-bold text-[#1a1a1a] mb-3 uppercase tracking-wide"
+                  className="text-lg md:text-xl font-bold text-[#1a1a1a] mb-2 uppercase tracking-wide"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {service.title}
                 </h3>
 
-                {/* Price */}
-                <p className="font-sans text-base font-semibold text-[#FF3333] mb-4">
+                <p 
+                  className="text-sm font-semibold text-[#FF3333] mb-3"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
                   {service.price}{' '}
-                  <span className="text-[#666666] font-normal text-sm">
+                  <span className="text-[#666666] font-normal text-xs">
                     {service.priceLabel}
                   </span>
                 </p>
 
-                {/* Description */}
-                <p className="font-sans text-sm text-[#666666] leading-[1.7] mb-6">
+                <p 
+                  className="text-sm text-[#666666] leading-relaxed mb-5"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
                   {service.description}
                 </p>
 
-                {/* Button */}
                 <Link
                   to={service.href}
-                  className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#1a1a1a] hover:text-[#FF3333] transition-all duration-300 group/btn"
+                  className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1a1a1a] hover:text-[#FF3333] transition-all duration-300 group/btn"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   <span>Подробнее</span>
                   <svg 
