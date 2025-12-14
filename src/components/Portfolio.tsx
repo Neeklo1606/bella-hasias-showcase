@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import work1 from '@/assets/portfolio/work-1.jpg';
@@ -14,72 +14,107 @@ import work10 from '@/assets/portfolio/work-10.jpg';
 import work11 from '@/assets/portfolio/work-11.jpg';
 import work12 from '@/assets/portfolio/work-12.jpg';
 
+type AspectRatio = 'portrait' | 'square' | 'landscape';
+
+interface PortfolioItem {
+  src: string;
+  category: string;
+  alt: string;
+  title: string;
+  aspect: AspectRatio;
+}
+
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const filters = [
-    { id: 'all', label: 'Все' },
-    { id: 'styling', label: 'Стилистика' },
-    { id: 'content', label: 'Контент' },
-    { id: 'photo', label: 'Фото' },
+    { id: 'all', label: 'All' },
+    { id: 'styling', label: 'Styling' },
+    { id: 'editorial', label: 'Editorial' },
+    { id: 'ugc', label: 'UGC' },
+    { id: 'photo', label: 'Photography' },
   ];
 
-  const portfolioItems = [
-    { src: work1, category: 'styling', alt: 'Styling work', title: 'Деловой образ' },
-    { src: work2, category: 'content', alt: 'Content creation', title: 'Контент для бренда' },
-    { src: work3, category: 'photo', alt: 'Photography', title: 'Editorial Look' },
-    { src: work4, category: 'styling', alt: 'Fashion styling', title: 'Консультация по стилю' },
-    { src: work5, category: 'content', alt: 'UGC content', title: 'TikTok контент' },
-    { src: work6, category: 'photo', alt: 'Editorial photo', title: 'Fashion портрет' },
-    { src: work7, category: 'styling', alt: 'Personal styling', title: 'Beauty съёмка' },
-    { src: work8, category: 'content', alt: 'Brand content', title: 'Студийная съёмка' },
-    { src: work9, category: 'photo', alt: 'Portrait photography', title: 'Капсульный гардероб' },
-    { src: work10, category: 'styling', alt: 'Wardrobe styling', title: 'Unboxing видео' },
-    { src: work11, category: 'content', alt: 'Social media content', title: 'Lifestyle портрет' },
-    { src: work12, category: 'photo', alt: 'Fashion photography', title: 'Коммерческая съёмка' },
+  // Portfolio items with varied aspect ratios for dynamic masonry
+  const portfolioItems: PortfolioItem[] = [
+    { src: work1, category: 'styling', alt: 'Styling work', title: 'Business Look', aspect: 'portrait' },
+    { src: work2, category: 'editorial', alt: 'Editorial shoot', title: 'Editorial Campaign', aspect: 'square' },
+    { src: work3, category: 'photo', alt: 'Photography', title: 'Fashion Portrait', aspect: 'portrait' },
+    { src: work4, category: 'styling', alt: 'Fashion styling', title: 'Personal Styling', aspect: 'landscape' },
+    { src: work5, category: 'ugc', alt: 'UGC content', title: 'Brand Content', aspect: 'portrait' },
+    { src: work6, category: 'photo', alt: 'Editorial photo', title: 'Studio Session', aspect: 'portrait' },
+    { src: work7, category: 'styling', alt: 'Personal styling', title: 'Capsule Wardrobe', aspect: 'square' },
+    { src: work8, category: 'editorial', alt: 'Brand content', title: 'Lookbook', aspect: 'portrait' },
+    { src: work9, category: 'photo', alt: 'Portrait photography', title: 'Beauty Editorial', aspect: 'portrait' },
+    { src: work10, category: 'ugc', alt: 'Social content', title: 'Social Campaign', aspect: 'landscape' },
+    { src: work11, category: 'editorial', alt: 'Lifestyle portrait', title: 'Lifestyle Shoot', aspect: 'portrait' },
+    { src: work12, category: 'photo', alt: 'Fashion photography', title: 'Commercial Work', aspect: 'square' },
   ];
 
   const filteredItems = activeFilter === 'all'
     ? portfolioItems
     : portfolioItems.filter(item => item.category === activeFilter);
 
-  const handlePrev = () => {
+  const handleImageLoad = (index: number) => {
+    setLoadedImages(prev => new Set(prev).add(index));
+  };
+
+  const handlePrev = useCallback(() => {
     if (selectedImage === null) return;
     const prevIndex = selectedImage > 0 ? selectedImage - 1 : filteredItems.length - 1;
     setSelectedImage(prevIndex);
-  };
+  }, [selectedImage, filteredItems.length]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (selectedImage === null) return;
     const nextIndex = selectedImage < filteredItems.length - 1 ? selectedImage + 1 : 0;
     setSelectedImage(nextIndex);
+  }, [selectedImage, filteredItems.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImage === null) return;
+      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight') handleNext();
+      if (e.key === 'Escape') setSelectedImage(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, handlePrev, handleNext]);
+
+  const getAspectClass = (aspect: AspectRatio): string => {
+    switch (aspect) {
+      case 'portrait': return 'aspect-[3/4]';
+      case 'square': return 'aspect-square';
+      case 'landscape': return 'aspect-[16/10]';
+      default: return 'aspect-[3/4]';
+    }
   };
 
   return (
     <>
-      <section id="portfolio" className="py-20 md:py-28 px-5 md:px-8 bg-cream">
+      <section id="portfolio" className="py-20 md:py-28 px-5 md:px-8 lg:px-12 bg-cream">
         <div className="max-w-[1400px] mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-12 md:mb-16">
-            <p className="font-sans text-xs tracking-[0.3em] uppercase text-graphite/50 mb-4">
-              Мои работы
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-deep-black tracking-tight">
-              Портфолио
+          {/* Section Header - Left aligned like DOSA */}
+          <div className="mb-10 md:mb-12">
+            <h2 className="font-serif text-[28px] md:text-[36px] lg:text-[42px] text-deep-black tracking-[-0.01em] font-normal">
+              Portfolio
             </h2>
           </div>
 
-          {/* Filters */}
-          <div className="flex justify-center gap-6 md:gap-8 mb-12 md:mb-16 flex-wrap">
+          {/* Filters - Outline style buttons */}
+          <div className="flex flex-wrap gap-3 mb-10 md:mb-14">
             {filters.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`font-sans text-xs md:text-sm tracking-[0.1em] uppercase pb-1 border-b transition-all duration-300 ${
+                className={`px-5 py-2.5 font-sans text-xs tracking-[0.08em] uppercase transition-all duration-300 ${
                   activeFilter === filter.id
-                    ? 'text-deep-black border-deep-black'
-                    : 'text-graphite/50 border-transparent hover:text-deep-black hover:border-deep-black/30'
+                    ? 'bg-gold text-white border border-gold'
+                    : 'bg-transparent text-deep-black border border-deep-black/20 hover:border-deep-black/50'
                 }`}
               >
                 {filter.label}
@@ -87,33 +122,55 @@ const Portfolio = () => {
             ))}
           </div>
 
-          {/* Portfolio Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+          {/* Masonry Grid */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 md:gap-5">
             {filteredItems.map((item, index) => (
               <div
-                key={index}
+                key={`${item.src}-${index}`}
                 onClick={() => setSelectedImage(index)}
-                className="group relative aspect-[3/4] overflow-hidden cursor-pointer"
+                className="group relative mb-4 md:mb-5 break-inside-avoid cursor-pointer overflow-hidden"
+                style={{
+                  transition: 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                }}
               >
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.02]"
+                {/* Loading placeholder */}
+                {!loadedImages.has(index) && (
+                  <div className={`absolute inset-0 bg-[#f0eded] ${getAspectClass(item.aspect)}`} />
+                )}
+                
+                <div className={`${getAspectClass(item.aspect)} overflow-hidden`}>
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(index)}
+                    className={`w-full h-full object-cover transition-transform duration-[350ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] ${
+                      loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                </div>
+
+                {/* Hover overlay with gold accent line */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold" />
+                </div>
+
+                {/* Shadow on hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-[350ms] pointer-events-none"
+                  style={{ boxShadow: '0 8px 24px rgba(26, 26, 26, 0.15)' }}
                 />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-deep-black/0 group-hover:bg-deep-black/10 transition-all duration-300" />
               </div>
             ))}
           </div>
 
-          {/* View More */}
-          <div className="text-center mt-12 md:mt-16">
+          {/* View More CTA */}
+          <div className="mt-14 md:mt-20">
             <a
               href="#contact"
-              className="inline-block font-sans text-xs tracking-[0.2em] uppercase text-deep-black border-b border-deep-black pb-1 hover:text-gold hover:border-gold transition-colors duration-300"
+              className="inline-block font-sans text-xs tracking-[0.15em] uppercase text-deep-black border-b border-deep-black pb-1 hover:text-gold hover:border-gold transition-colors duration-300"
             >
-              Заказать съёмку
+              Book a Session
             </a>
           </div>
         </div>
@@ -121,39 +178,49 @@ const Portfolio = () => {
 
       {/* Lightbox Modal */}
       <Dialog open={selectedImage !== null} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-[95vw] md:max-w-4xl lg:max-w-5xl p-0 bg-deep-black/95 border-none">
-          <div className="relative">
+        <DialogContent className="max-w-[95vw] md:max-w-5xl lg:max-w-6xl p-0 bg-deep-black border-none">
+          <div className="relative min-h-[50vh]">
+            {/* Close button */}
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2 text-cream/70 hover:text-cream transition-colors"
+              className="absolute top-4 right-4 z-20 p-3 text-cream/60 hover:text-cream transition-colors bg-deep-black/50 rounded-full"
+              aria-label="Close"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5" />
             </button>
 
+            {/* Previous button */}
             <button
               onClick={handlePrev}
-              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 p-2 text-cream/70 hover:text-cream transition-colors"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 p-3 text-cream/60 hover:text-cream transition-colors bg-deep-black/50 rounded-full"
+              aria-label="Previous image"
             >
-              <ChevronLeft className="w-8 h-8" />
+              <ChevronLeft className="w-6 h-6" />
             </button>
 
+            {/* Next button */}
             <button
               onClick={handleNext}
-              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 p-2 text-cream/70 hover:text-cream transition-colors"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 p-3 text-cream/60 hover:text-cream transition-colors bg-deep-black/50 rounded-full"
+              aria-label="Next image"
             >
-              <ChevronRight className="w-8 h-8" />
+              <ChevronRight className="w-6 h-6" />
             </button>
 
+            {/* Image */}
             {selectedImage !== null && filteredItems[selectedImage] && (
-              <div className="flex flex-col">
+              <div className="flex flex-col items-center justify-center">
                 <img
                   src={filteredItems[selectedImage].src}
                   alt={filteredItems[selectedImage].alt}
-                  className="w-full max-h-[80vh] object-contain"
+                  className="w-full max-h-[85vh] object-contain"
                 />
-                <div className="p-4 md:p-6 text-center">
-                  <p className="font-serif text-cream text-xl md:text-2xl">
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-deep-black/80 to-transparent">
+                  <p className="font-serif text-cream text-lg md:text-xl text-center">
                     {filteredItems[selectedImage].title}
+                  </p>
+                  <p className="font-sans text-cream/50 text-xs tracking-[0.15em] uppercase text-center mt-2">
+                    {selectedImage + 1} / {filteredItems.length}
                   </p>
                 </div>
               </div>
