@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight } from 'lucide-react';
 import serviceStylist from '@/assets/service-stylist.jpg';
 import serviceUgc from '@/assets/service-ugc.jpg';
 import servicePhotographer from '@/assets/service-photographer.jpg';
@@ -7,74 +6,84 @@ import servicePhotographer from '@/assets/service-photographer.jpg';
 const Services = () => {
   const services = [
     {
-      title: 'Стилист',
-      description: 'Персональный стиль, подбор образов и создание уникального гардероба для вашей индивидуальности.',
+      title: 'Стилизация',
+      price: 'от ₽5,000',
+      priceLabel: 'за сессию',
+      description: 'Персональный стиль, подбор образов, создание капсульного гардероба и консультации по имиджу.',
       image: serviceStylist,
       href: '/services/stylist',
     },
     {
-      title: 'UGC Креатор',
-      description: 'Создание аутентичного контента для брендов: фото, видео и сторис, которые вызывают доверие.',
+      title: 'UGC Контент',
+      price: 'от ₽8,000',
+      priceLabel: 'за проект',
+      description: 'Создание аутентичного контента для брендов: фото, видео, сторис и рекламные материалы.',
       image: serviceUgc,
       href: '/services/ugc',
     },
     {
-      title: 'Фотограф',
-      description: 'Профессиональная фотосъёмка для портфолио, каталогов и рекламных кампаний.',
+      title: 'Фотосъёмка',
+      price: 'от ₽7,000',
+      priceLabel: 'за съёмку',
+      description: 'Профессиональная фотосъёмка для портфолио, каталогов, лукбуков и рекламных кампаний.',
       image: servicePhotographer,
       href: '/services/photographer',
     },
   ];
 
   return (
-    <section id="services" className="py-20 md:py-28 px-5 md:px-8 bg-cream">
+    <section id="services" className="py-20 md:py-28 px-5 md:px-8 lg:px-12 bg-cream">
       <div className="max-w-[1400px] mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16 md:mb-20">
-          <p className="font-sans text-xs tracking-[0.3em] uppercase text-graphite/50 mb-4">
-            Чем я могу помочь
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-deep-black tracking-tight">
-            Услуги
+        {/* Section Header - Left aligned */}
+        <div className="mb-10 md:mb-14">
+          <h2 className="font-serif text-[28px] md:text-[36px] lg:text-[42px] text-deep-black tracking-[-0.01em] font-normal">
+            Services
           </h2>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {services.map((service, index) => (
-            <Link
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          {services.map((service) => (
+            <div
               key={service.title}
-              to={service.href}
-              className="group block"
+              className="group bg-[#fefbf8] border border-[#e8e3d8] p-7 md:p-9 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(26,26,26,0.08)] hover:border-gold"
             >
               {/* Image */}
-              <div className="relative aspect-[3/4] overflow-hidden mb-6">
+              <div className="relative aspect-[16/10] overflow-hidden mb-6">
                 <img
                   src={service.image}
                   alt={service.title}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-deep-black/0 group-hover:bg-deep-black/10 transition-all duration-300" />
               </div>
 
-              {/* Content */}
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="font-serif text-xl md:text-2xl text-deep-black mb-2 group-hover:text-gold transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="font-sans text-sm text-graphite leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-                <ArrowUpRight 
-                  size={20} 
-                  className="text-graphite/40 group-hover:text-gold transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0 mt-1" 
-                />
-              </div>
-            </Link>
+              {/* Title */}
+              <h3 className="font-serif text-lg md:text-xl text-deep-black mb-3 tracking-wide">
+                {service.title}
+              </h3>
+
+              {/* Price */}
+              <p className="font-sans text-base font-medium text-gold mb-4">
+                {service.price}{' '}
+                <span className="text-graphite/60 font-normal text-sm">
+                  {service.priceLabel}
+                </span>
+              </p>
+
+              {/* Description */}
+              <p className="font-sans text-sm text-graphite leading-[1.7] mb-6">
+                {service.description}
+              </p>
+
+              {/* Button */}
+              <Link
+                to={service.href}
+                className="inline-block w-full md:w-auto text-center px-7 py-3 border border-gold text-deep-black font-sans text-xs tracking-[0.12em] uppercase rounded-full transition-all duration-300 hover:bg-gold hover:text-white"
+              >
+                Подробнее
+              </Link>
+            </div>
           ))}
         </div>
       </div>
