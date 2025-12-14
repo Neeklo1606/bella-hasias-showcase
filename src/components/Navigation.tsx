@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,12 +35,6 @@ const Navigation = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const services = [
-    { href: '/services/stylist', label: 'Стилист' },
-    { href: '/services/ugc', label: 'UGC / Контент-креатор' },
-    { href: '/services/photographer', label: 'Фотография' },
-  ];
-
   const navLinks = [
     { href: '#services', label: 'Услуги' },
     { href: '#portfolio', label: 'Портфолио' },
@@ -63,8 +56,8 @@ const Navigation = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-cream/98 backdrop-blur-sm border-b border-border-light'
-            : 'bg-cream'
+            ? 'bg-white/95 backdrop-blur-sm border-b border-border-light'
+            : 'bg-transparent'
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-5 md:px-8">
@@ -72,7 +65,7 @@ const Navigation = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="font-serif text-sm md:text-lg tracking-[0.02em] text-deep-black hover:text-gold transition-colors duration-300"
+              className="font-sans text-sm md:text-base tracking-[0.15em] uppercase text-deep-black hover:text-graphite transition-colors duration-300 font-medium"
             >
               BELLA HASIAS
             </Link>
@@ -87,7 +80,7 @@ const Navigation = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className="font-sans text-[13px] font-normal text-graphite hover:text-gold transition-colors duration-300"
+                  className="font-sans text-[13px] tracking-[0.1em] uppercase font-normal text-deep-black hover:text-graphite transition-colors duration-300"
                 >
                   {link.label}
                 </a>
@@ -98,7 +91,7 @@ const Navigation = () => {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 text-deep-black"
-              aria-label="Toggle menu"
+              aria-label="Переключить меню"
             >
               {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -108,14 +101,14 @@ const Navigation = () => {
 
       {/* Full-screen Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-cream transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 z-40 bg-mint transition-all duration-300 ${
           isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
       >
         <div className="flex flex-col items-center justify-center min-h-screen px-6 py-20">
           {/* Navigation Links */}
           <div className="flex flex-col items-center gap-8">
-            {navLinks.map((link, index) => (
+            {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -123,34 +116,10 @@ const Navigation = () => {
                   e.preventDefault();
                   scrollToSection(link.href);
                 }}
-                className="font-serif text-2xl text-deep-black hover:text-gold transition-colors duration-300"
-                style={{ 
-                  animationDelay: `${index * 0.1}s`,
-                  animationFillMode: 'both'
-                }}
+                className="font-sans text-2xl tracking-[0.1em] uppercase text-deep-black hover:text-graphite transition-colors duration-300"
               >
                 {link.label}
               </a>
-            ))}
-          </div>
-
-          {/* Separator */}
-          <div className="w-12 h-px bg-border-light my-10" />
-
-          {/* Services */}
-          <div className="flex flex-col items-center gap-4">
-            <p className="font-sans text-xs tracking-[0.2em] uppercase text-graphite/50 mb-2">
-              Услуги
-            </p>
-            {services.map((service) => (
-              <Link
-                key={service.href}
-                to={service.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="font-sans text-base text-graphite hover:text-gold transition-colors duration-300"
-              >
-                {service.label}
-              </Link>
             ))}
           </div>
 
@@ -162,7 +131,7 @@ const Navigation = () => {
                 e.preventDefault();
                 scrollToSection('#contact');
               }}
-              className="inline-block px-8 py-3 bg-deep-black text-cream font-sans text-xs tracking-[0.15em] uppercase hover:bg-gold transition-colors duration-300"
+              className="inline-block px-8 py-3 bg-lemon text-deep-black font-sans text-xs tracking-[0.15em] uppercase rounded-full hover:bg-lemon/80 transition-colors duration-300"
             >
               Связаться
             </a>
