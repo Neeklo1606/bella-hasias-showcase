@@ -109,72 +109,79 @@
   }
 
   :root {
-    /* Bella Hasias Color Palette */
-    --background: 40 33% 97%; /* Cream #FBF9F7 */
-    --foreground: 180 2% 13%; /* Black #1F2121 */
+    /* Modern & Sophisticated Color Palette */
+    --background: 38 47% 97%; /* Very light cream #faf7f2 */
+    --foreground: 0 0% 16%; /* Soft black #2a2a2a */
 
-    --card: 40 33% 97%;
-    --card-foreground: 180 2% 13%;
+    --card: 38 47% 97%;
+    --card-foreground: 0 0% 16%;
 
-    --popover: 40 33% 97%;
-    --popover-foreground: 180 2% 13%;
+    --popover: 38 47% 97%;
+    --popover-foreground: 0 0% 16%;
 
-    --primary: 37 15% 31%; /* Brown #5E5240 */
-    --primary-foreground: 40 33% 97%;
+    --primary: 30 52% 64%; /* Golden beige #d4a574 */
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 12 50% 86%; /* Magnolia Pink #F0D0C8 */
-    --secondary-foreground: 180 2% 13%;
+    --secondary: 40 24% 88%; /* Warm cream #e8e3d8 */
+    --secondary-foreground: 0 0% 16%;
 
-    --muted: 30 20% 92%;
-    --muted-foreground: 37 15% 45%;
+    --muted: 40 16% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 187 63% 28%; /* Grotto Teal #1A6873 */
-    --accent-foreground: 40 33% 97%;
+    --accent: 153 14% 54%; /* Sage green #7a9b8e */
+    --accent-foreground: 38 47% 97%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 37 15% 31%;
+    --border: 40 16% 82%; /* Soft border #d9d4c9 */
+    --input: 40 16% 82%;
+    --ring: 30 52% 64%;
 
     --radius: 0.25rem;
 
     /* Custom tokens */
-    --hero-overlay: 180 2% 13%;
-    --nav-bg: 40 33% 97%;
-    --text-light: 40 33% 97%;
-    --text-dark: 180 2% 13%;
+    --hero-overlay: 0 0% 10%;
+    --nav-bg: 38 47% 97%;
+    --text-light: 38 47% 97%;
+    --text-dark: 0 0% 16%;
+    
+    /* Accent colors */
+    --accent-gold: 30 52% 64%; /* #d4a574 */
+    --accent-sage: 153 14% 54%; /* #7a9b8e */
+    --accent-gold-light: 30 44% 63%; /* #c9a17a */
+    --graphite: 0 0% 24%; /* #3d3d3d */
+    --deep-black: 0 0% 10%; /* #1a1a1a */
   }
 
   .dark {
-    --background: 180 2% 13%;
-    --foreground: 40 33% 97%;
+    --background: 0 0% 10%; /* Deep black */
+    --foreground: 38 47% 97%;
 
-    --card: 180 3% 18%;
-    --card-foreground: 40 33% 97%;
+    --card: 0 0% 14%;
+    --card-foreground: 38 47% 97%;
 
-    --popover: 180 3% 18%;
-    --popover-foreground: 40 33% 97%;
+    --popover: 0 0% 14%;
+    --popover-foreground: 38 47% 97%;
 
-    --primary: 40 33% 97%;
-    --primary-foreground: 180 2% 13%;
+    --primary: 30 52% 64%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 187 63% 28%;
-    --secondary-foreground: 40 33% 97%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 38 47% 97%;
 
-    --muted: 180 3% 25%;
-    --muted-foreground: 30 20% 70%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 12 50% 86%;
-    --accent-foreground: 180 2% 13%;
+    --accent: 153 14% 54%;
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 180 3% 25%;
-    --input: 180 3% 25%;
-    --ring: 40 33% 97%;
+    --border: 0 0% 24%;
+    --input: 0 0% 24%;
+    --ring: 30 52% 64%;
   }
 }
 
