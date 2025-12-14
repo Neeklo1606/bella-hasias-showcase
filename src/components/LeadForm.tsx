@@ -6,7 +6,7 @@ import { z } from 'zod';
 const formSchema = z.object({
   name: z.string().trim().min(1, 'Введите ваше имя').max(100),
   email: z.string().trim().email('Введите корректный email').max(255),
-  phone: z.string().trim().min(1, 'Введите номер телефона').max(20),
+  phone: z.string().trim().max(20).optional(),
   service: z.string().min(1, 'Выберите услугу'),
   message: z.string().trim().max(1000).optional(),
 });
@@ -16,6 +16,7 @@ type FormData = z.infer<typeof formSchema>;
 const LeadForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -31,6 +32,7 @@ const LeadForm = () => {
     if (errors[name as keyof FormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
+    setIsSuccess(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,12 +63,13 @@ const LeadForm = () => {
 
     setFormData({ name: '', email: '', phone: '', service: '', message: '' });
     setIsSubmitting(false);
+    setIsSuccess(true);
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'bella@bellahasias.com', href: 'mailto:bella@bellahasias.com' },
-    { icon: Phone, label: 'Телефон', value: '+7 (999) 123-45-67', href: 'tel:+79991234567' },
-    { icon: MapPin, label: 'Локация', value: 'Москва, Россия', href: null },
+    { icon: Mail, label: 'EMAIL', value: 'bella@bellahasias.com', href: 'mailto:bella@bellahasias.com' },
+    { icon: Phone, label: 'ТЕЛЕФОН', value: '+7 (999) 123-45-67', href: 'tel:+79991234567' },
+    { icon: MapPin, label: 'ЛОКАЦИЯ', value: 'Москва, Россия', href: null },
   ];
 
   const socialLinks = [
@@ -75,21 +78,15 @@ const LeadForm = () => {
   ];
 
   const inputClass = (hasError: boolean) => 
-    `w-full px-4 py-3 bg-white border ${hasError ? 'border-[#FF3333]' : 'border-[#e5e5e5]'} text-[#1a1a1a] placeholder:text-[#999999] text-sm focus:outline-none focus:border-[#FF3333] transition-all duration-300`;
+    `w-full px-4 py-3 bg-white border ${hasError ? 'border-[#FF3333]' : 'border-[#e8e8e8]'} rounded-md text-[#1a1a1a] placeholder:text-[#999999] text-sm focus:outline-none focus:border-[#FF3333] focus:shadow-[0_0_0_3px_rgba(255,51,51,0.1)] transition-all duration-300`;
 
   return (
-    <section id="contact" className="py-16 md:py-24 px-6 md:px-10 lg:px-16 bg-white">
-      <div className="max-w-[1200px] mx-auto">
+    <section id="contact" className="py-16 md:py-20 lg:py-20 px-5 md:px-10 lg:px-10 bg-white border-t border-[#e8e8e8]">
+      <div className="max-w-[1400px] mx-auto">
         {/* Section Header */}
-        <div className="mb-10 md:mb-14">
-          <span 
-            className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#666666] mb-4 block"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            <span className="text-[#FF3333]">04</span> / КОНТАКТЫ
-          </span>
+        <div className="mb-12 md:mb-16">
           <h2 
-            className="text-[40px] sm:text-[60px] md:text-[80px] font-black uppercase leading-[0.85] tracking-[-0.03em] text-[#1a1a1a]"
+            className="text-[60px] sm:text-[80px] md:text-[100px] lg:text-[120px] font-black uppercase leading-[0.95] tracking-[-0.02em] text-[#1a1a1a]"
             style={{ fontFamily: "'Montserrat', 'Poppins', sans-serif" }}
           >
             СВЯЗАТЬСЯ.
@@ -100,32 +97,32 @@ const LeadForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-10 lg:gap-16">
           
           {/* Left: Form */}
-          <div className="bg-[#f5f5f5] p-6 md:p-8 border border-[#e5e5e5]">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <input
                   type="text"
                   name="name"
-                  placeholder="Ваше имя"
+                  placeholder="Ваше имя *"
                   value={formData.name}
                   onChange={handleChange}
                   className={inputClass(!!errors.name)}
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 />
-                {errors.name && <p className="text-[#FF3333] text-xs mt-1">{errors.name}</p>}
+                {errors.name && <p className="text-[#FF3333] text-xs mt-1.5">{errors.name}</p>}
               </div>
 
               <div>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Email"
+                  placeholder="Email *"
                   value={formData.email}
                   onChange={handleChange}
                   className={inputClass(!!errors.email)}
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 />
-                {errors.email && <p className="text-[#FF3333] text-xs mt-1">{errors.email}</p>}
+                {errors.email && <p className="text-[#FF3333] text-xs mt-1.5">{errors.email}</p>}
               </div>
 
               <div>
@@ -135,10 +132,9 @@ const LeadForm = () => {
                   placeholder="Телефон"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={inputClass(!!errors.phone)}
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  className={inputClass(false)}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 />
-                {errors.phone && <p className="text-[#FF3333] text-xs mt-1">{errors.phone}</p>}
               </div>
 
               <div>
@@ -148,20 +144,19 @@ const LeadForm = () => {
                   onChange={handleChange}
                   className={`${inputClass(!!errors.service)} appearance-none cursor-pointer ${!formData.service ? 'text-[#999999]' : ''}`}
                   style={{ 
-                    fontFamily: "'Montserrat', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666666' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E")`, 
                     backgroundRepeat: 'no-repeat', 
                     backgroundPosition: 'right 12px center', 
                     backgroundSize: '20px' 
                   }}
                 >
-                  <option value="">Выберите услугу</option>
+                  <option value="">Выберите услугу *</option>
                   <option value="styling">Стилизация</option>
                   <option value="ugc">UGC Контент</option>
                   <option value="photo">Фотосъёмка</option>
-                  <option value="other">Другое</option>
                 </select>
-                {errors.service && <p className="text-[#FF3333] text-xs mt-1">{errors.service}</p>}
+                {errors.service && <p className="text-[#FF3333] text-xs mt-1.5">{errors.service}</p>}
               </div>
 
               <div>
@@ -172,32 +167,30 @@ const LeadForm = () => {
                   onChange={handleChange}
                   rows={4}
                   className={`${inputClass(false)} resize-none`}
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#FF3333] text-white text-xs tracking-[0.15em] uppercase font-semibold transition-all duration-300 hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 bg-[#FF3333] text-white text-sm tracking-[0.05em] uppercase font-semibold rounded-full transition-all duration-300 hover:bg-[#d40000] hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(255,51,51,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                {isSubmitting ? 'Отправка...' : 'Отправить'}
+                {isSubmitting ? 'ОТПРАВЛЯЕТСЯ...' : isSuccess ? 'СПАСИБО! МЫ СВЯЖЕМСЯ СКОРО' : 'ОТПРАВИТЬ'}
               </button>
             </form>
           </div>
 
           {/* Right: Contact Info */}
-          <div className="lg:pl-4">
-            <div className="space-y-5 mb-8">
+          <div className="lg:pl-8">
+            <div className="space-y-7">
               {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-[#f5f5f5] border border-[#e5e5e5]">
-                    <item.icon size={18} className="text-[#1a1a1a]" />
-                  </div>
+                <div key={item.label} className="flex items-start gap-3">
+                  <item.icon size={24} className="text-[#1a1a1a] flex-shrink-0 mt-0.5" />
                   <div>
                     <p 
-                      className="text-[10px] tracking-[0.1em] uppercase text-[#666666] mb-1"
+                      className="text-[11px] tracking-[0.05em] uppercase font-semibold text-[#1a1a1a] mb-1"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       {item.label}
@@ -205,15 +198,15 @@ const LeadForm = () => {
                     {item.href ? (
                       <a 
                         href={item.href}
-                        className="text-sm text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
-                        style={{ fontFamily: "'Montserrat', sans-serif" }}
+                        className="text-sm text-[#666666] hover:text-[#FF3333] transition-colors duration-300"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         {item.value}
                       </a>
                     ) : (
                       <p 
-                        className="text-sm text-[#1a1a1a]"
-                        style={{ fontFamily: "'Montserrat', sans-serif" }}
+                        className="text-sm text-[#666666]"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         {item.value}
                       </p>
@@ -221,58 +214,61 @@ const LeadForm = () => {
                   </div>
                 </div>
               ))}
-            </div>
 
-            <div className="h-px bg-[#e5e5e5] mb-8" />
-
-            <div className="flex items-start gap-4 mb-8">
-              <div className="w-10 h-10 flex items-center justify-center bg-[#f5f5f5] border border-[#e5e5e5]">
-                <Clock size={18} className="text-[#1a1a1a]" />
+              {/* Working Hours */}
+              <div className="flex items-start gap-3">
+                <Clock size={24} className="text-[#1a1a1a] flex-shrink-0 mt-0.5" />
+                <div>
+                  <p 
+                    className="text-[11px] tracking-[0.05em] uppercase font-semibold text-[#1a1a1a] mb-1"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    ЧАСЫ РАБОТЫ
+                  </p>
+                  <p 
+                    className="text-sm text-[#666666]"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Пн–Пт: 10:00–18:00 (МСК)
+                  </p>
+                  <p 
+                    className="text-sm text-[#666666]"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Выходные: по записи
+                  </p>
+                </div>
               </div>
+
+              {/* Social Links */}
               <div>
                 <p 
-                  className="text-[10px] tracking-[0.1em] uppercase text-[#666666] mb-2"
+                  className="text-[11px] tracking-[0.05em] uppercase font-semibold text-[#1a1a1a] mb-3"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  Часы работы
+                  СОЦИАЛЬНЫЕ СЕТИ
                 </p>
-                <p 
-                  className="text-sm text-[#1a1a1a] mb-1"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  Пн–Пт: 10:00–18:00 (МСК)
-                </p>
-                <p 
-                  className="text-sm text-[#666666]"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  Выходные: по записи
-                </p>
-              </div>
-            </div>
-
-            <div className="h-px bg-[#e5e5e5] mb-8" />
-
-            <div>
-              <p 
-                className="text-[10px] tracking-[0.1em] uppercase text-[#666666] mb-4"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                Социальные сети
-              </p>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
+                <div className="flex gap-3">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="w-10 h-10 flex items-center justify-center text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
+                    >
+                      <social.icon size={24} />
+                    </a>
+                  ))}
                   <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="w-10 h-10 flex items-center justify-center bg-[#1a1a1a] text-white hover:bg-[#FF3333] transition-all duration-300"
+                    href="mailto:bella@bellahasias.com"
+                    aria-label="Email"
+                    className="w-10 h-10 flex items-center justify-center text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
                   >
-                    <social.icon size={18} />
+                    <Mail size={24} />
                   </a>
-                ))}
+                </div>
               </div>
             </div>
           </div>
