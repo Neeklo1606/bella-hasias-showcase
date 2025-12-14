@@ -84,37 +84,6 @@ const HeroMasonry = () => {
         </p>
       </div>
 
-      {/* [3] Filmstrip */}
-      <div className="w-full bg-[#f5f5f5] border-t-2 border-b-2 border-[#FF3333]">
-        <div 
-          className="flex overflow-x-auto p-2"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {portfolioImages.map((image, index) => (
-            <button
-              key={image.id}
-              onClick={() => {
-                setActiveIndex(index);
-                openLightbox(index);
-              }}
-              className={`flex-shrink-0 w-[80px] h-[80px] sm:w-[90px] sm:h-[90px] md:w-[100px] md:h-[100px] lg:w-[120px] lg:h-[100px] relative overflow-hidden transition-all duration-[250ms] border border-[#e0e0e0] ${
-                activeIndex === index 
-                  ? 'ring-[3px] ring-[#FF3333] ring-inset scale-105 z-10' 
-                  : 'hover:ring-[2px] hover:ring-[#FF3333] hover:ring-inset hover:scale-105'
-              }`}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-1 left-1 text-[10px] font-semibold text-white bg-[#1a1a1a]/50 px-1.5 py-0.5">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* [4] Masonry Grid */}
       <div className="w-full bg-white px-5 md:px-10 lg:px-10 py-12 md:py-16 lg:py-20">
