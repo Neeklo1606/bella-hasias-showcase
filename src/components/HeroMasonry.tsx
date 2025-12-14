@@ -1,93 +1,226 @@
-import heroLeft from '@/assets/hero/hero-left.jpg';
-import heroCenter from '@/assets/hero/hero-center.jpg';
-import heroRight from '@/assets/hero/hero-right.jpg';
+import { useState } from 'react';
+import work1 from '@/assets/portfolio/work-1.jpg';
+import work2 from '@/assets/portfolio/work-2.jpg';
+import work3 from '@/assets/portfolio/work-3.jpg';
+import work4 from '@/assets/portfolio/work-4.jpg';
+import work5 from '@/assets/portfolio/work-5.jpg';
+import work6 from '@/assets/portfolio/work-6.jpg';
+import work7 from '@/assets/portfolio/work-7.jpg';
+import work8 from '@/assets/portfolio/work-8.jpg';
+import work9 from '@/assets/portfolio/work-9.jpg';
+import work10 from '@/assets/portfolio/work-10.jpg';
+import work11 from '@/assets/portfolio/work-11.jpg';
+import work12 from '@/assets/portfolio/work-12.jpg';
+
+const portfolioImages = [
+  { id: 1, src: work1, alt: 'Bella Hasias работа 1', size: 'normal' },
+  { id: 2, src: work2, alt: 'Bella Hasias работа 2', size: 'normal' },
+  { id: 3, src: work3, alt: 'Bella Hasias работа 3', size: 'wide' },
+  { id: 4, src: work4, alt: 'Bella Hasias работа 4', size: 'tall' },
+  { id: 5, src: work5, alt: 'Bella Hasias работа 5', size: 'normal' },
+  { id: 6, src: work6, alt: 'Bella Hasias работа 6', size: 'normal' },
+  { id: 7, src: work7, alt: 'Bella Hasias работа 7', size: 'normal' },
+  { id: 8, src: work8, alt: 'Bella Hasias работа 8', size: 'wide' },
+  { id: 9, src: work9, alt: 'Bella Hasias работа 9', size: 'normal' },
+  { id: 10, src: work10, alt: 'Bella Hasias работа 10', size: 'tall' },
+  { id: 11, src: work11, alt: 'Bella Hasias работа 11', size: 'normal' },
+  { id: 12, src: work12, alt: 'Bella Hasias работа 12', size: 'normal' },
+];
 
 const HeroMasonry = () => {
-  return (
-    <section className="relative min-h-screen w-full bg-white">
-      {/* Three Column Hero Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 h-screen">
-        {/* Left Image */}
-        <div className="hidden md:block relative overflow-hidden">
-          <img
-            src={heroLeft}
-            alt="Работа стилиста"
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-          />
-          {/* Red accent line on hover */}
-          <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#FF3333] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-        </div>
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
-        {/* Center Image with Text Overlay */}
-        <div className="relative overflow-hidden h-screen md:h-auto">
-          <img
-            src={heroCenter}
-            alt="Bella Hasias стилист"
-            className="w-full h-full object-cover"
-          />
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
-          
-          {/* Text Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-            {/* Red accent line */}
-            <div className="w-16 h-[3px] bg-[#FF3333] mb-10" />
-            
-            {/* Name - Bold Editorial */}
-            <h1 
-              className="text-white text-[40px] sm:text-[60px] md:text-[70px] lg:text-[90px] font-black uppercase leading-[0.9] tracking-[-0.02em] mb-6"
-              style={{ fontFamily: "'Montserrat', 'Franklin Gothic', 'Impact', sans-serif" }}
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  const nextImage = () => {
+    setLightboxIndex((prev) => (prev + 1) % portfolioImages.length);
+  };
+
+  const prevImage = () => {
+    setLightboxIndex((prev) => (prev - 1 + portfolioImages.length) % portfolioImages.length);
+  };
+
+  return (
+    <section className="relative w-full bg-white">
+      {/* [1] Top Info Bar */}
+      <div className="w-full bg-[#f5f5f5] border-b-2 border-[#FF3333]">
+        <div className="flex items-center justify-between px-6 md:px-10 lg:px-16 py-3">
+          <span 
+            className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#1a1a1a]"
+            style={{ fontFamily: "'Montserrat', 'Inter', sans-serif" }}
+          >
+            EDITORIAL BY BELLA HASIAS
+          </span>
+          <span 
+            className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#FF3333]"
+            style={{ fontFamily: "'Montserrat', 'Inter', sans-serif" }}
+          >
+            {String(activeIndex + 1).padStart(2, '0')} / {portfolioImages.length}
+          </span>
+        </div>
+      </div>
+
+      {/* [2] Main Name Block */}
+      <div className="w-full bg-white px-6 md:px-10 lg:px-16 py-12 md:py-16 lg:py-20">
+        <h1 
+          className="text-[60px] sm:text-[90px] md:text-[120px] lg:text-[160px] font-black uppercase leading-[0.95] tracking-[-0.02em] text-[#1a1a1a] mb-4 md:mb-6"
+          style={{ fontFamily: "'Montserrat', 'Poppins', sans-serif" }}
+        >
+          BELLA
+          <br />
+          HASIAS
+        </h1>
+        <p 
+          className="text-sm sm:text-base md:text-xl lg:text-2xl font-normal tracking-[0.02em] text-[#1a1a1a]"
+          style={{ fontFamily: "'Montserrat', 'Inter', sans-serif" }}
+        >
+          Стилист / Креатор / UGC
+        </p>
+      </div>
+
+      {/* [3] Filmstrip */}
+      <div className="w-full bg-[#f5f5f5] border-t-2 border-b-2 border-[#FF3333]">
+        <div 
+          className="flex overflow-x-auto scrollbar-hide"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {portfolioImages.map((image, index) => (
+            <button
+              key={image.id}
+              onClick={() => {
+                setActiveIndex(index);
+                openLightbox(index);
+              }}
+              className={`flex-shrink-0 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[100px] relative overflow-hidden transition-all duration-300 ${
+                activeIndex === index 
+                  ? 'ring-[3px] ring-[#FF3333] ring-inset z-10' 
+                  : 'hover:ring-[2px] hover:ring-[#FF3333] hover:ring-inset'
+              }`}
             >
-              BELLA
-              <br />
-              HASIAS.
-            </h1>
-            
-            {/* Subtitle */}
-            <p className="font-sans text-white/80 text-xs md:text-sm tracking-[0.3em] uppercase mb-8">
-              Стилист & Креатор
-            </p>
-            
-            {/* Description */}
-            <p className="font-sans text-white/60 text-sm md:text-base max-w-md leading-relaxed mb-10">
-              Создаю уникальный визуальный образ для брендов и личностей
-            </p>
-            
-            {/* CTA Button - Red accent */}
-            <a
-              href="#services"
-              className="inline-flex items-center gap-3 px-8 py-3 border border-[#FF3333] text-[#FF3333] hover:bg-[#FF3333] hover:text-white font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 group"
-            >
-              <span>Смотреть услуги</span>
-              <svg 
-                className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
+              <img
+                src={image.src}
+                alt={image.alt}
+                className={`w-full h-full object-cover transition-all duration-300 ${
+                  activeIndex === index ? 'scale-105' : 'hover:scale-105'
+                }`}
+              />
+              {/* Number overlay */}
+              <span className="absolute bottom-1 right-1 text-[10px] font-semibold text-white bg-[#1a1a1a]/70 px-1.5 py-0.5">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* [4] Masonry Grid */}
+      <div className="w-full bg-white px-4 md:px-8 lg:px-12 py-12 md:py-16 lg:py-20">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px] lg:auto-rows-[280px]">
+          {portfolioImages.map((image, index) => {
+            // Determine grid span based on size
+            let gridClass = '';
+            if (image.size === 'wide') {
+              gridClass = 'md:col-span-2';
+            } else if (image.size === 'tall') {
+              gridClass = 'row-span-2';
+            }
+
+            return (
+              <button
+                key={image.id}
+                onClick={() => openLightbox(index)}
+                className={`relative overflow-hidden group ${gridClass}`}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-full object-cover transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.02]"
+                  loading="lazy"
+                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-[#FF3333]/0 group-hover:bg-[#FF3333]/8 transition-all duration-300" />
+                {/* Hover border */}
+                <div className="absolute inset-0 ring-0 group-hover:ring-[3px] ring-[#FF3333] ring-inset transition-all duration-300" />
+                {/* Number */}
+                <span className="absolute bottom-2 left-2 text-xs font-semibold text-white bg-[#1a1a1a]/80 px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-[#1a1a1a]/95 flex items-center justify-center"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-6 right-6 text-white hover:text-[#FF3333] transition-colors duration-300 z-10"
+          >
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Counter */}
+          <div className="absolute top-6 left-6 text-white text-sm font-semibold tracking-[0.1em]">
+            <span className="text-[#FF3333]">{String(lightboxIndex + 1).padStart(2, '0')}</span>
+            <span className="mx-2">/</span>
+            <span>{portfolioImages.length}</span>
+          </div>
+
+          {/* Navigation - Previous */}
+          <button
+            onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:text-[#FF3333] transition-colors duration-300"
+          >
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Navigation - Next */}
+          <button
+            onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:text-[#FF3333] transition-colors duration-300"
+          >
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Main Image */}
+          <div 
+            className="max-w-[90vw] max-h-[85vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={portfolioImages[lightboxIndex].src}
+              alt={portfolioImages[lightboxIndex].alt}
+              className="max-w-full max-h-[85vh] object-contain"
+            />
           </div>
         </div>
+      )}
 
-        {/* Right Image */}
-        <div className="hidden md:block relative overflow-hidden group">
-          <img
-            src={heroRight}
-            alt="Редакционная мода"
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-          />
-          {/* Red accent line on hover */}
-          <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#FF3333] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-right" />
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <span className="text-white/40 text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-        <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent" />
-      </div>
+      {/* CSS for hiding scrollbar */}
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };
