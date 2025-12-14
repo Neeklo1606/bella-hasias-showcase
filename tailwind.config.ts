@@ -47,16 +47,23 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom Bella Hasias colors
-        cream: "hsl(40 33% 97%)",
-        brown: "hsl(37 15% 31%)",
-        magnolia: "hsl(12 50% 86%)",
-        grotto: "hsl(187 63% 28%)",
-        charcoal: "hsl(180 2% 13%)",
+        // Custom colors
+        cream: "hsl(38 47% 97%)",
+        gold: "hsl(30 52% 64%)",
+        "gold-light": "hsl(30 44% 63%)",
+        sage: "hsl(153 14% 54%)",
+        graphite: "hsl(0 0% 24%)",
+        "deep-black": "hsl(0 0% 10%)",
       },
       fontFamily: {
-        serif: ["'Playfair Display'", "serif"],
-        sans: ["'Montserrat'", "sans-serif"],
+        serif: ["'Playfair Display'", "'Cormorant Garamond'", "serif"],
+        sans: ["'Inter'", "'Poppins'", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        'display': ['56px', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'h1': ['42px', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        'h2': ['28px', { lineHeight: '1.3', letterSpacing: '-0.01em' }],
+        'h3': ['20px', { lineHeight: '1.4' }],
       },
       borderRadius: {
         lg: "var(--radius)",
