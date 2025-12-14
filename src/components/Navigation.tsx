@@ -15,7 +15,6 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -26,7 +25,6 @@ const Navigation = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -45,8 +43,8 @@ const Navigation = () => {
   ];
 
   const navLinks = [
+    { href: '#services', label: 'Услуги' },
     { href: '#portfolio', label: 'Портфолио' },
-    { href: '#about', label: 'О мне' },
     { href: '#contact', label: 'Контакты' },
   ];
 
@@ -63,61 +61,24 @@ const Navigation = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-card/98 backdrop-blur-sm shadow-sm'
-            : 'bg-transparent'
+            ? 'bg-cream/98 backdrop-blur-sm border-b border-border-light'
+            : 'bg-cream'
         }`}
       >
-        <div className="container mx-auto px-6 md:px-12">
-          <div className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? 'py-4' : 'py-5 md:py-6'}`}>
+        <div className="max-w-[1400px] mx-auto px-5 md:px-8">
+          <div className="flex items-center justify-between h-[56px] md:h-[60px]">
             {/* Logo */}
             <Link
               to="/"
-              className={`font-serif text-lg md:text-xl tracking-[0.15em] transition-colors duration-300 ${
-                isScrolled ? 'text-foreground' : 'text-cream'
-              }`}
+              className="font-serif text-sm md:text-lg tracking-[0.02em] text-deep-black hover:text-gold transition-colors duration-300"
             >
               BELLA HASIAS
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-10">
-              {/* Services Dropdown */}
-              <div 
-                className="relative"
-                onMouseEnter={() => setIsServicesOpen(true)}
-                onMouseLeave={() => setIsServicesOpen(false)}
-              >
-                <button
-                  className={`font-sans text-xs tracking-[0.2em] uppercase flex items-center gap-1.5 transition-colors duration-300 hover:text-gold ${
-                    isScrolled ? 'text-foreground' : 'text-cream'
-                  }`}
-                >
-                  Услуги
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {/* Dropdown Menu */}
-                <div 
-                  className={`absolute top-full left-0 pt-3 transition-all duration-200 ${
-                    isServicesOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
-                  }`}
-                >
-                  <div className="bg-background border border-border rounded-xl shadow-lg py-2 min-w-[220px]">
-                    {services.map((service) => (
-                      <Link
-                        key={service.href}
-                        to={service.href}
-                        className="block px-5 py-3 font-sans text-sm text-foreground hover:text-gold hover:bg-muted/50 transition-colors"
-                      >
-                        {service.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
+            <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
@@ -126,9 +87,7 @@ const Navigation = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className={`font-sans text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:text-gold ${
-                    isScrolled ? 'text-foreground' : 'text-cream'
-                  }`}
+                  className="font-sans text-[13px] font-normal text-graphite hover:text-gold transition-colors duration-300"
                 >
                   {link.label}
                 </a>
@@ -138,52 +97,25 @@ const Navigation = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`md:hidden p-2 transition-colors duration-300 z-50 ${
-                isMobileMenuOpen ? 'text-foreground' : isScrolled ? 'text-foreground' : 'text-background'
-              }`}
+              className="md:hidden p-2 text-deep-black"
               aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
-
-        {/* Separator line */}
-        <div className={`h-px bg-primary/20 transition-opacity duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`} />
       </nav>
 
       {/* Full-screen Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-card transition-all duration-300 ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        className={`md:hidden fixed inset-0 z-40 bg-cream transition-all duration-300 ${
+          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
       >
         <div className="flex flex-col items-center justify-center min-h-screen px-6 py-20">
-          {/* Services Section */}
-          <div className="mb-8 text-center">
-            <p className="font-sans text-xs tracking-[0.3em] uppercase text-primary mb-4">
-              Услуги
-            </p>
-            <div className="flex flex-col gap-4">
-              {services.map((service) => (
-                <Link
-                  key={service.href}
-                  to={service.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-serif text-xl text-foreground hover:text-primary transition-colors"
-                >
-                  {service.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Separator */}
-          <div className="w-16 h-px bg-primary/30 my-6" />
-
           {/* Navigation Links */}
-          <div className="flex flex-col items-center gap-6">
-            {navLinks.map((link) => (
+          <div className="flex flex-col items-center gap-8">
+            {navLinks.map((link, index) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -191,25 +123,48 @@ const Navigation = () => {
                   e.preventDefault();
                   scrollToSection(link.href);
                 }}
-                className="font-serif text-2xl text-foreground hover:text-primary transition-colors"
+                className="font-serif text-2xl text-deep-black hover:text-gold transition-colors duration-300"
+                style={{ 
+                  animationDelay: `${index * 0.1}s`,
+                  animationFillMode: 'both'
+                }}
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* Contact Info */}
-          <div className="mt-12 text-center">
-            <p className="font-sans text-sm text-muted-foreground mb-4">
-              Связаться со мной
+          {/* Separator */}
+          <div className="w-12 h-px bg-border-light my-10" />
+
+          {/* Services */}
+          <div className="flex flex-col items-center gap-4">
+            <p className="font-sans text-xs tracking-[0.2em] uppercase text-graphite/50 mb-2">
+              Услуги
             </p>
+            {services.map((service) => (
+              <Link
+                key={service.href}
+                to={service.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="font-sans text-base text-graphite hover:text-gold transition-colors duration-300"
+              >
+                {service.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Contact CTA */}
+          <div className="mt-12">
             <a
-              href="https://wa.me/79991234567"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-primary text-primary-foreground font-sans text-sm tracking-wider uppercase hover:bg-foreground transition-colors"
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#contact');
+              }}
+              className="inline-block px-8 py-3 bg-deep-black text-cream font-sans text-xs tracking-[0.15em] uppercase hover:bg-gold transition-colors duration-300"
             >
-              WhatsApp
+              Связаться
             </a>
           </div>
         </div>

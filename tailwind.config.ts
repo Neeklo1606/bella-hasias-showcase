@@ -52,12 +52,13 @@ export default {
         gold: "hsl(30 52% 64%)",
         "gold-light": "hsl(30 44% 63%)",
         sage: "hsl(153 14% 54%)",
-        graphite: "hsl(0 0% 24%)",
+        graphite: "hsl(0 0% 40%)",
         "deep-black": "hsl(0 0% 10%)",
+        "border-light": "hsl(40 24% 88%)",
       },
       fontFamily: {
-        serif: ["'Cinzel'", "'Libre Baskerville'", "serif"],
-        sans: ["'Montserrat'", "system-ui", "sans-serif"],
+        serif: ["'Playfair Display'", "'Cormorant Garamond'", "serif"],
+        sans: ["'Inter'", "'Poppins'", "system-ui", "sans-serif"],
       },
       fontSize: {
         'display': ['56px', { lineHeight: '1.1', letterSpacing: '-0.02em' }],

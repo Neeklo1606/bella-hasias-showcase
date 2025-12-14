@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
-import Hero from '@/components/Hero';
-import Portfolio from '@/components/Portfolio';
+import HeroMasonry from '@/components/HeroMasonry';
 import Services from '@/components/Services';
+import Portfolio from '@/components/Portfolio';
 import LeadForm from '@/components/LeadForm';
 import Footer from '@/components/Footer';
 
@@ -23,9 +23,9 @@ const Index = () => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-cream">
         <Navigation />
-        <Hero />
+        <HeroMasonry />
         <Services />
         <Portfolio />
         <LeadForm />
