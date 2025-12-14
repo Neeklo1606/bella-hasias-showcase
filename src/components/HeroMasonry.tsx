@@ -1,23 +1,23 @@
 import { useState } from 'react';
+import heroPhoto from '@/assets/hero/photo-3.jpg';
 import work1 from '@/assets/portfolio/work-1.jpg';
 import work2 from '@/assets/portfolio/work-2.jpg';
 import work3 from '@/assets/portfolio/work-3.jpg';
 import work4 from '@/assets/portfolio/work-4.jpg';
 import work5 from '@/assets/portfolio/work-5.jpg';
 import work6 from '@/assets/portfolio/work-6.jpg';
-import work7 from '@/assets/portfolio/work-7.jpg';
 
 const HeroMasonry = () => {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const images = [
-    { src: work1, alt: 'Bella Hasias styling work', span: 'col-span-2 row-span-2' },
-    { src: work2, alt: 'Fashion editorial', span: 'col-span-1 row-span-1' },
-    { src: work3, alt: 'Personal styling session', span: 'col-span-1 row-span-2' },
-    { src: work4, alt: 'Content creation', span: 'col-span-1 row-span-1' },
-    { src: work5, alt: 'Editorial photography', span: 'col-span-1 row-span-1' },
-    { src: work6, alt: 'Style consultation', span: 'col-span-2 row-span-1' },
-    { src: work7, alt: 'Fashion photography', span: 'col-span-1 row-span-1' },
+    { src: heroPhoto, alt: 'Bella Hasias styling work', span: 'col-span-2 row-span-2' },
+    { src: work1, alt: 'Fashion editorial', span: 'col-span-1 row-span-1' },
+    { src: work2, alt: 'Personal styling session', span: 'col-span-1 row-span-2' },
+    { src: work3, alt: 'Content creation', span: 'col-span-1 row-span-1' },
+    { src: work4, alt: 'Editorial photography', span: 'col-span-1 row-span-1' },
+    { src: work5, alt: 'Style consultation', span: 'col-span-2 row-span-1' },
+    { src: work6, alt: 'Fashion photography', span: 'col-span-1 row-span-1' },
   ];
 
   const handleImageLoad = (index: number) => {
