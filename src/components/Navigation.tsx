@@ -3,16 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,9 +27,9 @@ const Navigation = () => {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { href: '#services', label: 'Услуги' },
-    { href: '#portfolio', label: 'Портфолио' },
-    { href: '#contact', label: 'Контакты' },
+    { href: '#services', label: 'УСЛУГИ' },
+    { href: '#portfolio', label: 'ПОРТФОЛИО' },
+    { href: '#contact', label: 'КОНТАКТЫ' },
   ];
 
   const scrollToSection = (href: string) => {
@@ -53,20 +44,17 @@ const Navigation = () => {
 
   return (
     <>
+      {/* Sticky Navigation Bar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/95 backdrop-blur-sm border-b border-[#e5e5e5]'
-            : 'bg-transparent'
-        }`}
+        className="sticky top-0 z-[1000] bg-white border-b border-[#e8e8e8] animate-fade-in"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
-        <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="flex items-center justify-between h-[56px] md:h-[64px]">
+        <div className="max-w-[1600px] mx-auto px-5 md:px-10">
+          <div className="flex items-center justify-between h-14 md:h-[60px]">
             {/* Logo */}
             <Link
               to="/"
-              className="text-xs md:text-sm tracking-[0.15em] uppercase text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300 font-semibold"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              className="text-sm md:text-base font-semibold text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300 tracking-[0.5px]"
             >
               BELLA HASIAS
             </Link>
@@ -81,10 +69,11 @@ const Navigation = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className="text-[11px] tracking-[0.12em] uppercase font-medium text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  className="relative text-[13px] font-normal text-[#1a1a1a] tracking-[0.3px] uppercase transition-colors duration-300 hover:text-[#FF3333] group"
                 >
                   {link.label}
+                  {/* Underline effect */}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#FF3333] transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
             </div>
@@ -92,7 +81,7 @@ const Navigation = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-[#1a1a1a] hover:text-[#FF3333] transition-colors"
+              className="md:hidden p-2 text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
               aria-label="Переключить меню"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -103,43 +92,49 @@ const Navigation = () => {
 
       {/* Full-screen Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-white transition-all duration-300 ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        className={`md:hidden fixed inset-0 z-[999] bg-white transition-all duration-400 ${
+          isMobileMenuOpen 
+            ? 'opacity-100 visible translate-x-0' 
+            : 'opacity-0 invisible translate-x-full'
         }`}
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
-        <div className="flex flex-col items-center justify-center min-h-screen px-6 py-20">
-          {/* Navigation Links */}
-          <div className="flex flex-col items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(link.href);
-                }}
-                className="text-2xl tracking-[0.1em] uppercase text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300 font-semibold"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
+        {/* Close Button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="absolute top-4 right-5 p-2 text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
+          aria-label="Закрыть меню"
+        >
+          <X size={24} />
+        </button>
 
-          {/* Contact CTA */}
-          <div className="mt-12">
+        {/* Navigation Links */}
+        <div className="flex flex-col items-start justify-center min-h-screen px-10 py-16 gap-5">
+          {navLinks.map((link) => (
             <a
-              href="#contact"
+              key={link.href}
+              href={link.href}
               onClick={(e) => {
                 e.preventDefault();
-                scrollToSection('#contact');
+                scrollToSection(link.href);
               }}
-              className="inline-block px-8 py-3 bg-[#FF3333] text-white text-xs tracking-[0.15em] uppercase font-semibold hover:bg-[#1a1a1a] transition-colors duration-300"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              className="text-lg font-medium text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300 uppercase tracking-[0.5px]"
             >
-              Связаться
+              {link.label}
             </a>
-          </div>
+          ))}
+
+          {/* Contact CTA */}
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('#contact');
+            }}
+            className="mt-8 inline-block px-8 py-3 border-2 border-[#FF3333] text-[#FF3333] text-sm tracking-[0.1em] uppercase font-semibold hover:bg-[#FF3333] hover:text-white transition-all duration-300"
+          >
+            Связаться
+          </a>
         </div>
       </div>
     </>
