@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import ServiceStylist from "./pages/ServiceStylist";
 import ServiceUgc from "./pages/ServiceUgc";
 import ServicePhotographer from "./pages/ServicePhotographer";
+import AdminDocumentation from "./pages/AdminDocumentation";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/services/stylist" element={<ServiceStylist />} />
             <Route path="/services/ugc" element={<ServiceUgc />} />
             <Route path="/services/photographer" element={<ServicePhotographer />} />
+            <Route path="/admin/documentation" element={<AdminDocumentation />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
