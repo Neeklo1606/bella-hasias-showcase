@@ -12,7 +12,6 @@ import work6 from '@/assets/portfolio/work-6.jpg';
 import work7 from '@/assets/portfolio/work-7.jpg';
 import work8 from '@/assets/portfolio/work-8.jpg';
 
-// Combined images: 4 hero photos + 8 portfolio works = 12 total
 const portfolioImages = [
   { id: 1, src: heroCenter, alt: 'Bella Hasias работа 1', size: 'tall' as const },
   { id: 2, src: heroLeft, alt: 'Bella Hasias работа 2', size: 'normal' as const },
@@ -29,7 +28,6 @@ const portfolioImages = [
 ];
 
 const HeroMasonry = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -52,7 +50,6 @@ const HeroMasonry = () => {
     setLightboxIndex((prev) => (prev - 1 + portfolioImages.length) % portfolioImages.length);
   }, []);
 
-  // Keyboard navigation for lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!lightboxOpen) return;
@@ -65,33 +62,30 @@ const HeroMasonry = () => {
   }, [lightboxOpen, closeLightbox, nextImage, prevImage]);
 
   return (
-    <section className="relative w-full bg-white animate-fade-in">
-      {/* [2] Main Name Block */}
-      <div className="w-full bg-white px-5 md:px-10 lg:px-10 py-12 md:py-16 lg:py-20">
+    <section className="relative w-full bg-background">
+      {/* Hero Name Block */}
+      <div className="w-full px-6 md:px-10 lg:px-16 py-16 md:py-24 lg:py-32 max-w-7xl mx-auto">
         <h1 
-          className="text-[50px] sm:text-[70px] md:text-[110px] lg:text-[140px] xl:text-[160px] font-black uppercase leading-[0.95] tracking-[-0.02em] text-[#1a1a1a] mb-4 md:mb-5"
-          style={{ fontFamily: "'Montserrat', 'Poppins', sans-serif" }}
+          className="font-serif text-display font-medium text-foreground mb-6 animate-fade-in-up"
         >
-          BELLA
+          Bella
           <br />
-          HASIAS
+          <span className="text-primary">Hasias</span>
         </h1>
         <p 
-          className="text-base sm:text-lg md:text-xl font-normal tracking-[0.02em] text-[#1a1a1a]"
-          style={{ fontFamily: "'Montserrat', 'Inter', sans-serif" }}
+          className="font-sans text-lg md:text-xl text-muted-foreground max-w-md animate-fade-in-up animation-delay-200"
         >
-          Стилист / UGC / Креатор / Контент-Фотограф
+          Стилист · UGC Креатор · Контент-Фотограф
         </p>
       </div>
 
-
-      {/* [4] Masonry Grid */}
-      <div className="w-full bg-white px-5 md:px-10 lg:px-10 py-12 md:py-16 lg:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 md:gap-3.5 lg:gap-[18px] auto-rows-[160px] sm:auto-rows-[180px] md:auto-rows-[220px] lg:auto-rows-[260px]">
+      {/* Masonry Grid */}
+      <div className="w-full px-6 md:px-10 lg:px-16 pb-20 md:pb-28 lg:pb-32">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6 auto-rows-[200px] sm:auto-rows-[220px] md:auto-rows-[260px] lg:auto-rows-[300px] max-w-7xl mx-auto">
           {portfolioImages.map((image, index) => {
             let gridClass = '';
             if (image.size === 'wide') {
-              gridClass = 'md:col-span-2';
+              gridClass = 'sm:col-span-2';
             } else if (image.size === 'tall') {
               gridClass = 'row-span-2';
             }
@@ -100,24 +94,23 @@ const HeroMasonry = () => {
               <button
                 key={image.id}
                 onClick={() => openLightbox(index)}
-                className={`relative overflow-hidden group ${gridClass}`}
+                className={`relative overflow-hidden rounded-2xl group ${gridClass} animate-fade-in-up`}
+                style={{ animationDelay: `${index * 50}ms` }}
               >
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-full object-cover transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.02]"
+                  className="w-full h-full object-cover transition-all duration-700 ease-premium group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* Red overlay on hover */}
-                <div className="absolute inset-0 bg-[#FF3333]/0 group-hover:bg-[#FF3333]/[0.08] transition-all duration-300" />
-                {/* Red border on hover */}
-                <div className="absolute inset-0 ring-0 group-hover:ring-[3px] ring-[#FF3333] ring-inset transition-all duration-300" />
-                {/* Shadow on hover */}
-                <div className="absolute inset-0 shadow-none group-hover:shadow-[0_8px_24px_rgba(26,26,26,0.12)] transition-all duration-[350ms]" />
-                {/* Number label */}
-                <span className="absolute bottom-2 left-2 text-xs font-semibold text-white bg-[#1a1a1a]/80 px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+                {/* Subtle dark overlay on hover */}
+                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-all duration-500" />
+                {/* Title reveal on hover */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <span className="font-serif text-white text-lg md:text-xl tracking-wide">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
               </button>
             );
           })}
@@ -127,13 +120,13 @@ const HeroMasonry = () => {
       {/* Lightbox Modal */}
       {lightboxOpen && (
         <div 
-          className="fixed inset-0 z-50 bg-[#1a1a1a]/95 flex items-center justify-center animate-fade-in"
+          className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-sm flex items-center justify-center animate-fade-in"
           onClick={closeLightbox}
         >
           {/* Close button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-6 right-6 text-white hover:text-[#FF3333] transition-colors duration-300 z-10"
+            className="absolute top-6 right-6 text-white/80 hover:text-white transition-colors duration-300 z-10 p-2 rounded-full hover:bg-white/10"
             aria-label="Закрыть"
           >
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -142,19 +135,19 @@ const HeroMasonry = () => {
           </button>
 
           {/* Counter */}
-          <div className="absolute top-6 left-6 text-white text-sm font-semibold tracking-[0.1em]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-            <span className="text-[#FF3333]">{String(lightboxIndex + 1).padStart(2, '0')}</span>
-            <span className="mx-2">/</span>
-            <span>{portfolioImages.length}</span>
+          <div className="absolute top-6 left-6 text-white/80 text-sm font-sans font-medium tracking-widest">
+            <span className="text-white">{String(lightboxIndex + 1).padStart(2, '0')}</span>
+            <span className="mx-2 text-white/40">/</span>
+            <span className="text-white/60">{portfolioImages.length}</span>
           </div>
 
           {/* Previous button */}
           <button
             onClick={(e) => { e.stopPropagation(); prevImage(); }}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:text-[#FF3333] transition-colors duration-300"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/60 hover:text-white transition-colors duration-300 rounded-full hover:bg-white/10"
             aria-label="Предыдущее фото"
           >
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
@@ -162,17 +155,17 @@ const HeroMasonry = () => {
           {/* Next button */}
           <button
             onClick={(e) => { e.stopPropagation(); nextImage(); }}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:text-[#FF3333] transition-colors duration-300"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/60 hover:text-white transition-colors duration-300 rounded-full hover:bg-white/10"
             aria-label="Следующее фото"
           >
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
           {/* Main image */}
           <div 
-            className="max-w-[90vw] max-h-[85vh] overflow-hidden"
+            className="max-w-[90vw] max-h-[85vh] overflow-hidden rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <img
@@ -183,12 +176,6 @@ const HeroMasonry = () => {
           </div>
         </div>
       )}
-
-      <style>{`
-        div::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   );
 };

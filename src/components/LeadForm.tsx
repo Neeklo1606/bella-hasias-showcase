@@ -67,9 +67,9 @@ const LeadForm = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'EMAIL', value: 'bella@bellahasias.com', href: 'mailto:bella@bellahasias.com' },
-    { icon: Phone, label: 'ТЕЛЕФОН', value: '+7 (999) 123-45-67', href: 'tel:+79991234567' },
-    { icon: MapPin, label: 'ЛОКАЦИЯ', value: 'Москва, Россия', href: null },
+    { icon: Mail, label: 'Email', value: 'bella@bellahasias.com', href: 'mailto:bella@bellahasias.com' },
+    { icon: Phone, label: 'Телефон', value: '+7 (999) 123-45-67', href: 'tel:+79991234567' },
+    { icon: MapPin, label: 'Локация', value: 'Москва, Россия', href: null },
   ];
 
   const socialLinks = [
@@ -77,198 +77,203 @@ const LeadForm = () => {
     { icon: Send, label: 'Telegram', href: 'https://t.me/bellahasias' },
   ];
 
-  const inputClass = (hasError: boolean) => 
-    `w-full px-4 py-3 bg-white border ${hasError ? 'border-[#FF3333]' : 'border-[#e8e8e8]'} rounded-md text-[#1a1a1a] placeholder:text-[#999999] text-sm focus:outline-none focus:border-[#FF3333] focus:shadow-[0_0_0_3px_rgba(255,51,51,0.1)] transition-all duration-300`;
-
   return (
-    <section id="contact" className="py-16 md:py-20 lg:py-20 px-5 md:px-10 lg:px-10 bg-white border-t border-[#e8e8e8]">
-      <div className="max-w-[1400px] mx-auto">
+    <section id="contact" className="section-padding bg-secondary/30">
+      <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-12 md:mb-16">
-          <h2 
-            className="text-[60px] sm:text-[80px] md:text-[100px] lg:text-[120px] font-black uppercase leading-[0.95] tracking-[-0.02em] text-[#1a1a1a]"
-            style={{ fontFamily: "'Montserrat', 'Poppins', sans-serif" }}
-          >
-            СВЯЗАТЬСЯ.
+        <div className="mb-12 md:mb-16 lg:mb-20">
+          <span className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-primary mb-4 block">
+            Контакты
+          </span>
+          <h2 className="font-serif text-h2 text-foreground">
+            Давайте<br />
+            <span className="text-primary">работать вместе</span>
           </h2>
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           
           {/* Left: Form */}
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Ваше имя *"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={inputClass(!!errors.name)}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-                {errors.name && <p className="text-[#FF3333] text-xs mt-1.5">{errors.name}</p>}
+          <div className="card-premium p-8 md:p-10">
+            {isSuccess ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="font-serif text-2xl text-foreground mb-3">Спасибо!</h3>
+                <p className="font-sans text-muted-foreground">Я свяжусь с вами в ближайшее время.</p>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="name" className="font-sans text-sm font-medium text-foreground mb-2 block">
+                      Ваше имя <span className="text-primary">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Как вас зовут?"
+                      className={`input-premium ${errors.name ? 'border-destructive' : ''}`}
+                    />
+                    {errors.name && <p className="text-destructive text-xs mt-1.5">{errors.name}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="font-sans text-sm font-medium text-foreground mb-2 block">
+                      Email <span className="text-primary">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="your@email.com"
+                      className={`input-premium ${errors.email ? 'border-destructive' : ''}`}
+                    />
+                    {errors.email && <p className="text-destructive text-xs mt-1.5">{errors.email}</p>}
+                  </div>
+                </div>
 
-              <div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email *"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={inputClass(!!errors.email)}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-                {errors.email && <p className="text-[#FF3333] text-xs mt-1.5">{errors.email}</p>}
-              </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="phone" className="font-sans text-sm font-medium text-foreground mb-2 block">
+                      Телефон
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+7 (___) ___-__-__"
+                      className="input-premium"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="service" className="font-sans text-sm font-medium text-foreground mb-2 block">
+                      Услуга <span className="text-primary">*</span>
+                    </label>
+                    <select
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className={`input-premium appearance-none cursor-pointer ${errors.service ? 'border-destructive' : ''}`}
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E")`, 
+                        backgroundRepeat: 'no-repeat', 
+                        backgroundPosition: 'right 16px center', 
+                        backgroundSize: '20px' 
+                      }}
+                    >
+                      <option value="">Выберите услугу</option>
+                      <option value="styling">Стилизация</option>
+                      <option value="ugc">UGC контент</option>
+                      <option value="photo">Фотосъёмка</option>
+                    </select>
+                    {errors.service && <p className="text-destructive text-xs mt-1.5">{errors.service}</p>}
+                  </div>
+                </div>
 
-              <div>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Телефон"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={inputClass(false)}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-              </div>
+                <div>
+                  <label htmlFor="message" className="font-sans text-sm font-medium text-foreground mb-2 block">
+                    Сообщение
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Расскажите о вашем проекте..."
+                    rows={4}
+                    className="input-premium resize-none"
+                  />
+                </div>
 
-              <div>
-                <select
-                  name="service"
-                  value={formData.service}
-                  onChange={handleChange}
-                  className={`${inputClass(!!errors.service)} appearance-none cursor-pointer ${!formData.service ? 'text-[#999999]' : ''}`}
-                  style={{ 
-                    fontFamily: "'Inter', sans-serif",
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666666' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E")`, 
-                    backgroundRepeat: 'no-repeat', 
-                    backgroundPosition: 'right 12px center', 
-                    backgroundSize: '20px' 
-                  }}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-premium w-full text-sm tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <option value="">Выберите услугу *</option>
-                  <option value="styling">Стилизация</option>
-                  <option value="ugc">UGC Контент</option>
-                  <option value="photo">Фотосъёмка</option>
-                </select>
-                {errors.service && <p className="text-[#FF3333] text-xs mt-1.5">{errors.service}</p>}
-              </div>
-
-              <div>
-                <textarea
-                  name="message"
-                  placeholder="Сообщение (опционально)"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className={`${inputClass(false)} resize-none`}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3.5 bg-[#FF3333] text-white text-sm tracking-[0.05em] uppercase font-semibold rounded-full transition-all duration-300 hover:bg-[#d40000] hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(255,51,51,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                {isSubmitting ? 'ОТПРАВЛЯЕТСЯ...' : isSuccess ? 'СПАСИБО! МЫ СВЯЖЕМСЯ СКОРО' : 'ОТПРАВИТЬ'}
-              </button>
-            </form>
+                  {isSubmitting ? 'Отправляется...' : 'Отправить'}
+                </button>
+              </form>
+            )}
           </div>
 
           {/* Right: Contact Info */}
-          <div className="lg:pl-8">
-            <div className="space-y-7">
+          <div className="space-y-10">
+            <div className="space-y-8">
               {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-start gap-3">
-                  <item.icon size={24} className="text-[#1a1a1a] flex-shrink-0 mt-0.5" />
+                <div key={item.label} className="flex items-start gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-primary" />
+                  </div>
                   <div>
-                    <p 
-                      className="text-[11px] tracking-[0.05em] uppercase font-semibold text-[#1a1a1a] mb-1"
-                      style={{ fontFamily: "'Montserrat', sans-serif" }}
-                    >
+                    <span className="font-sans text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground block mb-1">
                       {item.label}
-                    </p>
+                    </span>
                     {item.href ? (
-                      <a 
+                      <a
                         href={item.href}
-                        className="text-sm text-[#666666] hover:text-[#FF3333] transition-colors duration-300"
-                        style={{ fontFamily: "'Inter', sans-serif" }}
+                        className="font-sans text-foreground hover:text-primary transition-colors duration-300"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <p 
-                        className="text-sm text-[#666666]"
-                        style={{ fontFamily: "'Inter', sans-serif" }}
-                      >
-                        {item.value}
-                      </p>
+                      <span className="font-sans text-foreground">{item.value}</span>
                     )}
                   </div>
                 </div>
               ))}
 
               {/* Working Hours */}
-              <div className="flex items-start gap-3">
-                <Clock size={24} className="text-[#1a1a1a] flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-5">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-5 h-5 text-primary" />
+                </div>
                 <div>
-                  <p 
-                    className="text-[11px] tracking-[0.05em] uppercase font-semibold text-[#1a1a1a] mb-1"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    ЧАСЫ РАБОТЫ
-                  </p>
-                  <p 
-                    className="text-sm text-[#666666]"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    Пн–Пт: 10:00–18:00 (МСК)
-                  </p>
-                  <p 
-                    className="text-sm text-[#666666]"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    Выходные: по записи
-                  </p>
+                  <span className="font-sans text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground block mb-1">
+                    Часы работы
+                  </span>
+                  <span className="font-sans text-foreground block">Пн–Пт: 10:00–18:00</span>
+                  <span className="font-sans text-muted-foreground text-sm">Выходные: по записи</span>
                 </div>
               </div>
+            </div>
 
-              {/* Social Links */}
-              <div>
-                <p 
-                  className="text-[11px] tracking-[0.05em] uppercase font-semibold text-[#1a1a1a] mb-3"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  СОЦИАЛЬНЫЕ СЕТИ
-                </p>
-                <div className="flex gap-3">
-                  {socialLinks.map((social) => (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.label}
-                      className="w-10 h-10 flex items-center justify-center text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
-                    >
-                      <social.icon size={24} />
-                    </a>
-                  ))}
+            {/* Social Links */}
+            <div>
+              <span className="font-sans text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground block mb-5">
+                Социальные сети
+              </span>
+              <div className="flex items-center gap-4">
+                {socialLinks.map((link) => (
                   <a
-                    href="mailto:bella@bellahasias.com"
-                    aria-label="Email"
-                    className="w-10 h-10 flex items-center justify-center text-[#1a1a1a] hover:text-[#FF3333] transition-colors duration-300"
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                    className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                   >
-                    <Mail size={24} />
+                    <link.icon size={20} />
                   </a>
-                </div>
+                ))}
+                <a
+                  href="mailto:bella@bellahasias.com"
+                  aria-label="Email"
+                  className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                >
+                  <Mail size={20} />
+                </a>
               </div>
             </div>
           </div>

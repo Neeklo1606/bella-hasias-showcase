@@ -11,20 +11,19 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-10 md:py-14 px-6 md:px-10 lg:px-16 bg-[#1a1a1a] border-t-2 border-[#FF3333]">
-      <div className="max-w-[1600px] mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-foreground">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo */}
           <Link
             to="/"
-            className="text-sm tracking-[0.15em] uppercase text-white hover:text-[#FF3333] transition-colors duration-300 font-semibold"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            className="font-serif text-lg font-medium text-background/90 hover:text-background transition-colors duration-300"
           >
-            BELLA HASIAS
+            Bella Hasias
           </Link>
 
           {/* Social Links */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {socialLinks.map((link) => (
               <a
                 key={link.label}
@@ -32,7 +31,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.label}
-                className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-[#FF3333] transition-colors duration-300"
+                className="w-11 h-11 rounded-xl flex items-center justify-center bg-background/10 text-background/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 <link.icon size={18} />
               </a>
@@ -40,11 +39,8 @@ const Footer = () => {
           </div>
 
           {/* Copyright */}
-          <p 
-            className="text-xs text-white/50"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            © {currentYear} Bella Hasias. Все права защищены.
+          <p className="font-sans text-sm text-background/50">
+            © {currentYear} Bella Hasias
           </p>
         </div>
       </div>
