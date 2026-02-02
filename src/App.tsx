@@ -10,6 +10,9 @@ import ServiceStylist from "./pages/ServiceStylist";
 import ServiceUgc from "./pages/ServiceUgc";
 import ServicePhotographer from "./pages/ServicePhotographer";
 import AdminDocumentation from "./pages/AdminDocumentation";
+import Admin from "./pages/Admin";
+import Privacy from "./pages/Privacy";
+import VKLanding from "./pages/VKLanding";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +28,10 @@ const App = () => (
             <Route path="/services/stylist" element={<ServiceStylist />} />
             <Route path="/services/ugc" element={<ServiceUgc />} />
             <Route path="/services/photographer" element={<ServicePhotographer />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/admin/documentation" element={<AdminDocumentation />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/vk" element={<VKLanding />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

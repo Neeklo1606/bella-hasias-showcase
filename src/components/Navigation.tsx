@@ -37,8 +37,9 @@ const Navigation = () => {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { href: '#works', label: 'Работы' },
     { href: '#services', label: 'Услуги' },
+    { href: '#works', label: 'Портфолио' },
+    { href: 'https://vk.com/bella_hasias', label: 'ВК', external: true },
     { href: '#contact', label: 'Контакты' },
   ];
 
@@ -97,17 +98,29 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(link.href);
-                }}
-                className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-              >
-                {link.label}
-              </a>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(link.href);
+                  }}
+                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
             <a
               href="#contact"
@@ -144,21 +157,37 @@ const Navigation = () => {
           >
             <div className="flex flex-col items-start justify-center min-h-screen px-10 py-20">
               {navLinks.map((link, index) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  custom={index}
-                  variants={linkVariants}
-                  initial="closed"
-                  animate="open"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(link.href);
-                  }}
-                  className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6"
-                >
-                  {link.label}
-                </motion.a>
+                link.external ? (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    custom={index}
+                    variants={linkVariants}
+                    initial="closed"
+                    animate="open"
+                    className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6"
+                  >
+                    {link.label}
+                  </motion.a>
+                ) : (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    custom={index}
+                    variants={linkVariants}
+                    initial="closed"
+                    animate="open"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection(link.href);
+                    }}
+                    className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6"
+                  >
+                    {link.label}
+                  </motion.a>
+                )
               ))}
 
               <motion.a
