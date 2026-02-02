@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 
 const documentation = `
-# BELLA HASIAS — Проектная Документация
-## Modern Minimalist Luxury (v3.0)
+# BELLA HASIAS — Проектная Документация v5.0
+## Modern Minimalist Luxury (Production Ready)
 
 ---
 
@@ -97,7 +97,7 @@ BODY:
 
 ---
 
-## 📁 СТРУКТУРА
+## 📁 СТРУКТУРА ПРОЕКТА
 
 \`\`\`
 src/
@@ -106,88 +106,50 @@ src/
 │   ├── FeaturedWorks.tsx # Curated 6 works grid
 │   ├── Services.tsx      # Bento grid with glassmorphism
 │   ├── Portfolio.tsx     # Full portfolio grid
-│   ├── LeadForm.tsx      # Minimal contact form
+│   ├── LeadForm.tsx      # Telegram redirect form
 │   ├── Navigation.tsx    # Blurry sticky header
-│   └── Footer.tsx        # Clean footer
+│   └── Footer.tsx        # Clean footer with VK
 ├── pages/
-│   ├── Index.tsx
+│   ├── Index.tsx         # Homepage
 │   ├── ServiceStylist.tsx
 │   ├── ServiceUgc.tsx
-│   └── ServicePhotographer.tsx
+│   ├── ServicePhotographer.tsx
+│   ├── Admin.tsx         # CMS-like admin panel
+│   ├── Privacy.tsx       # Privacy policy (FZ-152)
+│   └── VKLanding.tsx     # VK mobile landing
 └── index.css             # Design tokens
 \`\`\`
 
 ---
 
-## 🧩 КОМПОНЕНТЫ
+## 🔗 МАРШРУТЫ
 
-### Hero
-- Split layout: Typography left, Image right
-- H1: "Bella Hasias" (Plus Jakarta Sans 700)
-- Subtitle: "Стилист · UGC · Контент"
-- Two CTAs: Primary + Ghost buttons
-- Single vertical image (rounded-3xl)
-
-### FeaturedWorks
-- 6 curated projects in 3-column grid
-- Hover: scale + blur + title reveal
-- Framer Motion stagger animations
-
-### Services (Bento)
-- 3-column grid cards
-- Glassmorphism price badges
-- Arrow icon on hover
-
-### Navigation
-- Fixed top with glass effect on scroll
-- Mobile: Full-screen overlay with blur
+| Route | Описание |
+|-------|----------|
+| / | Главная страница |
+| /services/stylist | Услуга: Стилизация |
+| /services/ugc | Услуга: UGC контент |
+| /services/photographer | Услуга: Фотосъёмка |
+| /admin | Админ-панель (CMS) |
+| /admin/documentation | Документация (эта страница) |
+| /privacy | Политика конфиденциальности |
+| /vk | Лендинг для VK трафика |
 
 ---
 
-## 🎯 АНИМАЦИИ (Framer Motion)
+## 📱 ИНТЕГРАЦИИ
 
-\`\`\`tsx
-// Container
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-// Items
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
-};
-
-// Usage
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.6 }}
->
+### Telegram Direct Flow
+При отправке формы пользователь перенаправляется в Telegram с предзаполненным сообщением:
+\`\`\`
+https://t.me/Bella_hasias?text=Привет!_Я_[Имя]._Интересует_услуга:_[Услуга].
 \`\`\`
 
----
-
-## 📱 MOBILE-FIRST
-
-\`\`\`css
-.section-luxury {
-  padding: 80px 24px;    /* mobile */
-  padding: 112px 40px;   /* md */
-  padding: 128px 64px;   /* lg */
-}
-
-/* Grid: 1 col → 2 cols → 3 cols */
-grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
-
-/* Gap */
-gap-6 md:gap-8
-\`\`\`
+### Социальные сети
+- Telegram: https://t.me/Bella_hasias
+- Instagram: https://instagram.com/bellahasias
+- VK: https://vk.com/bella_hasias
+- Email: bella@bellahasias.com
 
 ---
 
@@ -199,6 +161,13 @@ gap-6 md:gap-8
 4. **Границы:** НЕТ ВИДИМЫХ ГРАНИЦ. Только тени
 5. **Hover:** translateY(-8px) + мягкая тень
 6. **Анимации:** Framer Motion fade-in-up при скролле
+
+---
+
+## ⚖️ ЮРИДИЧЕСКОЕ
+
+- **ФЗ-152:** Чекбокс согласия в форме
+- **Privacy Policy:** /privacy
 
 ---
 
