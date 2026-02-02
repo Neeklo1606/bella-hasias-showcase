@@ -3,279 +3,215 @@ import { Copy, Check } from 'lucide-react';
 
 const documentation = `
 # BELLA HASIAS — Проектная Документация
-## High-End Minimalist Portfolio (v2.0)
+## Modern Minimalist Luxury (v3.0)
 
 ---
 
 ## 🎨 ДИЗАЙН-СИСТЕМА
 
 ### Философия
-- **Стиль:** High-End Minimalist Portfolio
+- **Стиль:** Modern Minimalist Luxury
 - **Вдохновение:** Awwwards 2025, Apple, Airbnb
-- **Принципы:** Много воздуха, мягкие формы, приглушённые тона
+- **Принципы:** Airy, expensive, smooth, mobile-first
+
+### Шрифты (NO SERIFS)
+\`\`\`
+HEADLINES:
+- Шрифт: 'Plus Jakarta Sans', sans-serif
+- Вес: 600-700
+- Letter-spacing: -0.04em
+- Размер: clamp() для адаптивности
+
+BODY:
+- Шрифт: 'Inter', system-ui, sans-serif
+- Вес: 400-500
+- Размер: 14-16px
+\`\`\`
 
 ### Цветовая Палитра (HSL)
 \`\`\`css
 :root {
-  /* Основные */
-  --background: 210 20% 99%;      /* Ultra-light gray #FDFDFD */
-  --foreground: 215 25% 15%;      /* Deep Slate #1E293B */
-  
-  /* Акценты */
-  --primary: 243 75% 59%;         /* Muted Indigo #4338CA */
-  --primary-foreground: 0 0% 100%;
-  
-  /* Нейтральные */
-  --secondary: 210 20% 96%;       /* Soft gray #F1F5F9 */
-  --muted: 210 16% 93%;
-  --muted-foreground: 215 16% 47%;
-  
-  /* Границы */
-  --border: 214 32% 91%;          /* #E2E8F0 */
-  
-  /* Радиус */
-  --radius: 1.25rem;              /* 20px */
+  --background: 0 0% 98%;        /* Off-white #FAFAFA */
+  --foreground: 220 15% 10%;     /* Deep Slate #1A1A1A */
+  --primary: 239 84% 67%;        /* Modern Indigo #4F46E5 */
+  --secondary: 220 14% 96%;      /* Light gray #F1F5F9 */
+  --muted-foreground: 220 9% 46%;
+  --border: 220 13% 91%;
+  --radius: 1.5rem;              /* 24px */
 }
 \`\`\`
 
-### Типографика
-\`\`\`
-ЗАГОЛОВКИ:
-- Шрифт: 'Playfair Display', Georgia, serif
-- Вес: 500 (Medium)
-- H1: clamp(2.5rem, 8vw, 5rem)
-- H2: clamp(2rem, 5vw, 3.5rem)
-- H3: clamp(1.25rem, 3vw, 1.75rem)
-- Letter-spacing: -0.02em
-- Line-height: 1.1-1.15
-
-BODY TEXT:
-- Шрифт: 'Inter', system-ui, sans-serif
-- Вес: 400
-- Размер: 14-16px
-- Line-height: 1.75
-- Цвет: hsl(var(--muted-foreground))
-
-LABELS:
-- Шрифт: 'Inter', sans-serif
-- Вес: 500-600
-- Размер: 11-12px
-- Text-transform: uppercase
-- Letter-spacing: 0.15-0.2em
-\`\`\`
-
-### Компоненты UI
-
-**Кнопки:**
-\`\`\`css
-.btn-premium {
-  background: hsl(var(--primary));
-  color: white;
-  border-radius: 20px;
-  padding: 16px 32px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease;
-}
-
-.btn-premium:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -6px hsl(var(--primary) / 0.4);
-}
-\`\`\`
+### Компоненты
 
 **Карточки:**
 \`\`\`css
-.card-premium {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.card-luxury {
+  background: white;
+  border-radius: 24px;
+  border: none;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
 }
 
-.card-premium:hover {
+.card-luxury:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.1);
+}
+\`\`\`
+
+**Кнопки:**
+\`\`\`css
+.btn-luxury {
+  background: hsl(var(--primary));
+  color: white;
+  border-radius: 9999px; /* pill */
+  padding: 16px 32px;
+}
+
+.btn-luxury:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px hsl(var(--primary) / 0.5);
+}
+\`\`\`
+
+**Inputs:**
+\`\`\`css
+.input-luxury {
+  background: hsl(var(--secondary));
+  border: none;
+  border-radius: 12px;
+  padding: 16px 24px;
+}
+
+.input-luxury:focus {
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
 }
 \`\`\`
 
 **Glassmorphism:**
 \`\`\`css
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-\`\`\`
-
-**Inputs:**
-\`\`\`css
-.input-premium {
-  padding: 16px 20px;
-  border: 1px solid hsl(var(--border));
-  border-radius: 12px;
-  background: white;
-}
-
-.input-premium:focus {
-  border-color: hsl(var(--primary));
-  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
 }
 \`\`\`
 
 ---
 
-## 📁 СТРУКТУРА ПРОЕКТА
+## 📁 СТРУКТУРА
 
 \`\`\`
 src/
-├── assets/
-│   ├── hero/           # Hero images
-│   └── portfolio/      # Portfolio works
 ├── components/
-│   ├── ui/             # shadcn/ui components
-│   ├── Navigation.tsx  # Sticky nav with blur
-│   ├── HeroMasonry.tsx # Hero + masonry grid
-│   ├── Services.tsx    # Bento grid services
-│   ├── Portfolio.tsx   # Portfolio section
-│   ├── LeadForm.tsx    # Contact form
-│   └── Footer.tsx      # Footer
+│   ├── Hero.tsx          # Clean hero with one image
+│   ├── FeaturedWorks.tsx # Curated 6 works grid
+│   ├── Services.tsx      # Bento grid with glassmorphism
+│   ├── Portfolio.tsx     # Full portfolio grid
+│   ├── LeadForm.tsx      # Minimal contact form
+│   ├── Navigation.tsx    # Blurry sticky header
+│   └── Footer.tsx        # Clean footer
 ├── pages/
 │   ├── Index.tsx
 │   ├── ServiceStylist.tsx
 │   ├── ServiceUgc.tsx
-│   ├── ServicePhotographer.tsx
-│   └── AdminDocumentation.tsx
-└── index.css           # Design tokens + utilities
+│   └── ServicePhotographer.tsx
+└── index.css             # Design tokens
 \`\`\`
 
 ---
 
 ## 🧩 КОМПОНЕНТЫ
 
-### Navigation.tsx
-**Особенности:**
-- Sticky with backdrop blur on scroll
-- Mobile menu: full-screen с blur overlay
-- Анимированное появление ссылок
-- Стиль: serif логотип, sans-serif links
+### Hero
+- Split layout: Typography left, Image right
+- H1: "Bella Hasias" (Plus Jakarta Sans 700)
+- Subtitle: "Стилист · UGC · Контент"
+- Two CTAs: Primary + Ghost buttons
+- Single vertical image (rounded-3xl)
 
-### HeroMasonry.tsx
-**Структура:**
-1. Hero name: "Bella" + "Hasias" (accent color)
-2. Subtitle: "Стилист · UGC Креатор · Контент-Фотограф"
-3. Masonry Grid: 12 images
+### FeaturedWorks
+- 6 curated projects in 3-column grid
+- Hover: scale + blur + title reveal
+- Framer Motion stagger animations
 
-**Grid:**
-- Mobile: 1 col
-- SM: 2 cols
-- MD: 3 cols  
-- LG: 4 cols
-- Gap: 16-24px
-- Border-radius: 16px
+### Services (Bento)
+- 3-column grid cards
+- Glassmorphism price badges
+- Arrow icon on hover
 
-**Hover:** scale-105, dark overlay, centered number
-
-### Services.tsx
-**Стиль:** Bento Grid Cards
-
-**Карточка:**
-- Image with glassmorphism price badge
-- Title + arrow icon
-- Description
-- Hover: translateY(-8px), shadow
-
-### LeadForm.tsx
-**Layout:** 2 columns (form + contact info)
-
-**Form fields:**
-- Name, Email (required)
-- Phone, Service dropdown
-- Message textarea
-- Submit button (full-width)
-
-**Contact info:**
-- Icons in rounded primary/10 bg
-- Social links as rounded buttons
+### Navigation
+- Fixed top with glass effect on scroll
+- Mobile: Full-screen overlay with blur
 
 ---
 
-## 🎯 АНИМАЦИИ
+## 🎯 АНИМАЦИИ (Framer Motion)
+
+\`\`\`tsx
+// Container
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+// Items
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
+
+// Usage
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.6 }}
+>
+\`\`\`
+
+---
+
+## 📱 MOBILE-FIRST
 
 \`\`\`css
-/* Fade In Up */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+.section-luxury {
+  padding: 80px 24px;    /* mobile */
+  padding: 112px 40px;   /* md */
+  padding: 128px 64px;   /* lg */
 }
 
-/* Timing */
-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+/* Grid: 1 col → 2 cols → 3 cols */
+grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
 
-/* Delay classes */
-.animation-delay-100 { animation-delay: 0.1s; }
-.animation-delay-200 { animation-delay: 0.2s; }
-...
+/* Gap */
+gap-6 md:gap-8
 \`\`\`
 
 ---
 
-## 📱 RESPONSIVE
+## 📝 ПРАВИЛА
 
-\`\`\`
-Breakpoints (Tailwind):
-- sm: 640px
-- md: 768px
-- lg: 1024px
-- xl: 1280px
-
-Section padding:
-.section-padding {
-  padding: 80px 24px (mobile)
-  padding: 112px 40px (tablet)
-  padding: 128px 64px (desktop)
-}
-
-Max-width: 7xl (1280px)
-\`\`\`
-
----
-
-## 🔧 ТЕХНОЛОГИИ
-
-- React 18 + TypeScript
-- Tailwind CSS (semantic tokens)
-- shadcn/ui
-- React Router v6
-- Lucide Icons
-- Vite
-
----
-
-## 📝 ПРАВИЛА ДЛЯ ПРОМТОВ
-
-1. **Цвета:** Используй CSS variables (--primary, --foreground, etc.)
-2. **Шрифты:** Playfair Display для заголовков, Inter для body
-3. **Border-radius:** 20px для карточек, 12px для inputs
-4. **Hover:** translateY(-8px) + shadow, без резких границ
-5. **Transitions:** cubic-bezier(0.25, 0.46, 0.45, 0.94)
-6. **Воздух:** Много white space, section-padding
+1. **Шрифты:** Plus Jakarta Sans для заголовков, Inter для body. БЕЗ ЗАСЕЧЕК!
+2. **Цвета:** НЕТ КРАСНОГО. Только Indigo (#4F46E5) для акцентов
+3. **Радиусы:** 24px для карточек, pill для кнопок, 12px для inputs
+4. **Границы:** НЕТ ВИДИМЫХ ГРАНИЦ. Только тени
+5. **Hover:** translateY(-8px) + мягкая тень
+6. **Анимации:** Framer Motion fade-in-up при скролле
 
 ---
 
 ## 🚀 ПРИМЕР ПРОМТА
 
-"Создай секцию [название] для сайта Bella Hasias.
+"Создай секцию для сайта Bella Hasias.
 Используй:
-- Заголовок: Playfair Display, clamp(), foreground color
-- Акцент: primary (Indigo)
-- Карточки: card-premium стиль, 20px radius, soft shadows
-- Кнопки: btn-premium, 20px radius
-- Анимации: fade-in-up с задержками
-- Grid: 1→2→3 columns responsive"
+- Шрифт: Plus Jakarta Sans 600 для заголовков
+- Акцент: Indigo #4F46E5
+- Карточки: rounded-3xl, no borders, shadow-soft
+- Кнопки: pill-shaped, btn-luxury
+- Анимации: Framer Motion whileInView
+- Mobile-first: 1 → 2 → 3 columns"
 `;
 
 const AdminDocumentation = () => {
@@ -292,7 +228,7 @@ const AdminDocumentation = () => {
       {/* Header */}
       <div className="bg-foreground text-background px-6 py-10">
         <div className="max-w-4xl mx-auto">
-          <h1 className="font-serif text-3xl md:text-4xl font-medium mb-3">
+          <h1 className="font-display text-3xl md:text-4xl font-semibold mb-3">
             Документация проекта
           </h1>
           <p className="text-background/60 font-sans text-sm">
@@ -305,10 +241,10 @@ const AdminDocumentation = () => {
       <div className="max-w-4xl mx-auto px-6 py-8">
         <button
           onClick={copyToClipboard}
-          className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-sans font-medium text-sm transition-all duration-300 ${
+          className={`flex items-center gap-3 px-8 py-4 rounded-full font-sans font-medium text-sm transition-all duration-300 ${
             copied 
               ? 'bg-green-500 text-white' 
-              : 'btn-premium'
+              : 'btn-luxury'
           }`}
         >
           {copied ? (
@@ -327,7 +263,7 @@ const AdminDocumentation = () => {
 
       {/* Documentation Content */}
       <div className="max-w-4xl mx-auto px-6 pb-16">
-        <div className="card-premium p-0 overflow-hidden">
+        <div className="card-luxury p-0 overflow-hidden">
           <pre 
             className="p-8 text-sm text-foreground whitespace-pre-wrap overflow-x-auto font-mono leading-relaxed"
           >
@@ -339,7 +275,7 @@ const AdminDocumentation = () => {
       {/* Last Updated */}
       <div className="max-w-4xl mx-auto px-6 pb-10">
         <p className="font-sans text-xs text-muted-foreground">
-          Версия 2.0 — High-End Minimalist • Обновлено: {new Date().toLocaleDateString('ru-RU', { 
+          Версия 3.0 — Modern Minimalist Luxury • Обновлено: {new Date().toLocaleDateString('ru-RU', { 
             day: 'numeric', 
             month: 'long', 
             year: 'numeric',
