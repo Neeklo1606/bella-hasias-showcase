@@ -17,7 +17,7 @@ const Footer = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="font-serif text-lg font-medium text-background/90 hover:text-background transition-colors duration-300"
+            className="font-display text-lg font-semibold text-background/90 hover:text-background transition-colors duration-300"
           >
             Bella Hasias
           </Link>
@@ -31,7 +31,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.label}
-                className="w-11 h-11 rounded-xl flex items-center justify-center bg-background/10 text-background/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                className="w-11 h-11 rounded-2xl flex items-center justify-center bg-background/10 text-background/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 <link.icon size={18} />
               </a>

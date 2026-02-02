@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Instagram, Send } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Mail, Phone, MapPin, Instagram, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 
@@ -7,7 +8,7 @@ const formSchema = z.object({
   name: z.string().trim().min(1, 'Введите ваше имя').max(100),
   email: z.string().trim().email('Введите корректный email').max(255),
   phone: z.string().trim().max(20).optional(),
-  service: z.string().min(1, 'Выберите услугу'),
+  service: z.string().optional(),
   message: z.string().trim().max(1000).optional(),
 });
 
@@ -78,24 +79,33 @@ const LeadForm = () => {
   ];
 
   return (
-    <section id="contact" className="section-padding bg-secondary/30">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="section-luxury bg-background">
+      <div className="container-luxury">
         {/* Section Header */}
-        <div className="mb-12 md:mb-16 lg:mb-20">
-          <span className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-primary mb-4 block">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <p className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-4">
             Контакты
-          </span>
-          <h2 className="font-serif text-h2 text-foreground">
-            Давайте<br />
-            <span className="text-primary">работать вместе</span>
+          </p>
+          <h2 className="font-display text-h2 text-foreground">
+            Давайте работать вместе
           </h2>
-        </div>
+        </motion.div>
 
-        {/* Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          
-          {/* Left: Form */}
-          <div className="card-premium p-8 md:p-10">
+          {/* Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="card-luxury p-8 md:p-10"
+          >
             {isSuccess ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
@@ -103,7 +113,7 @@ const LeadForm = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="font-serif text-2xl text-foreground mb-3">Спасибо!</h3>
+                <h3 className="font-display text-2xl text-foreground mb-3">Спасибо!</h3>
                 <p className="font-sans text-muted-foreground">Я свяжусь с вами в ближайшее время.</p>
               </div>
             ) : (
@@ -111,7 +121,7 @@ const LeadForm = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="name" className="font-sans text-sm font-medium text-foreground mb-2 block">
-                      Ваше имя <span className="text-primary">*</span>
+                      Имя
                     </label>
                     <input
                       type="text"
@@ -119,14 +129,14 @@ const LeadForm = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Как вас зовут?"
-                      className={`input-premium ${errors.name ? 'border-destructive' : ''}`}
+                      placeholder="Ваше имя"
+                      className={`input-luxury ${errors.name ? 'ring-2 ring-destructive' : ''}`}
                     />
                     {errors.name && <p className="text-destructive text-xs mt-1.5">{errors.name}</p>}
                   </div>
                   <div>
                     <label htmlFor="email" className="font-sans text-sm font-medium text-foreground mb-2 block">
-                      Email <span className="text-primary">*</span>
+                      Email
                     </label>
                     <input
                       type="email"
@@ -135,7 +145,7 @@ const LeadForm = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="your@email.com"
-                      className={`input-premium ${errors.email ? 'border-destructive' : ''}`}
+                      className={`input-luxury ${errors.email ? 'ring-2 ring-destructive' : ''}`}
                     />
                     {errors.email && <p className="text-destructive text-xs mt-1.5">{errors.email}</p>}
                   </div>
@@ -153,32 +163,25 @@ const LeadForm = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+7 (___) ___-__-__"
-                      className="input-premium"
+                      className="input-luxury"
                     />
                   </div>
                   <div>
                     <label htmlFor="service" className="font-sans text-sm font-medium text-foreground mb-2 block">
-                      Услуга <span className="text-primary">*</span>
+                      Услуга
                     </label>
                     <select
                       id="service"
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className={`input-premium appearance-none cursor-pointer ${errors.service ? 'border-destructive' : ''}`}
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E")`, 
-                        backgroundRepeat: 'no-repeat', 
-                        backgroundPosition: 'right 16px center', 
-                        backgroundSize: '20px' 
-                      }}
+                      className="input-luxury appearance-none cursor-pointer"
                     >
                       <option value="">Выберите услугу</option>
                       <option value="styling">Стилизация</option>
                       <option value="ugc">UGC контент</option>
                       <option value="photo">Фотосъёмка</option>
                     </select>
-                    {errors.service && <p className="text-destructive text-xs mt-1.5">{errors.service}</p>}
                   </div>
                 </div>
 
@@ -193,28 +196,34 @@ const LeadForm = () => {
                     onChange={handleChange}
                     placeholder="Расскажите о вашем проекте..."
                     rows={4}
-                    className="input-premium resize-none"
+                    className="input-luxury resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-premium w-full text-sm tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-luxury w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Отправляется...' : 'Отправить'}
                 </button>
               </form>
             )}
-          </div>
+          </motion.div>
 
-          {/* Right: Contact Info */}
-          <div className="space-y-10">
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="space-y-10"
+          >
             <div className="space-y-8">
               {contactInfo.map((item) => (
                 <div key={item.label} className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-5 h-5 text-primary" />
+                  <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div>
                     <span className="font-sans text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground block mb-1">
@@ -233,20 +242,6 @@ const LeadForm = () => {
                   </div>
                 </div>
               ))}
-
-              {/* Working Hours */}
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <span className="font-sans text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground block mb-1">
-                    Часы работы
-                  </span>
-                  <span className="font-sans text-foreground block">Пн–Пт: 10:00–18:00</span>
-                  <span className="font-sans text-muted-foreground text-sm">Выходные: по записи</span>
-                </div>
-              </div>
             </div>
 
             {/* Social Links */}
@@ -276,7 +271,7 @@ const LeadForm = () => {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

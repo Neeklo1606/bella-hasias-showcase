@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -18,7 +19,7 @@ const ServiceUgc = () => {
   return (
     <>
       <Helmet>
-        <title>Контент Креатор / UGC | Bella Hasias</title>
+        <title>UGC Контент | Bella Hasias</title>
         <meta
           name="description"
           content="Создание UGC контента от Bella Hasias. Видео для TikTok, Instagram Reels, рекламные ролики. От 8000 ₽ за проект."
@@ -28,11 +29,11 @@ const ServiceUgc = () => {
       <main className="min-h-screen bg-background">
         <Navigation />
         
-        <section className="section-padding">
-          <div className="max-w-7xl mx-auto">
+        <section className="section-luxury pt-32">
+          <div className="container-luxury">
             <Link
               to="/#services"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-10 font-sans text-sm tracking-wide"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-10 font-sans text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               Назад к услугам
@@ -40,20 +41,29 @@ const ServiceUgc = () => {
 
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
               {/* Image */}
-              <div className="relative overflow-hidden rounded-2xl">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="relative overflow-hidden rounded-3xl"
+              >
                 <img
                   src={ugcImage}
                   alt="UGC контент креатор"
                   className="w-full h-[400px] md:h-[550px] object-cover"
                 />
-              </div>
+              </motion.div>
 
               {/* Content */}
-              <div>
-                <span className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-primary mb-4 block">
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+              >
+                <p className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-4">
                   Услуга
-                </span>
-                <h1 className="font-serif text-h1 text-foreground mb-6">
+                </p>
+                <h1 className="font-display text-h1 text-foreground mb-6">
                   UGC Контент
                 </h1>
                 <p className="font-sans text-muted-foreground text-lg leading-relaxed mb-8">
@@ -62,13 +72,13 @@ const ServiceUgc = () => {
                   успешного продвижения в социальных сетях.
                 </p>
 
-                <div className="glass rounded-2xl p-6 mb-8 inline-block">
-                  <p className="font-serif text-3xl text-foreground">от 8,000 ₽</p>
+                <div className="glass rounded-3xl p-6 mb-8 inline-block">
+                  <p className="font-display text-3xl text-foreground">от 8,000 ₽</p>
                   <p className="font-sans text-muted-foreground text-sm">за проект</p>
                 </div>
 
                 <div className="mb-10">
-                  <h3 className="font-serif text-xl text-foreground mb-5">Что входит:</h3>
+                  <h3 className="font-display text-xl text-foreground mb-5">Что входит:</h3>
                   <ul className="space-y-4">
                     {features.map((feature, index) => (
                       <li key={index} className="flex items-center gap-4 font-sans text-muted-foreground">
@@ -85,11 +95,11 @@ const ServiceUgc = () => {
                   href="https://wa.me/79991234567"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-premium text-sm tracking-widest uppercase"
+                  className="btn-luxury"
                 >
                   Обсудить проект
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
