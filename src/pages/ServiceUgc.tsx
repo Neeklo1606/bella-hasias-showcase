@@ -28,33 +28,33 @@ const ServiceUgc = () => {
       <main className="min-h-screen bg-background">
         <Navigation />
         
-        <section className="pt-32 pb-20 md:pt-40 md:pb-28">
-          <div className="container mx-auto px-6 md:px-12">
+        <section className="section-padding">
+          <div className="max-w-7xl mx-auto">
             <Link
               to="/#services"
-              className="inline-flex items-center gap-2 text-primary hover:text-foreground transition-colors mb-8 font-sans text-sm tracking-wider uppercase"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-10 font-sans text-sm tracking-wide"
             >
               <ArrowLeft className="w-4 h-4" />
               Назад к услугам
             </Link>
 
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
               {/* Image */}
-              <div className="relative">
+              <div className="relative overflow-hidden rounded-2xl">
                 <img
                   src={ugcImage}
                   alt="UGC контент креатор"
-                  className="w-full h-[400px] md:h-[500px] object-cover rounded-sm"
+                  className="w-full h-[400px] md:h-[550px] object-cover"
                 />
               </div>
 
               {/* Content */}
               <div>
-                <p className="font-sans text-primary text-sm tracking-[0.3em] uppercase mb-4">
+                <span className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-primary mb-4 block">
                   Услуга
-                </p>
-                <h1 className="font-serif text-foreground text-4xl md:text-5xl lg:text-6xl mb-6">
-                  Контент Креатор / UGC
+                </span>
+                <h1 className="font-serif text-h1 text-foreground mb-6">
+                  UGC Контент
                 </h1>
                 <p className="font-sans text-muted-foreground text-lg leading-relaxed mb-8">
                   Создаю аутентичный UGC контент, который продаёт. Видео-обзоры, 
@@ -62,17 +62,19 @@ const ServiceUgc = () => {
                   успешного продвижения в социальных сетях.
                 </p>
 
-                <div className="mb-8">
-                  <p className="font-serif text-grotto text-3xl mb-2">от 8000 ₽</p>
-                  <p className="font-sans text-muted-foreground">за проект</p>
+                <div className="glass rounded-2xl p-6 mb-8 inline-block">
+                  <p className="font-serif text-3xl text-foreground">от 8,000 ₽</p>
+                  <p className="font-sans text-muted-foreground text-sm">за проект</p>
                 </div>
 
                 <div className="mb-10">
-                  <h3 className="font-serif text-foreground text-xl mb-4">Что входит:</h3>
-                  <ul className="space-y-3">
+                  <h3 className="font-serif text-xl text-foreground mb-5">Что входит:</h3>
+                  <ul className="space-y-4">
                     {features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3 font-sans text-muted-foreground">
-                        <Check className="w-5 h-5 text-grotto flex-shrink-0" />
+                      <li key={index} className="flex items-center gap-4 font-sans text-muted-foreground">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Check className="w-3.5 h-3.5 text-primary" />
+                        </div>
                         {feature}
                       </li>
                     ))}
@@ -83,7 +85,7 @@ const ServiceUgc = () => {
                   href="https://wa.me/79991234567"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-10 py-4 bg-primary text-primary-foreground font-sans text-sm tracking-wider uppercase hover:bg-foreground transition-colors duration-300"
+                  className="btn-premium text-sm tracking-widest uppercase"
                 >
                   Обсудить проект
                 </a>

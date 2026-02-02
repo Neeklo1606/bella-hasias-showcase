@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 import serviceStylist from '@/assets/service-stylist.jpg';
 import serviceUgc from '@/assets/service-ugc.jpg';
 import servicePhotographer from '@/assets/service-photographer.jpg';
@@ -6,26 +7,26 @@ import servicePhotographer from '@/assets/service-photographer.jpg';
 const Services = () => {
   const services = [
     {
-      title: 'СТИЛИЗАЦИЯ',
+      title: 'Стилизация',
       price: 'От ₽5,000',
       priceLabel: 'за сессию',
-      description: 'Персональный стиль, подбор образов, создание капсульного гардероба и консультации по имиджу для любого случая.',
+      description: 'Персональный стиль, подбор образов, создание капсульного гардероба и консультации по имиджу.',
       image: serviceStylist,
       href: '/services/stylist',
     },
     {
-      title: 'UGC КОНТЕНТ',
+      title: 'UGC Контент',
       price: 'От ₽8,000',
       priceLabel: 'за проект',
-      description: 'Создание аутентичного контента для брендов: фото, видео, сторис и рекламные материалы высокого качества.',
+      description: 'Создание аутентичного контента для брендов: фото, видео, сторис и рекламные материалы.',
       image: serviceUgc,
       href: '/services/ugc',
     },
     {
-      title: 'ФОТОСЪЁМКА',
+      title: 'Фотосъёмка',
       price: 'От ₽7,000',
       priceLabel: 'за съёмку',
-      description: 'Профессиональная фотосъёмка для портфолио, каталогов, лукбуков и рекламных кампаний любой сложности.',
+      description: 'Профессиональная фотосъёмка для портфолио, каталогов, лукбуков и рекламных кампаний.',
       image: servicePhotographer,
       href: '/services/photographer',
     },
@@ -34,86 +35,65 @@ const Services = () => {
   return (
     <section 
       id="services" 
-      className="py-16 md:py-20 lg:py-20 px-5 md:px-10 lg:px-10 bg-white border-t border-[#e8e8e8]"
+      className="section-padding bg-background"
     >
-      <div className="max-w-[1600px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-10 md:mb-14 lg:mb-16">
-          <span 
-            className="text-[14px] font-semibold tracking-[0.05em] uppercase mb-8 md:mb-10 block"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            <span className="text-[#FF3333]">03</span>
-            <span className="text-[#1a1a1a]"> / УСЛУГИ</span>
+        <div className="mb-12 md:mb-16 lg:mb-20">
+          <span className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-primary mb-4 block">
+            Услуги
           </span>
-          <h2 
-            className="text-[60px] sm:text-[80px] md:text-[100px] lg:text-[120px] font-black uppercase leading-[0.95] tracking-[-0.02em] text-[#1a1a1a]"
-            style={{ fontFamily: "'Montserrat', 'Poppins', sans-serif" }}
-          >
-            УСЛУГИ.
+          <h2 className="font-serif text-h2 text-foreground">
+            Что я могу<br />
+            <span className="text-primary">для вас сделать</span>
           </h2>
         </div>
 
-        {/* Services Grid */}
+        {/* Bento Grid Services */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {services.map((service) => (
-            <div
+          {services.map((service, index) => (
+            <Link
               key={service.title}
-              className="group bg-white border border-[#e8e8e8] transition-all duration-300 hover:border-[#FF3333] hover:shadow-[0_12px_32px_rgba(26,26,26,0.08)]"
+              to={service.href}
+              className="group card-premium overflow-hidden p-0 hover:shadow-medium"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Image */}
-              <div className="relative h-[240px] overflow-hidden">
+              <div className="relative h-[280px] md:h-[320px] overflow-hidden">
                 <img
                   src={service.image}
                   alt={service.title}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
+                  className="w-full h-full object-cover transition-all duration-700 ease-premium group-hover:scale-105"
                 />
+                {/* Glassmorphism price badge */}
+                <div className="absolute top-4 right-4 glass rounded-xl px-4 py-2">
+                  <span className="font-sans text-sm font-semibold text-foreground">
+                    {service.price}
+                  </span>
+                </div>
               </div>
 
               {/* Content */}
-              <div className="p-8 md:p-8">
-                <h3 
-                  className="text-[22px] font-semibold text-[#1a1a1a] mb-3"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  {service.title}
-                </h3>
+              <div className="p-6 md:p-8">
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <h3 className="font-serif text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
+                    <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300" />
+                  </div>
+                </div>
 
-                <p 
-                  className="text-base font-medium text-[#FF3333] mb-4"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  {service.price}{' '}
-                  <span className="text-[#666666] font-normal text-sm">
-                    {service.priceLabel}
-                  </span>
-                </p>
-
-                <p 
-                  className="text-sm text-[#666666] leading-[1.7] mb-6"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-4">
                   {service.description}
                 </p>
 
-                <Link
-                  to={service.href}
-                  className="inline-flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.05em] text-[#1a1a1a] border border-[#FF3333] rounded-full px-7 py-3 hover:bg-[#FF3333] hover:text-white transition-all duration-300"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  <span>ПОДРОБНЕЕ</span>
-                  <svg 
-                    className="w-4 h-4" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
+                <span className="font-sans text-xs text-muted-foreground tracking-wide">
+                  {service.priceLabel}
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
