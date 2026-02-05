@@ -38,6 +38,11 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          yellow: "hsl(var(--accent-yellow))",
+          "yellow-foreground": "hsl(var(--accent-yellow-foreground))",
+        },
+        slate: {
+          gray: "hsl(var(--slate-gray))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
