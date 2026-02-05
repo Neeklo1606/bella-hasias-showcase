@@ -43,6 +43,7 @@ export default {
         },
         slate: {
           gray: "hsl(var(--slate-gray))",
+          "gray-dark": "hsl(var(--slate-gray-dark))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

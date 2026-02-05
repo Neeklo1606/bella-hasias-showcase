@@ -108,7 +108,7 @@ const Services = () => {
                     <h3 className="font-display text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors duration-300">
                       {service.title}
                     </h3>
-                    <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
                       <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300" />
                     </div>
                   </div>
