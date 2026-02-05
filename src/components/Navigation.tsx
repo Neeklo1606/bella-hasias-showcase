@@ -137,7 +137,7 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-foreground hover:text-primary transition-colors rounded-xl hover:bg-secondary"
+            className="md:hidden p-2 text-foreground hover:text-primary transition-colors rounded-xl hover:bg-muted"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

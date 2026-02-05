@@ -178,7 +178,7 @@ const LeadForm = () => {
             <div className="space-y-8">
               {contactInfo.map((item) => (
                 <div key={item.label} className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center flex-shrink-0">
                     <item.icon className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div>
@@ -213,7 +213,7 @@ const LeadForm = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={link.label}
-                    className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                    className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                   >
                     <link.icon size={20} />
                   </a>
@@ -221,7 +221,7 @@ const LeadForm = () => {
                 <a
                   href="mailto:bella@bellahasias.com"
                   aria-label="Email"
-                  className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                 >
                   <Mail size={20} />
                 </a>

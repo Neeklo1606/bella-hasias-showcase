@@ -6,80 +6,83 @@
 
 @layer base {
   :root {
-    /* Modern Minimalist Luxury Palette - Gray + Illuminating Yellow */
+    /* Pantone 2021 Palette - Ultimate Gray + Illuminating Yellow */
     --background: 0 0% 98%; /* Off-white #FAFAFA */
-    --foreground: 220 15% 10%; /* Deep Slate #1A1A1A */
+    --foreground: 220 5% 15%; /* Deep Charcoal */
 
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 10%;
+    --card-foreground: 220 5% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 10%;
+    --popover-foreground: 220 5% 15%;
 
-    --primary: 239 84% 67%; /* Modern Indigo #4F46E5 */
-    --primary-foreground: 0 0% 100%;
+    /* Pantone Illuminating Yellow as Primary */
+    --primary: 51 100% 50%; /* #FFE600 - Illuminating Yellow */
+    --primary-foreground: 220 5% 10%; /* Dark text on yellow */
 
-    --secondary: 220 14% 96%; /* Light gray #F1F5F9 */
-    --secondary-foreground: 220 15% 10%;
+    /* Pantone Ultimate Gray as Secondary */
+    --secondary: 220 5% 58%; /* #939597 - Ultimate Gray */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 220 10% 94%;
+    --muted-foreground: 220 5% 45%;
 
-    --accent: 239 84% 67%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 51 100% 50%; /* Yellow accent */
+    --accent-foreground: 220 5% 10%;
     
-    /* Pantone Illuminating Yellow Accent */
+    /* Extended Palette */
     --accent-yellow: 51 100% 50%; /* #FFE600 - Illuminating */
-    --accent-yellow-foreground: 220 15% 10%;
+    --accent-yellow-foreground: 220 5% 10%;
     
-    /* Pantone Ultimate Gray */
     --slate-gray: 220 5% 58%; /* #939597 - Ultimate Gray */
+    --slate-gray-dark: 220 5% 35%; /* Darker gray for text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 239 84% 67%;
+    --border: 220 10% 90%;
+    --input: 220 10% 94%;
+    --ring: 51 100% 50%; /* Yellow ring */
 
-    --radius: 1.5rem; /* 24px global radius */
+    --radius: 1.5rem;
   }
 
   .dark {
-    --background: 220 15% 8%;
-    --foreground: 0 0% 98%;
+    --background: 220 10% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 220 15% 12%;
-    --card-foreground: 0 0% 98%;
+    --card: 220 10% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 220 15% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 220 10% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
+    /* Pantone Illuminating Yellow as Primary */
+    --primary: 51 100% 50%;
+    --primary-foreground: 220 5% 10%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 0 0% 98%;
+    /* Pantone Ultimate Gray as Secondary */
+    --secondary: 220 5% 40%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 9% 60%;
+    --muted: 220 10% 18%;
+    --muted-foreground: 220 5% 60%;
 
-    --accent: 239 84% 67%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 51 100% 50%;
+    --accent-foreground: 220 5% 10%;
     
-    /* Pantone Illuminating Yellow Accent */
     --accent-yellow: 51 100% 50%;
-    --accent-yellow-foreground: 220 15% 10%;
+    --accent-yellow-foreground: 220 5% 10%;
     
-    /* Pantone Ultimate Gray */
     --slate-gray: 220 5% 58%;
+    --slate-gray-dark: 220 5% 70%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 239 84% 67%;
+    --border: 220 10% 20%;
+    --input: 220 10% 20%;
+    --ring: 51 100% 50%;
   }
 }
 
@@ -163,7 +166,7 @@
     -webkit-backdrop-filter: blur(20px);
   }
 
-  /* Premium Button */
+  /* Premium Button - Yellow Accent */
   .btn-luxury {
     @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-semibold cursor-pointer transition-all duration-300;
     background: hsl(var(--primary));
@@ -173,21 +176,24 @@
 
   .btn-luxury:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px -6px hsl(var(--primary) / 0.5);
+    box-shadow: 0 12px 28px -6px hsl(51 100% 50% / 0.4);
+    background: hsl(51 100% 55%);
   }
 
   .btn-luxury:active {
     transform: translateY(0);
   }
 
+  /* Ghost Button - Gray */
   .btn-ghost-luxury {
     @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-medium cursor-pointer transition-all duration-300;
-    background: hsl(var(--secondary));
+    background: hsl(var(--slate-gray) / 0.15);
     color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--slate-gray) / 0.3);
   }
 
   .btn-ghost-luxury:hover {
-    background: hsl(var(--secondary));
+    background: hsl(var(--slate-gray) / 0.25);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
   }
