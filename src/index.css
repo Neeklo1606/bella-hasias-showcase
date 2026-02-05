@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Modern Minimalist Luxury Palette */
+    /* Modern Minimalist Luxury Palette - Gray + Illuminating Yellow */
     --background: 0 0% 98%; /* Off-white #FAFAFA */
     --foreground: 220 15% 10%; /* Deep Slate #1A1A1A */
 
@@ -27,6 +27,13 @@
 
     --accent: 239 84% 67%;
     --accent-foreground: 0 0% 100%;
+    
+    /* Pantone Illuminating Yellow Accent */
+    --accent-yellow: 51 100% 50%; /* #FFE600 - Illuminating */
+    --accent-yellow-foreground: 220 15% 10%;
+    
+    /* Pantone Ultimate Gray */
+    --slate-gray: 220 5% 58%; /* #939597 - Ultimate Gray */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -59,6 +66,13 @@
 
     --accent: 239 84% 67%;
     --accent-foreground: 0 0% 100%;
+    
+    /* Pantone Illuminating Yellow Accent */
+    --accent-yellow: 51 100% 50%;
+    --accent-yellow-foreground: 220 15% 10%;
+    
+    /* Pantone Ultimate Gray */
+    --slate-gray: 220 5% 58%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
@@ -202,6 +216,146 @@
   /* Container */
   .container-luxury {
     @apply max-w-7xl mx-auto;
+  }
+
+  /* ===== LUMINA SLIDER STYLES ===== */
+  .lumina-section {
+    @apply w-full py-20 md:py-28 lg:py-32 px-6 md:px-10 lg:px-16;
+    background: hsl(var(--foreground));
+  }
+
+  .lumina-slider-wrapper {
+    @apply relative w-full max-w-7xl mx-auto overflow-hidden;
+    height: 70vh;
+    min-height: 500px;
+    max-height: 800px;
+    border-radius: 2rem;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .lumina-slider-wrapper.loaded {
+    opacity: 1;
+  }
+
+  .lumina-canvas-container {
+    @apply absolute inset-0;
+  }
+
+  .lumina-webgl-canvas {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Counter - Top Left */
+  .lumina-counter {
+    @apply absolute top-6 left-6 z-20 flex items-baseline gap-1;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .lumina-counter-current {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: hsl(var(--accent-yellow));
+    line-height: 1;
+  }
+
+  .lumina-counter-separator {
+    font-size: 1.25rem;
+    color: hsl(var(--slate-gray));
+    margin: 0 0.25rem;
+  }
+
+  .lumina-counter-total {
+    font-size: 1rem;
+    color: hsl(var(--slate-gray));
+    font-weight: 500;
+  }
+
+  /* Content Overlay */
+  .lumina-content-overlay {
+    @apply absolute inset-0 z-10 flex items-end justify-start p-8 md:p-12;
+    background: linear-gradient(to top, hsla(220, 15%, 10%, 0.7) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .lumina-text-content {
+    max-width: 600px;
+  }
+
+  .lumina-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .lumina-title span {
+    display: inline-block;
+  }
+
+  .lumina-description {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+  }
+
+  /* Navigation - Bottom Right */
+  .lumina-slides-nav {
+    @apply absolute bottom-6 right-6 z-20 flex flex-col gap-3;
+  }
+
+  .lumina-slide-nav-item {
+    @apply flex items-center gap-3 cursor-pointer;
+    transition: all 0.3s ease;
+  }
+
+  .lumina-slide-progress {
+    @apply relative overflow-hidden;
+    width: 60px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+
+  .lumina-slide-progress-fill {
+    @apply absolute top-0 left-0 h-full;
+    width: 0%;
+    background: hsl(var(--accent-yellow));
+    border-radius: 2px;
+    transition: width 0.1s ease, opacity 0.3s ease;
+  }
+
+  .lumina-slide-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .lumina-slide-title {
+      display: block;
+    }
+    .lumina-slide-progress {
+      width: 80px;
+    }
+  }
+
+  .lumina-slide-nav-item:hover .lumina-slide-title,
+  .lumina-slide-nav-item.active .lumina-slide-title {
+    color: hsl(var(--accent-yellow));
+  }
+
+  .lumina-slide-nav-item.active .lumina-slide-progress {
+    background: rgba(255, 255, 255, 0.3);
   }
 }
 

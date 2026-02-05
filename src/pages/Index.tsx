@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import FeaturedWorks from '@/components/FeaturedWorks';
+import LuminaSlider from '@/components/LuminaSlider';
 import Services from '@/components/Services';
 import LeadForm from '@/components/LeadForm';
 import Footer from '@/components/Footer';
@@ -29,6 +30,7 @@ const Index = () => {
       <main className="min-h-screen bg-background">
         <Navigation />
         <Hero />
+        <LuminaSlider />
         <FeaturedWorks />
         <Services />
         <LeadForm />
