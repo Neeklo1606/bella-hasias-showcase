@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Portfolio from "./pages/Portfolio";
+import Services from "./pages/Services";
+import Contacts from "./pages/Contacts";
 import ServiceStylist from "./pages/ServiceStylist";
 import ServiceUgc from "./pages/ServiceUgc";
 import ServicePhotographer from "./pages/ServicePhotographer";
@@ -25,6 +28,9 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/contacts" element={<Contacts />} />
             <Route path="/services/stylist" element={<ServiceStylist />} />
             <Route path="/services/ugc" element={<ServiceUgc />} />
             <Route path="/services/photographer" element={<ServicePhotographer />} />

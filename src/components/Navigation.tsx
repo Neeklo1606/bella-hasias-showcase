@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Send } from 'lucide-react';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,10 +38,10 @@ const Navigation = () => {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { href: '#services', label: 'Услуги' },
-    { href: '#works', label: 'Портфолио' },
-    { href: 'https://vk.com/bella_hasias', label: 'ВК', external: true },
-    { href: '#contact', label: 'Контакты' },
+    { href: '/services', label: 'Услуги', isPage: true },
+    { href: '/portfolio', label: 'Портфолио', isPage: true },
+    { href: 'https://t.me/bellahasias', label: 'Telegram', external: true },
+    { href: '/contacts', label: 'Контакты', isPage: true },
   ];
 
   const scrollToSection = (href: string) => {
@@ -51,6 +52,15 @@ const Navigation = () => {
       }
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleNavClick = (link: typeof navLinks[0], e: React.MouseEvent) => {
+    if (link.isPage || link.external) {
+      setIsMobileMenuOpen(false);
+      return; // Let Link/anchor handle it
+    }
+    e.preventDefault();
+    scrollToSection(link.href);
   };
 
   const menuVariants = {
@@ -104,18 +114,28 @@ const Navigation = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
+                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 flex items-center gap-1"
                 >
+                  <Send size={14} />
                   {link.label}
                 </a>
+              ) : link.isPage ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`font-sans text-sm font-medium transition-colors duration-300 ${
+                    location.pathname === link.href 
+                      ? 'text-primary' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {link.label}
+                </Link>
               ) : (
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(link.href);
-                  }}
+                  onClick={(e) => handleNavClick(link, e)}
                   className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
                   {link.label}
@@ -123,11 +143,9 @@ const Navigation = () => {
               )
             ))}
             <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#contact');
-              }}
+              href="https://t.me/Bella_hasias"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-luxury text-xs py-3 px-6"
             >
               Связаться
@@ -167,10 +185,32 @@ const Navigation = () => {
                     variants={linkVariants}
                     initial="closed"
                     animate="open"
-                    className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6 flex items-center gap-3"
                   >
+                    <Send size={24} />
                     {link.label}
                   </motion.a>
+                ) : link.isPage ? (
+                  <motion.div
+                    key={link.href}
+                    custom={index}
+                    variants={linkVariants}
+                    initial="closed"
+                    animate="open"
+                  >
+                    <Link
+                      to={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`font-display text-4xl font-semibold transition-colors duration-300 mb-6 block ${
+                        location.pathname === link.href 
+                          ? 'text-primary' 
+                          : 'text-foreground hover:text-primary'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
                 ) : (
                   <motion.a
                     key={link.href}
@@ -179,10 +219,7 @@ const Navigation = () => {
                     variants={linkVariants}
                     initial="closed"
                     animate="open"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollToSection(link.href);
-                    }}
+                    onClick={(e) => handleNavClick(link, e)}
                     className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6"
                   >
                     {link.label}
@@ -191,15 +228,14 @@ const Navigation = () => {
               ))}
 
               <motion.a
-                href="#contact"
+                href="https://t.me/Bella_hasias"
+                target="_blank"
+                rel="noopener noreferrer"
                 custom={navLinks.length}
                 variants={linkVariants}
                 initial="closed"
                 animate="open"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('#contact');
-                }}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="btn-luxury mt-8"
               >
                 Связаться

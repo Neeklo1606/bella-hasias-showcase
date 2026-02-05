@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import serviceStylist from '@/assets/service-stylist.jpg';
 import serviceUgc from '@/assets/service-ugc.jpg';
 import servicePhotographer from '@/assets/service-photographer.jpg';
@@ -120,6 +120,23 @@ const Services = () => {
               </Link>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* View All Link */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center mt-12"
+        >
+          <Link
+            to="/services"
+            className="btn-ghost-luxury inline-flex items-center"
+          >
+            Все услуги
+            <ArrowRight size={16} className="ml-2" />
+          </Link>
         </motion.div>
       </div>
     </section>
