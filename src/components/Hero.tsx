@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import heroCenter from '@/assets/hero/hero-center.jpg';
 
 const Hero = () => {
@@ -43,18 +45,19 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="flex flex-wrap gap-4"
             >
-              <a
-                href="#contact"
+              <Link
+                to="/contacts"
                 className="btn-luxury"
               >
                 Связаться
-              </a>
-              <a
-                href="#works"
-                className="btn-ghost-luxury"
+              </Link>
+              <Link
+                to="/portfolio"
+                className="btn-ghost-luxury inline-flex items-center"
               >
                 Смотреть работы
-              </a>
+                <ArrowRight size={16} className="ml-2" />
+              </Link>
             </motion.div>
           </div>
 

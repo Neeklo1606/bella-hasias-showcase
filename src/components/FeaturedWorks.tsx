@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import heroLeft from '@/assets/hero/hero-left.jpg';
 import heroRight from '@/assets/hero/hero-right.jpg';
 import photo3 from '@/assets/hero/photo-3.jpg';
@@ -128,15 +130,13 @@ const FeaturedWorks = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <a
-            href="#portfolio"
-            className="font-sans text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 inline-flex items-center gap-2"
+          <Link
+            to="/portfolio"
+            className="btn-ghost-luxury inline-flex items-center"
           >
             Смотреть все работы
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+            <ArrowRight size={16} className="ml-2" />
+          </Link>
         </motion.div>
       </div>
 
