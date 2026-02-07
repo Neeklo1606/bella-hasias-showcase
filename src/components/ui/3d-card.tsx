@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export interface InteractiveTravelCardProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   imageUrl: string;
   actionText: string;
   href: string;
@@ -85,12 +85,14 @@ export const InteractiveTravelCard = React.forwardRef<
                 >
                   {title}
                 </h3>
-                <p 
-                  className="font-sans text-xs text-white/90 md:text-sm"
-                  itemProp="description"
-                >
-                  {subtitle}
-                </p>
+                {subtitle && (
+                  <p 
+                    className="font-sans text-xs text-white/90 md:text-sm"
+                    itemProp="description"
+                  >
+                    {subtitle}
+                  </p>
+                )}
               </div>
 
               <a

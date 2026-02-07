@@ -22,42 +22,36 @@ const stylistServices = [
   {
     id: 'brand-styling',
     title: 'Стилизация съёмки',
-    subtitle: 'Каталог • Кампейн • Имидж',
     image: userPhotos[0],
     href: '/services/brand-styling',
   },
   {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
-    subtitle: 'Анализ • Образы • Рекомендации',
     image: userPhotos[1],
     href: '/services/wardrobe-audit',
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
-    subtitle: 'Шоп-лист • Совместные покупки',
     image: userPhotos[2],
     href: '/services/personal-shopping',
   },
   {
     id: 'capsule-wardrobe',
     title: 'Капсульный гардероб',
-    subtitle: 'Универсальный • Стильный',
     image: userPhotos[3],
     href: '/services/capsule-wardrobe',
   },
   {
     id: 'event-look',
     title: 'Образ на мероприятие',
-    subtitle: 'Вечерний • Деловой • Casual',
     image: userPhotos[4],
     href: '/services/event-look',
   },
   {
     id: 'client-shoot',
     title: 'Съёмка для клиента',
-    subtitle: 'Портфолио • Личный бренд',
     image: userPhotos[5],
     href: '/services/client-shoot',
   },
@@ -68,21 +62,18 @@ const creatorServices = [
   {
     id: 'ugc-content',
     title: 'UGC-контент',
-    subtitle: 'User-Generated • Для брендов',
     image: userPhotos[3],
     href: '/services/ugc',
   },
   {
     id: 'photo-video',
     title: 'Фото и видео',
-    subtitle: 'Креатив • Блогеры • Бренды',
     image: userPhotos[4],
     href: '/services/photo-video',
   },
   {
     id: 'ai-content',
     title: 'AI-контент',
-    subtitle: 'Digital • SMM • Визуалы',
     image: userPhotos[5],
     href: '/services/ai-content',
   },
@@ -131,8 +122,13 @@ const Services = () => {
   return (
     <>
       <Helmet>
-        <title>Услуги — Bella Hasias | Стилист и Контент-креатор</title>
-        <meta name="description" content="Полный список услуг Bella Hasias: стилизация съёмок, разбор гардероба, персональный шоппинг, UGC-контент, фото и видео для брендов." />
+        <title>Услуги стилиста и контент-креатора в Москве — Bella Hasias</title>
+        <meta name="description" content="Услуги стилиста для брендов и съёмок, персональный шоппинг, разбор гардероба, UGC-контент и визуальный контент для брендов в Москве." />
+        <meta name="keywords" content="стилист для бренда, стилист на съёмку, персональный шоппинг, визуальный контент для брендов, UGC-контент Москва, стилист контент-креатор" />
+        <meta property="og:title" content="Услуги стилиста и контент-креатора — Bella Hasias" />
+        <meta property="og:description" content="Стилизация съёмок, персональный шоппинг, UGC-контент и визуальный контент для брендов в Москве." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://bellahasias.com/services" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -159,7 +155,7 @@ const Services = () => {
               className="btn-luxury text-xs py-2 px-4"
             >
               <Send size={14} className="mr-2" />
-              Связаться
+              Написать в Telegram
             </a>
           </div>
         </nav>
@@ -174,12 +170,9 @@ const Services = () => {
               transition={{ duration: 0.6 }}
               className="text-center mb-10"
             >
-              <h1 className="font-display text-h1 text-foreground mb-4">
+              <h1 className="font-display text-h1 text-foreground mb-8">
                 Услуги
               </h1>
-              <p className="font-sans text-lg text-muted-foreground max-w-xl mx-auto mb-8">
-                Выберите направление, которое вам подходит
-              </p>
 
               {/* Toggle Filter */}
               <ToggleGroup 
@@ -217,7 +210,6 @@ const Services = () => {
                   <motion.div key={service.id} variants={itemVariants}>
                     <InteractiveTravelCard
                       title={service.title}
-                      subtitle={service.subtitle}
                       imageUrl={service.image}
                       actionText="Подробнее"
                       href={service.href}
@@ -227,32 +219,6 @@ const Services = () => {
                 ))}
               </motion.div>
             </AnimatePresence>
-
-            {/* Bottom CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-center mt-16"
-            >
-              <div className="card-luxury p-10 max-w-2xl mx-auto">
-                <h3 className="font-display text-2xl text-foreground mb-3">
-                  Не знаете, что выбрать?
-                </h3>
-                <p className="font-sans text-muted-foreground mb-6">
-                  Напишите мне, и мы вместе определим, какая услуга подойдёт именно вам
-                </p>
-                <a
-                  href="https://t.me/Bella_hasias"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-luxury inline-flex"
-                >
-                  <Send size={16} className="mr-2" />
-                  Написать в Telegram
-                </a>
-              </div>
-            </motion.div>
           </div>
         </section>
       </main>

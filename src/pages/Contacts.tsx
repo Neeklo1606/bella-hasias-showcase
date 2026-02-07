@@ -2,9 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Send, Mail, MapPin, Instagram } from 'lucide-react';
+import { ArrowLeft, Send, Instagram } from 'lucide-react';
 import { z } from 'zod';
-import { Checkbox } from '@/components/ui/checkbox';
 
 // Telegram Icon
 const TelegramIcon = ({ size = 20 }: { size?: number }) => (
@@ -15,9 +14,8 @@ const TelegramIcon = ({ size = 20 }: { size?: number }) => (
 
 const formSchema = z.object({
   name: z.string().trim().min(1, 'Введите ваше имя').max(100),
-  service: z.string().min(1, 'Выберите услугу'),
+  telegram: z.string().trim().min(1, 'Введите ваш Telegram').max(100),
   message: z.string().trim().max(500).optional(),
-  consent: z.boolean().refine(val => val === true, 'Необходимо согласие'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -26,12 +24,11 @@ const Contacts = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [formData, setFormData] = useState<FormData>({
     name: '',
-    service: '',
+    telegram: '',
     message: '',
-    consent: false,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormData]) {
@@ -56,14 +53,7 @@ const Contacts = () => {
       return;
     }
 
-    const serviceLabels: Record<string, string> = {
-      styling: 'Стилизация',
-      ugc: 'UGC контент',
-      photo: 'Фотосъёмка',
-    };
-    
-    const serviceName = serviceLabels[formData.service] || formData.service;
-    let message = `Привет! Я ${formData.name}. Интересует услуга: ${serviceName}.`;
+    let message = `Привет! Я ${formData.name}. Мой Telegram: ${formData.telegram}.`;
     if (formData.message) {
       message += ` ${formData.message}`;
     }
@@ -72,17 +62,16 @@ const Contacts = () => {
     window.open(`https://t.me/Bella_hasias?text=${encodedMessage}`, '_blank');
   };
 
-  const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'bella@bellahasias.com', href: 'mailto:bella@bellahasias.com' },
-    { icon: MapPin, label: 'Локация', value: 'Москва, Россия', href: null },
-  ];
-
-
   return (
     <>
       <Helmet>
-        <title>Контакты — Bella Hasias</title>
-        <meta name="description" content="Свяжитесь с Bella Hasias для заказа стилизации, UGC-контента или фотосъёмки." />
+        <title>Контакты — Bella Hasias | Стилист и контент-креатор Москва</title>
+        <meta name="description" content="Свяжитесь с Bella Hasias для заказа стилизации, UGC-контента или фотосъёмки в Москве. Telegram и Instagram." />
+        <meta name="keywords" content="стилист Москва контакты, UGC-контент заказать, визуальный контент для брендов" />
+        <meta property="og:title" content="Контакты — Bella Hasias" />
+        <meta property="og:description" content="Свяжитесь для заказа стилизации, UGC-контента или фотосъёмки." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://bellahasias.com/contacts" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -124,12 +113,9 @@ const Contacts = () => {
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h1 className="font-display text-h1 text-foreground mb-4">
-                Давайте работать вместе
+              <h1 className="font-display text-h1 text-foreground">
+                Контакты
               </h1>
-              <p className="font-sans text-lg text-muted-foreground max-w-xl mx-auto">
-                Напишите мне, и я отвечу в течение 24 часов
-              </p>
             </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -158,27 +144,24 @@ const Contacts = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="service" className="font-sans text-sm font-medium text-foreground mb-2 block">
-                      Интересующая услуга
+                    <label htmlFor="telegram" className="font-sans text-sm font-medium text-foreground mb-2 block">
+                      Ваш Telegram
                     </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
+                    <input
+                      type="text"
+                      id="telegram"
+                      name="telegram"
+                      value={formData.telegram}
                       onChange={handleChange}
-                      className={`input-luxury appearance-none cursor-pointer ${errors.service ? 'ring-2 ring-destructive' : ''}`}
-                    >
-                      <option value="">Выберите услугу</option>
-                      <option value="styling">Стилизация</option>
-                      <option value="ugc">UGC контент</option>
-                      <option value="photo">Фотосъёмка</option>
-                    </select>
-                    {errors.service && <p className="text-destructive text-xs mt-1.5">{errors.service}</p>}
+                      placeholder="@username"
+                      className={`input-luxury ${errors.telegram ? 'ring-2 ring-destructive' : ''}`}
+                    />
+                    {errors.telegram && <p className="text-destructive text-xs mt-1.5">{errors.telegram}</p>}
                   </div>
 
                   <div>
                     <label htmlFor="message" className="font-sans text-sm font-medium text-foreground mb-2 block">
-                      Сообщение (опционально)
+                      Комментарий (опционально)
                     </label>
                     <textarea
                       id="message"
@@ -189,29 +172,6 @@ const Contacts = () => {
                       rows={4}
                       className="input-luxury resize-none"
                     />
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="consent"
-                      checked={formData.consent}
-                      onCheckedChange={(checked) => {
-                        setFormData(prev => ({ ...prev, consent: checked === true }));
-                        if (errors.consent) {
-                          setErrors(prev => ({ ...prev, consent: undefined }));
-                        }
-                      }}
-                      className="mt-0.5"
-                    />
-                    <div className="flex-1">
-                      <label htmlFor="consent" className="font-sans text-sm text-muted-foreground cursor-pointer">
-                        Я согласен на{' '}
-                        <Link to="/privacy" className="text-primary hover:underline">
-                          обработку персональных данных
-                        </Link>
-                      </label>
-                      {errors.consent && <p className="text-destructive text-xs mt-1">{errors.consent}</p>}
-                    </div>
                   </div>
 
                   <button type="submit" className="btn-luxury w-full">
@@ -228,32 +188,6 @@ const Contacts = () => {
                 transition={{ duration: 0.7 }}
                 className="space-y-8"
               >
-                {/* Contact Details */}
-                <div className="space-y-6">
-                  {contactInfo.map((item) => (
-                    <div key={item.label} className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center flex-shrink-0">
-                        <item.icon className="w-5 h-5 text-muted-foreground" />
-                      </div>
-                      <div>
-                        <span className="font-sans text-xs font-medium tracking-wider uppercase text-muted-foreground block mb-1">
-                          {item.label}
-                        </span>
-                        {item.href ? (
-                          <a
-                            href={item.href}
-                            className="font-sans text-foreground hover:text-primary transition-colors"
-                          >
-                            {item.value}
-                          </a>
-                        ) : (
-                          <span className="font-sans text-foreground">{item.value}</span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
                 {/* Social Links */}
                 <div>
                   <span className="font-sans text-xs font-medium tracking-wider uppercase text-muted-foreground block mb-4">

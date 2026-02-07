@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Images, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Only user's own photos
 import heroLeft from '@/assets/hero/hero-left.jpg';
@@ -85,21 +85,9 @@ const PortfolioSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6"
-          >
-            <Images className="w-7 h-7 text-primary" />
-          </motion.div>
-          <h2 className="font-display text-h2 text-foreground mb-4">
+          <h2 className="font-display text-h2 text-foreground">
             Портфолио
           </h2>
-          <p className="font-sans text-muted-foreground max-w-lg mx-auto">
-            Мои стилизации, контент и съёмки для брендов
-          </p>
         </motion.div>
 
         {/* Works Grid */}

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Send, Sparkles, Camera, Heart } from 'lucide-react';
+import { Send } from 'lucide-react';
 
 const TelegramCTA = () => {
   return (
@@ -35,7 +35,7 @@ const TelegramCTA = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="font-sans text-xs font-medium tracking-[0.3em] uppercase text-primary mb-4"
           >
-            Telegram канал
+            Telegram-канал
           </motion.p>
 
           <motion.h2
@@ -43,43 +43,10 @@ const TelegramCTA = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="font-display text-h2 text-foreground mb-6"
+            className="font-display text-h2 text-foreground mb-10"
           >
             Больше работ и жизни
           </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="font-sans text-lg text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed"
-          >
-            Подписывайтесь на мой Telegram-канал, чтобы видеть свежие работы, 
-            закулисье съёмок и вдохновляющий контент каждый день
-          </motion.p>
-
-          {/* Features */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-wrap justify-center gap-6 mb-10"
-          >
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Camera className="w-5 h-5 text-primary" />
-              <span className="font-sans text-sm">Свежие работы</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <span className="font-sans text-sm">Стилизации</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Heart className="w-5 h-5 text-primary" />
-              <span className="font-sans text-sm">Backstage</span>
-            </div>
-          </motion.div>
 
           {/* CTA Button */}
           <motion.a
@@ -89,7 +56,7 @@ const TelegramCTA = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.7 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="btn-luxury inline-flex items-center gap-3 text-base py-4 px-10"
@@ -103,7 +70,7 @@ const TelegramCTA = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
             className="font-sans text-sm text-muted-foreground mt-6"
           >
             @bellahasias

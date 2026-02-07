@@ -21,21 +21,18 @@ const stylistServices = [
   {
     id: 'brand-styling',
     title: 'Стилизация съёмки',
-    subtitle: 'Каталог • Кампейн • Имидж',
     image: userPhotos[0],
     href: '/services/brand-styling',
   },
   {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
-    subtitle: 'Анализ • Образы • Рекомендации',
     image: userPhotos[1],
     href: '/services/wardrobe-audit',
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
-    subtitle: 'Шоп-лист • Совместные покупки',
     image: userPhotos[2],
     href: '/services/personal-shopping',
   },
@@ -45,21 +42,18 @@ const creatorServices = [
   {
     id: 'ugc-content',
     title: 'UGC-контент',
-    subtitle: 'User-Generated • Для брендов',
     image: userPhotos[3],
     href: '/services/ugc',
   },
   {
     id: 'photo-video',
     title: 'Фото и видео',
-    subtitle: 'Креатив • Блогеры • Бренды',
     image: userPhotos[4],
     href: '/services/photo-video',
   },
   {
     id: 'ai-content',
     title: 'AI-контент',
-    subtitle: 'Digital • SMM • Визуалы',
     image: userPhotos[5],
     href: '/services/ai-content',
   },
@@ -163,7 +157,6 @@ const ServicesSection = () => {
               <motion.div key={service.id} variants={itemVariants}>
                 <InteractiveTravelCard
                   title={service.title}
-                  subtitle={service.subtitle}
                   imageUrl={service.image}
                   actionText="Подробнее"
                   href={service.href}
