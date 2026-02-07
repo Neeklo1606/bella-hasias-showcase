@@ -3,21 +3,21 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Only user's own photos
-import heroLeft from '@/assets/hero/hero-left.jpg';
-import heroCenter from '@/assets/hero/hero-center.jpg';
-import heroRight from '@/assets/hero/hero-right.jpg';
-import photo3 from '@/assets/hero/photo-3.jpg';
-import user1 from '@/assets/portfolio/user-1.jpg';
-import user2 from '@/assets/portfolio/user-2.jpg';
+// Portfolio images
+import portfolio1 from '@/assets/portfolio/portfolio-1.jpg';
+import portfolio2 from '@/assets/portfolio/portfolio-2.jpg';
+import portfolio3 from '@/assets/portfolio/portfolio-3.jpg';
+import portfolio4 from '@/assets/portfolio/portfolio-4.jpg';
+import portfolio5 from '@/assets/portfolio/portfolio-5.webp';
+import portfolio6 from '@/assets/portfolio/portfolio-6.jpg';
 
 const featuredWorks = [
-  { id: 1, src: heroLeft, title: 'Стилизация' },
-  { id: 2, src: heroCenter, title: 'Fashion Съёмка' },
-  { id: 3, src: heroRight, title: 'Кампейн' },
-  { id: 4, src: photo3, title: 'Контент' },
-  { id: 5, src: user1, title: 'UGC' },
-  { id: 6, src: user2, title: 'Фотосессия' },
+  { id: 1, src: portfolio1, title: 'Editorial' },
+  { id: 2, src: portfolio2, title: 'Стилизация' },
+  { id: 3, src: portfolio3, title: 'Fashion Съёмка' },
+  { id: 4, src: portfolio4, title: 'Кампейн' },
+  { id: 5, src: portfolio5, title: 'Lookbook' },
+  { id: 6, src: portfolio6, title: 'Beauty' },
 ];
 
 const containerVariants = {
