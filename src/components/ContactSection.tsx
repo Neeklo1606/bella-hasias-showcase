@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MessageCircle, Instagram, Send } from 'lucide-react';
+import { ArrowRight, Send, Instagram } from 'lucide-react';
 
 const ContactSection = () => {
   return (
@@ -14,21 +14,9 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6"
-          >
-            <MessageCircle className="w-7 h-7 text-primary" />
-          </motion.div>
-          <h2 className="font-display text-h2 text-foreground mb-4">
+          <h2 className="font-display text-h2 text-foreground">
             Контакты
           </h2>
-          <p className="font-sans text-muted-foreground max-w-lg mx-auto">
-            Готова обсудить ваш проект и создать что-то особенное
-          </p>
         </motion.div>
 
         {/* Contact Cards - Only Telegram and Instagram */}

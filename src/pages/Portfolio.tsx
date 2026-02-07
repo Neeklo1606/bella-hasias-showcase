@@ -88,8 +88,13 @@ const Portfolio = () => {
   return (
     <>
       <Helmet>
-        <title>Портфолио — Bella Hasias</title>
-        <meta name="description" content="Смотрите работы Bella Hasias: стилизация, UGC-контент и профессиональная фотосъёмка." />
+        <title>Портфолио — Bella Hasias | Стилизация, UGC и фотосъёмка</title>
+        <meta name="description" content="Портфолио Bella Hasias: стилизация для брендов, UGC-контент и профессиональная фотосъёмка в Москве." />
+        <meta name="keywords" content="портфолио стилиста, UGC-контент примеры, визуальный контент для брендов, стилист контент-креатор" />
+        <meta property="og:title" content="Портфолио — Bella Hasias" />
+        <meta property="og:description" content="Стилизация, UGC-контент и фотосъёмка для брендов." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://bellahasias.com/portfolio" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -131,20 +136,9 @@ const Portfolio = () => {
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <h1 className="font-display text-h1 text-foreground mb-4">
+              <h1 className="font-display text-h1 text-foreground">
                 Портфолио
               </h1>
-              <p className="font-sans text-lg text-muted-foreground max-w-xl mx-auto">
-                Больше работ и закулисья в{' '}
-                <a 
-                  href="https://t.me/bellahasias" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  Telegram-канале
-                </a>
-              </p>
             </motion.div>
 
             {/* Category Filter */}
@@ -208,12 +202,9 @@ const Portfolio = () => {
               className="text-center mt-16"
             >
               <div className="card-luxury p-8 max-w-lg mx-auto">
-                <h3 className="font-display text-2xl text-foreground mb-3">
-                  Хотите увидеть больше?
-                </h3>
-                <p className="font-sans text-muted-foreground mb-6">
-                  Подписывайтесь на Telegram-канал — там ещё больше работ и процессов
-                </p>
+                <h2 className="font-display text-2xl text-foreground mb-6">
+                  Больше работ и жизни
+                </h2>
                 <a
                   href="https://t.me/bellahasias"
                   target="_blank"
@@ -221,7 +212,7 @@ const Portfolio = () => {
                   className="btn-luxury inline-flex"
                 >
                   <Send size={16} className="mr-2" />
-                  Открыть Telegram
+                  Подписаться на канал
                 </a>
               </div>
             </motion.div>

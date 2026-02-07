@@ -7,8 +7,9 @@ const Privacy = () => {
   return (
     <>
       <Helmet>
-        <title>Политика конфиденциальности | Bella Hasias</title>
+        <title>Политика конфиденциальности — Bella Hasias</title>
         <meta name="description" content="Политика конфиденциальности и обработки персональных данных Bella Hasias" />
+        <link rel="canonical" href="https://bellahasias.com/privacy" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -21,9 +22,9 @@ const Privacy = () => {
             >
               <ArrowLeft size={20} />
             </Link>
-            <span className="font-display text-lg font-semibold text-foreground">
+            <Link to="/" className="font-display text-lg font-semibold text-foreground">
               Bella Hasias
-            </span>
+            </Link>
           </div>
         </div>
 
@@ -55,7 +56,7 @@ const Privacy = () => {
                   <h2 className="font-display text-xl text-foreground mb-4">2. Сбор информации</h2>
                   <p className="leading-relaxed">Мы можем собирать следующие персональные данные:</p>
                   <ul className="list-disc pl-6 mt-3 space-y-2">
-                    <li>Имя и контактная информация (email, телефон)</li>
+                    <li>Имя и контактная информация (Telegram)</li>
                     <li>Информация о запрашиваемых услугах</li>
                     <li>Техническая информация (IP-адрес, тип браузера, время посещения)</li>
                   </ul>

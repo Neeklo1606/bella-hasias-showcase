@@ -11,15 +11,16 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Bella Hasias — Стилист, UGC-креатор и контент-фотограф</title>
+        <title>Bella Hasias — Стилист и контент-креатор в Москве</title>
         <meta
           name="description"
-          content="Высококлассный визуальный контент в Москве. Стилизация, UGC-контент и профессиональная фотосъёмка для брендов и личностей."
+          content="Стилист для брендов и съёмок, персональный шоппинг, UGC-контент и визуальный контент для брендов в Москве. Bella Hasias — стилист контент-креатор."
         />
-        <meta property="og:title" content="Bella Hasias — Стилист, UGC-креатор и контент-фотограф" />
+        <meta name="keywords" content="стилист для бренда, стилист на съёмку, персональный шоппинг, визуальный контент для брендов, UGC-контент Москва, стилист контент-креатор" />
+        <meta property="og:title" content="Bella Hasias — Стилист и контент-креатор в Москве" />
         <meta
           property="og:description"
-          content="Высококлассный визуальный контент в Москве. Стилизация, UGC и фотосъёмка."
+          content="Стилист для брендов и съёмок, персональный шоппинг, UGC-контент и визуальный контент для брендов в Москве."
         />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/og-image.jpg" />
