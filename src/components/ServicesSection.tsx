@@ -4,31 +4,29 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import serviceStylist from '@/assets/service-stylist.jpg';
-import serviceUgc from '@/assets/service-ugc.jpg';
-import servicePhotographer from '@/assets/service-photographer.jpg';
+import heroCenter from '@/assets/hero/hero-center.jpg';
 
-// Only 3 services per category
+// Only 3 services per category - all using hero image
 const stylistServices = [
   {
     id: 'brand-styling',
     title: 'Стилизация съёмки',
     subtitle: 'Каталог • Кампейн • Имидж',
-    image: serviceStylist,
+    image: heroCenter,
     href: '/services/brand-styling',
   },
   {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
     subtitle: 'Анализ • Образы • Рекомендации',
-    image: servicePhotographer,
+    image: heroCenter,
     href: '/services/wardrobe-audit',
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
     subtitle: 'Шоп-лист • Совместные покупки',
-    image: serviceStylist,
+    image: heroCenter,
     href: '/services/personal-shopping',
   },
 ];
@@ -38,21 +36,21 @@ const creatorServices = [
     id: 'ugc-content',
     title: 'UGC-контент',
     subtitle: 'User-Generated • Для брендов',
-    image: serviceUgc,
+    image: heroCenter,
     href: '/services/ugc',
   },
   {
     id: 'photo-video',
     title: 'Фото и видео',
     subtitle: 'Креатив • Блогеры • Бренды',
-    image: servicePhotographer,
+    image: heroCenter,
     href: '/services/photo-video',
   },
   {
     id: 'ai-content',
     title: 'AI-контент',
     subtitle: 'Digital • SMM • Визуалы',
-    image: serviceUgc,
+    image: heroCenter,
     href: '/services/ai-content',
   },
 ];
