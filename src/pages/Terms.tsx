@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
 import Footer from '@/components/Footer';
+import PageHeader from '@/components/PageHeader';
 
 const Terms = () => {
   return (
@@ -13,26 +12,14 @@ const Terms = () => {
       </Helmet>
 
       <main className="min-h-screen bg-background">
-        <nav className="fixed top-0 left-0 right-0 z-50 glass py-4">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft size={20} />
-              <span className="font-sans text-sm">Назад</span>
-            </Link>
-            <Link
-              to="/"
-              className="font-display text-xl font-semibold text-foreground"
-            >
-              Bella Hasias
-            </Link>
-            <div className="w-20" />
-          </div>
-        </nav>
+        <PageHeader
+          breadcrumbs={[
+            { label: 'Главная', href: '/' },
+            { label: 'Пользовательское соглашение' },
+          ]}
+        />
 
-        <section className="pt-32 pb-20 px-6 md:px-10">
+        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
           <div className="max-w-3xl mx-auto">
             <h1 className="font-display text-h1 text-foreground mb-8">
               Пользовательское соглашение

@@ -1,9 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Send } from 'lucide-react';
 import Footer from '@/components/Footer';
+import PageHeader from '@/components/PageHeader';
 import heroLeft from '@/assets/hero/hero-left.jpg';
 import heroRight from '@/assets/hero/hero-right.jpg';
 import heroCenter from '@/assets/hero/hero-center.jpg';
@@ -87,36 +86,15 @@ const Portfolio = () => {
       </Helmet>
 
       <main className="min-h-screen bg-background">
-        {/* Header */}
-        <nav className="fixed top-0 left-0 right-0 z-50 glass py-4">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px]"
-            >
-              <ArrowLeft size={20} />
-              <span className="font-sans text-sm">Назад</span>
-            </Link>
-            <Link
-              to="/"
-              className="font-display text-xl font-semibold text-foreground"
-            >
-              Bella Hasias
-            </Link>
-            <a
-              href="https://t.me/bellahasias"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-luxury text-xs py-2 px-4 min-h-[44px]"
-            >
-              <Send size={14} className="mr-2" />
-              Telegram
-            </a>
-          </div>
-        </nav>
+        <PageHeader
+          breadcrumbs={[
+            { label: 'Главная', href: '/' },
+            { label: 'Портфолио' },
+          ]}
+        />
 
         {/* Content */}
-        <section className="pt-32 pb-20 px-6 md:px-10">
+        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
           <div className="max-w-7xl mx-auto">
             {/* Page Title */}
             <motion.div
@@ -168,17 +146,21 @@ const Portfolio = () => {
                 <h2 className="font-display text-2xl text-foreground mb-4">
                   Больше работ из жизни
                 </h2>
-                <span className="inline-block px-4 py-1.5 rounded-full bg-muted text-muted-foreground text-sm font-sans mb-6">
+                <a
+                  href="https://t.me/bellahasias"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex px-4 py-1.5 rounded-full bg-muted text-muted-foreground text-sm font-sans mb-6 hover:text-foreground transition-colors"
+                >
                   Telegram-канал
-                </span>
+                </a>
                 <a
                   href="https://t.me/bellahasias"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-luxury inline-flex min-h-[48px]"
                 >
-                  <Send size={16} className="mr-2" />
-                  Подписаться на канал
+                  Связаться
                 </a>
               </div>
             </motion.div>

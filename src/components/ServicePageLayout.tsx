@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Send } from 'lucide-react';
 import Footer from '@/components/Footer';
+import PageHeader from '@/components/PageHeader';
 
 interface ServicePageLayoutProps {
   title: string;
@@ -56,37 +55,16 @@ const ServicePageLayout = ({
       </Helmet>
 
       <main className="min-h-screen bg-background">
-        {/* Navigation */}
-        <nav className="fixed top-0 left-0 right-0 z-[1000] glass py-4">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-12">
-            <Link
-              to="/services"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px]"
-            >
-              <ArrowLeft size={20} />
-              <span className="font-sans text-sm hidden sm:inline">Назад</span>
-            </Link>
-            <Link
-              to="/"
-              className="font-display text-xl font-semibold transition-opacity hover:opacity-70"
-              style={{ color: 'hsl(220, 10%, 15%)' }}
-            >
-              Bella Hasias
-            </Link>
-            <a
-              href="https://t.me/Bella_hasias"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-luxury text-xs py-2 px-4 min-h-[44px]"
-            >
-              <Send size={14} className="mr-2" />
-              <span className="hidden sm:inline">Связаться</span>
-            </a>
-          </div>
-        </nav>
+        <PageHeader
+          breadcrumbs={[
+            { label: 'Главная', href: '/' },
+            { label: 'Услуги', href: '/services' },
+            { label: title },
+          ]}
+        />
 
         {/* Hero Section - Full Width Image */}
-        <section className="pt-24 md:pt-28">
+        <section className="pt-28 md:pt-32">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

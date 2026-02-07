@@ -17,15 +17,21 @@ const TelegramCTA = () => {
           className="max-w-3xl mx-auto text-center"
         >
           {/* Icon */}
-          <motion.div
+          <motion.a
+            href="https://t.me/bellahasias"
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2, type: "spring" }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.98 }}
             className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary mb-8"
+            aria-label="Открыть Telegram-канал"
           >
             <Send className="w-9 h-9 text-primary-foreground" />
-          </motion.div>
+          </motion.a>
 
           {/* Header */}
           <motion.p
@@ -48,33 +54,20 @@ const TelegramCTA = () => {
             Больше работ и жизни
           </motion.h2>
 
-          {/* CTA Button */}
+          {/* Channel handle */}
           <motion.a
             href="https://t.me/bellahasias"
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="btn-luxury inline-flex items-center gap-3 text-base py-4 px-10"
-          >
-            <Send className="w-5 h-5" />
-            Подписаться на канал
-          </motion.a>
-
-          {/* Channel handle */}
-          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="font-sans text-sm text-muted-foreground mt-6"
+            whileHover={{ scale: 1.01 }}
+            className="font-sans text-sm text-muted-foreground mt-6 inline-flex"
           >
             @bellahasias
-          </motion.p>
+          </motion.a>
         </motion.div>
       </div>
     </section>

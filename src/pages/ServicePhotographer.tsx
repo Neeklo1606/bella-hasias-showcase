@@ -2,9 +2,9 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import photographerImage from '@/assets/service-photographer.jpg';
+import PageHeader from '@/components/PageHeader';
 
 const ServicePhotographer = () => {
   const features = [
@@ -27,9 +27,15 @@ const ServicePhotographer = () => {
       </Helmet>
 
       <main className="min-h-screen bg-background">
-        <Navigation />
+        <PageHeader
+          breadcrumbs={[
+            { label: 'Главная', href: '/' },
+            { label: 'Услуги', href: '/services' },
+            { label: 'Фотосъёмка' },
+          ]}
+        />
         
-        <section className="section-luxury pt-32">
+        <section className="section-luxury pt-32 md:pt-36">
           <div className="container-luxury">
             <Link
               to="/#services"
