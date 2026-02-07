@@ -1,31 +1,31 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
-import serviceStylist from '@/assets/service-stylist.jpg';
-import serviceUgc from '@/assets/service-ugc.jpg';
-import servicePhotographer from '@/assets/service-photographer.jpg';
+import serviceBrandStyling from '@/assets/service-brand-styling.jpg';
+import serviceClientShoot from '@/assets/service-client-shoot.jpg';
+import serviceWardrobe from '@/assets/service-wardrobe.jpg';
 
 const services = [
   {
-    title: 'Стилизация',
-    price: 'от 5,000 ₽',
-    description: 'Персональный стиль, подбор образов и создание капсульного гардероба',
-    image: serviceStylist,
-    href: '/services/stylist',
+    title: 'Стилизация съёмки для бренда',
+    price: 'от 15,000 ₽',
+    description: 'Создание визуального образа для рекламных кампаний и лукбуков',
+    image: serviceBrandStyling,
+    href: '/services/brand-styling',
   },
   {
-    title: 'UGC Контент',
-    price: 'от 8,000 ₽',
-    description: 'Аутентичный контент для брендов: фото, видео и рекламные материалы',
-    image: serviceUgc,
-    href: '/services/ugc',
+    title: 'Клиентская съёмка',
+    price: 'от 10,000 ₽',
+    description: 'Персональная фотосессия с полной стилизацией и подготовкой образа',
+    image: serviceClientShoot,
+    href: '/services/client-shoot',
   },
   {
-    title: 'Фотосъёмка',
+    title: 'Разбор гардероба',
     price: 'от 7,000 ₽',
-    description: 'Профессиональная съёмка для портфолио и рекламных кампаний',
-    image: servicePhotographer,
-    href: '/services/photographer',
+    description: 'Аудит вашего гардероба с рекомендациями по обновлению и комплектации',
+    image: serviceWardrobe,
+    href: '/services/wardrobe-audit',
   },
 ];
 
