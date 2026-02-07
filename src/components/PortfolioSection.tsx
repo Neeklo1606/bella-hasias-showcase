@@ -75,7 +75,7 @@ const PortfolioSection = () => {
   }, [lightboxOpen, closeLightbox, nextImage, prevImage]);
 
   return (
-    <section id="portfolio" className="section-luxury bg-background">
+    <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
