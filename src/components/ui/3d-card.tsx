@@ -52,15 +52,15 @@ export const InteractiveTravelCard = React.forwardRef<
     return (
       <article
         ref={ref}
-        className={cn("group [perspective:1000px]", className)}
+        className={cn("group [perspective:1000px] overflow-hidden rounded-2xl", className)}
         itemScope
         itemType="https://schema.org/Service"
       >
         <motion.div
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          style={{ rotateX, rotateY }}
-          className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[360px]"
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[360px] [backface-visibility:hidden]"
         >
           {/* Background Image */}
           <img
