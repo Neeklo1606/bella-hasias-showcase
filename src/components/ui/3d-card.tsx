@@ -80,7 +80,7 @@ export const InteractiveTravelCard = React.forwardRef<
             alt={title}
             loading="lazy"
             itemProp="image"
-            className="absolute -inset-4 h-[calc(100%+32px)] w-[calc(100%+32px)] object-cover scale-110 transition-transform duration-500 ease-out group-hover:scale-115"
+            className="absolute -inset-4 h-[calc(100%+32px)] w-[calc(100%+32px)] object-cover object-top scale-110 transition-transform duration-500 ease-out group-hover:scale-115"
           />
           
           {/* Darker overlay for better text contrast */}
