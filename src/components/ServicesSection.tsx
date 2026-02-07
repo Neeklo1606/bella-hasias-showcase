@@ -1,34 +1,80 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight, Sparkles, Camera, Video } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import { InteractiveTravelCard } from '@/components/ui/3d-card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import serviceStylist from '@/assets/service-stylist.jpg';
 import serviceUgc from '@/assets/service-ugc.jpg';
 import servicePhotographer from '@/assets/service-photographer.jpg';
 
-const services = [
+// Service data with SEO-optimized titles and subtitles
+const stylistServices = [
   {
-    title: 'Стилизация',
-    price: 'от 5,000 ₽',
-    description: 'Персональный стиль, подбор образов и создание капсульного гардероба',
+    id: 'brand-styling',
+    title: 'Стилизация съёмки',
+    subtitle: 'Каталог • Кампейн • Имидж',
     image: serviceStylist,
-    href: '/services/stylist',
-    icon: Sparkles,
+    href: '/services/brand-styling',
   },
   {
-    title: 'UGC Контент',
-    price: 'от 8,000 ₽',
-    description: 'Аутентичный контент для брендов: фото, видео и рекламные материалы',
+    id: 'client-shoot',
+    title: 'Клиентская съёмка',
+    subtitle: 'Персональный образ • Фотосессия',
+    image: servicePhotographer,
+    href: '/services/client-shoot',
+  },
+  {
+    id: 'wardrobe-audit',
+    title: 'Разбор гардероба',
+    subtitle: 'Анализ • Образы • Рекомендации',
+    image: serviceStylist,
+    href: '/services/wardrobe-audit',
+  },
+  {
+    id: 'personal-shopping',
+    title: 'Персональный шоппинг',
+    subtitle: 'Шоп-лист • Совместные покупки',
+    image: servicePhotographer,
+    href: '/services/personal-shopping',
+  },
+  {
+    id: 'capsule-wardrobe',
+    title: 'Капсульный гардероб',
+    subtitle: 'Сезон • Событие • Онлайн',
+    image: serviceStylist,
+    href: '/services/capsule-wardrobe',
+  },
+  {
+    id: 'event-look',
+    title: 'Образ на мероприятие',
+    subtitle: 'Подбор лука • Стилизация',
+    image: servicePhotographer,
+    href: '/services/event-look',
+  },
+];
+
+const creatorServices = [
+  {
+    id: 'ugc-content',
+    title: 'UGC-контент',
+    subtitle: 'User-Generated • Для брендов',
     image: serviceUgc,
     href: '/services/ugc',
-    icon: Video,
   },
   {
-    title: 'Фотосъёмка',
-    price: 'от 7,000 ₽',
-    description: 'Профессиональная съёмка для портфолио и рекламных кампаний',
+    id: 'photo-video',
+    title: 'Фото и видео',
+    subtitle: 'Креатив • Блогеры • Бренды',
     image: servicePhotographer,
-    href: '/services/photographer',
-    icon: Camera,
+    href: '/services/photo-video',
+  },
+  {
+    id: 'ai-content',
+    title: 'AI-контент',
+    subtitle: 'Digital • SMM • Визуалы',
+    image: serviceUgc,
+    href: '/services/ai-content',
   },
 ];
 
@@ -37,24 +83,47 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.05,
+      staggerDirection: -1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7 },
+    scale: 1,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    scale: 0.95,
+    transition: { duration: 0.3 },
   },
 };
 
 const ServicesSection = () => {
+  const [activeFilter, setActiveFilter] = useState<'stylist' | 'creator'>('stylist');
+  const navigate = useNavigate();
+
+  const currentServices = activeFilter === 'stylist' ? stylistServices : creatorServices;
+
   return (
-    <section id="services" className="section-luxury bg-secondary/30">
+    <section 
+      id="services" 
+      className="section-luxury bg-secondary/30"
+      aria-labelledby="services-heading"
+    >
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
@@ -62,98 +131,68 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6"
+          <h2 
+            id="services-heading"
+            className="font-display text-h2 text-foreground mb-8"
           >
-            <Sparkles className="w-7 h-7 text-primary" />
-          </motion.div>
-          <p className="font-sans text-xs font-medium tracking-[0.3em] uppercase text-primary mb-4">
             Услуги
-          </p>
-          <h2 className="font-display text-h2 text-foreground mb-4">
-            Что я могу для вас сделать
           </h2>
-          <p className="font-sans text-muted-foreground max-w-lg mx-auto">
-            Профессиональные услуги для создания вашего уникального образа и контента
-          </p>
+
+          {/* Toggle Filter */}
+          <ToggleGroup 
+            type="single" 
+            value={activeFilter}
+            onValueChange={(value) => value && setActiveFilter(value as 'stylist' | 'creator')}
+            className="inline-flex bg-muted/50 p-1.5 rounded-2xl"
+          >
+            <ToggleGroupItem 
+              value="stylist" 
+              className="px-6 py-3 rounded-xl font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
+            >
+              Стилист
+            </ToggleGroupItem>
+            <ToggleGroupItem 
+              value="creator"
+              className="px-6 py-3 rounded-xl font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
+            >
+              Контент-креатор
+            </ToggleGroupItem>
+          </ToggleGroup>
         </motion.div>
 
         {/* Services Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        >
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                variants={itemVariants}
-              >
-                <Link
-                  to={service.href}
-                  className="group card-luxury block overflow-hidden h-full hover:shadow-xl transition-all duration-500"
-                >
-                  {/* Image */}
-                  <div className="relative h-[280px] md:h-[320px] overflow-hidden rounded-t-3xl">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
-                    />
-                    {/* Glassmorphism price badge */}
-                    <div className="absolute top-4 right-4 glass rounded-2xl px-4 py-2">
-                      <span className="font-sans text-sm font-semibold text-foreground">
-                        {service.price}
-                      </span>
-                    </div>
-                    {/* Icon badge */}
-                    <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-primary-foreground" />
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6 md:p-8">
-                    <div className="flex items-start justify-between gap-4 mb-4">
-                      <h3 className="font-display text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors duration-300">
-                        {service.title}
-                      </h3>
-                      <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
-                        <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300" />
-                      </div>
-                    </div>
-
-                    <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-4">
-                      {service.description}
-                    </p>
-
-                    <span className="font-sans text-sm font-medium text-primary group-hover:underline">
-                      Узнать подробнее →
-                    </span>
-                  </div>
-                </Link>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeFilter}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          >
+            {currentServices.map((service) => (
+              <motion.div key={service.id} variants={itemVariants}>
+                <InteractiveTravelCard
+                  title={service.title}
+                  subtitle={service.subtitle}
+                  imageUrl={service.image}
+                  actionText="Подробнее"
+                  href={service.href}
+                  onActionClick={() => navigate(service.href)}
+                />
               </motion.div>
-            );
-          })}
-        </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
-        {/* View All Link */}
+        {/* View All Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-12"
         >
           <Link
@@ -164,6 +203,17 @@ const ServicesSection = () => {
             <ArrowRight size={16} className="ml-2" />
           </Link>
         </motion.div>
+      </div>
+
+      {/* Mobile Fixed CTA */}
+      <div className="fixed bottom-6 left-4 right-4 z-40 md:hidden">
+        <Link
+          to="/services"
+          className="btn-luxury w-full flex items-center justify-center py-4 shadow-lg"
+        >
+          Все услуги
+          <ArrowRight size={16} className="ml-2" />
+        </Link>
       </div>
     </section>
   );
