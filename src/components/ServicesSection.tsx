@@ -4,29 +4,39 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import heroCenter from '@/assets/hero/hero-center.jpg';
 
-// Only 3 services per category - all using hero image
+// User's own photos
+import heroLeft from '@/assets/hero/hero-left.jpg';
+import heroCenter from '@/assets/hero/hero-center.jpg';
+import heroRight from '@/assets/hero/hero-right.jpg';
+import photo3 from '@/assets/hero/photo-3.jpg';
+import user1 from '@/assets/portfolio/user-1.jpg';
+import user2 from '@/assets/portfolio/user-2.jpg';
+
+// User photos array to cycle through
+const userPhotos = [heroLeft, heroCenter, heroRight, photo3, user1, user2];
+
+// Only 3 services per category - using user's photos
 const stylistServices = [
   {
     id: 'brand-styling',
     title: 'Стилизация съёмки',
     subtitle: 'Каталог • Кампейн • Имидж',
-    image: heroCenter,
+    image: userPhotos[0],
     href: '/services/brand-styling',
   },
   {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
     subtitle: 'Анализ • Образы • Рекомендации',
-    image: heroCenter,
+    image: userPhotos[1],
     href: '/services/wardrobe-audit',
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
     subtitle: 'Шоп-лист • Совместные покупки',
-    image: heroCenter,
+    image: userPhotos[2],
     href: '/services/personal-shopping',
   },
 ];
@@ -36,21 +46,21 @@ const creatorServices = [
     id: 'ugc-content',
     title: 'UGC-контент',
     subtitle: 'User-Generated • Для брендов',
-    image: heroCenter,
+    image: userPhotos[3],
     href: '/services/ugc',
   },
   {
     id: 'photo-video',
     title: 'Фото и видео',
     subtitle: 'Креатив • Блогеры • Бренды',
-    image: heroCenter,
+    image: userPhotos[4],
     href: '/services/photo-video',
   },
   {
     id: 'ai-content',
     title: 'AI-контент',
     subtitle: 'Digital • SMM • Визуалы',
-    image: heroCenter,
+    image: userPhotos[5],
     href: '/services/ai-content',
   },
 ];

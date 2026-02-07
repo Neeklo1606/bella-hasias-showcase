@@ -2,20 +2,22 @@ import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Images, X, ChevronLeft, ChevronRight } from 'lucide-react';
+
+// Only user's own photos
 import heroLeft from '@/assets/hero/hero-left.jpg';
+import heroCenter from '@/assets/hero/hero-center.jpg';
 import heroRight from '@/assets/hero/hero-right.jpg';
 import photo3 from '@/assets/hero/photo-3.jpg';
-import work1 from '@/assets/portfolio/work-1.jpg';
-import work2 from '@/assets/portfolio/work-2.jpg';
-import work3 from '@/assets/portfolio/work-3.jpg';
+import user1 from '@/assets/portfolio/user-1.jpg';
+import user2 from '@/assets/portfolio/user-2.jpg';
 
 const featuredWorks = [
-  { id: 1, src: heroLeft, title: 'Editorial Portrait' },
-  { id: 2, src: heroRight, title: 'Fashion Story' },
-  { id: 3, src: photo3, title: 'Personal Style' },
-  { id: 4, src: work1, title: 'Brand Campaign' },
-  { id: 5, src: work2, title: 'Content Creation' },
-  { id: 6, src: work3, title: 'Studio Session' },
+  { id: 1, src: heroLeft, title: 'Стилизация' },
+  { id: 2, src: heroCenter, title: 'Fashion Съёмка' },
+  { id: 3, src: heroRight, title: 'Кампейн' },
+  { id: 4, src: photo3, title: 'Контент' },
+  { id: 5, src: user1, title: 'UGC' },
+  { id: 6, src: user2, title: 'Фотосессия' },
 ];
 
 const containerVariants = {
