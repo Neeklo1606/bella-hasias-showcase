@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { ComesInGoesOutUnderline } from '@/components/ui/underline-animation';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -38,29 +39,10 @@ const Navigation = () => {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { href: '/services', label: 'Услуги', isPage: true },
-    { href: '/portfolio', label: 'Портфолио', isPage: true },
-    { href: '/contacts', label: 'Контакты', isPage: true },
+    { href: '/services', label: 'Услуги' },
+    { href: '/portfolio', label: 'Портфолио' },
+    { href: '/contacts', label: 'Контакты' },
   ];
-
-  const scrollToSection = (href: string) => {
-    if (href.startsWith('#')) {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    setIsMobileMenuOpen(false);
-  };
-
-  const handleNavClick = (link: typeof navLinks[0], e: React.MouseEvent) => {
-    if (link.isPage) {
-      setIsMobileMenuOpen(false);
-      return;
-    }
-    e.preventDefault();
-    scrollToSection(link.href);
-  };
 
   const menuVariants = {
     closed: {
@@ -116,7 +98,11 @@ const Navigation = () => {
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {link.label}
+                <ComesInGoesOutUnderline 
+                  label={link.label}
+                  direction="left"
+                  underlineHeightRatio={0.08}
+                />
               </Link>
             ))}
             <a
@@ -132,7 +118,7 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-foreground hover:text-primary transition-colors rounded-xl hover:bg-muted"
+            className="md:hidden p-2 text-foreground hover:text-primary transition-colors rounded-xl hover:bg-muted min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -162,7 +148,7 @@ const Navigation = () => {
                   <Link
                     to={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`font-display text-4xl font-semibold transition-colors duration-300 mb-6 block ${
+                    className={`font-display text-4xl font-semibold transition-colors duration-300 mb-6 block min-h-[48px] ${
                       location.pathname === link.href 
                         ? 'text-primary' 
                         : 'text-foreground hover:text-primary'
@@ -182,7 +168,7 @@ const Navigation = () => {
                 initial="closed"
                 animate="open"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="btn-luxury mt-8"
+                className="btn-luxury mt-8 min-h-[48px]"
               >
                 Связаться
               </motion.a>

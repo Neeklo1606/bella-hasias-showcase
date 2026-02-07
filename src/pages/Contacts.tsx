@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Send, Instagram } from 'lucide-react';
 import { z } from 'zod';
+import Footer from '@/components/Footer';
+import { ComesInGoesOutUnderline } from '@/components/ui/underline-animation';
 
 // Telegram Icon
 const TelegramIcon = ({ size = 20 }: { size?: number }) => (
@@ -80,7 +82,7 @@ const Contacts = () => {
           <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
             <Link
               to="/"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px]"
             >
               <ArrowLeft size={20} />
               <span className="font-sans text-sm">Назад</span>
@@ -95,7 +97,7 @@ const Contacts = () => {
               href="https://t.me/bellahasias"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-luxury text-xs py-2 px-4"
+              className="btn-luxury text-xs py-2 px-4 min-h-[44px]"
             >
               <Send size={14} className="mr-2" />
               Telegram
@@ -174,7 +176,7 @@ const Contacts = () => {
                     />
                   </div>
 
-                  <button type="submit" className="btn-luxury w-full">
+                  <button type="submit" className="btn-luxury w-full min-h-[48px]">
                     <Send className="w-4 h-4 mr-2" />
                     Написать в Telegram
                   </button>
@@ -195,7 +197,7 @@ const Contacts = () => {
                   </span>
                   <div className="flex items-center gap-3">
                     <a
-                      href="https://instagram.com/bellahasias"
+                      href="https://www.instagram.com/bellahasias/"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Instagram"
@@ -217,26 +219,24 @@ const Contacts = () => {
 
                 {/* Telegram Channel CTA */}
                 <div className="card-luxury p-6">
-                  <h3 className="font-display text-xl text-foreground mb-2">
+                  <h2 className="font-display text-xl text-foreground mb-4">
                     Telegram-канал
-                  </h3>
-                  <p className="font-sans text-sm text-muted-foreground mb-4">
-                    Подписывайтесь на канал — там ещё больше работ и закулисья
-                  </p>
+                  </h2>
                   <a
                     href="https://t.me/bellahasias"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-luxury inline-flex text-sm"
+                    className="font-sans text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    <Send size={16} className="mr-2" />
-                    @bellahasias
+                    <ComesInGoesOutUnderline label="@bellahasias" direction="left" />
                   </a>
                 </div>
               </motion.div>
             </div>
           </div>
         </section>
+
+        <Footer />
       </main>
     </>
   );

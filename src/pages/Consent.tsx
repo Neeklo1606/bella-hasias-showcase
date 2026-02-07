@@ -1,0 +1,85 @@
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+import Footer from '@/components/Footer';
+
+const Consent = () => {
+  return (
+    <>
+      <Helmet>
+        <title>Согласие на обработку данных — Bella Hasias</title>
+        <meta name="description" content="Согласие на обработку персональных данных в соответствии с ФЗ №152." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+
+      <main className="min-h-screen bg-background">
+        <nav className="fixed top-0 left-0 right-0 z-50 glass py-4">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft size={20} />
+              <span className="font-sans text-sm">Назад</span>
+            </Link>
+            <Link
+              to="/"
+              className="font-display text-xl font-semibold text-foreground"
+            >
+              Bella Hasias
+            </Link>
+            <div className="w-20" />
+          </div>
+        </nav>
+
+        <section className="pt-32 pb-20 px-6 md:px-10">
+          <div className="max-w-3xl mx-auto">
+            <h1 className="font-display text-h1 text-foreground mb-8">
+              Согласие на обработку персональных данных
+            </h1>
+
+            <div className="prose prose-lg max-w-none font-sans text-muted-foreground space-y-6">
+              <p>
+                Нажимая на кнопку «Оставить заявку», вы соглашаетесь на обработку персональных данных 
+                в соответствии с Федеральным законом №152-ФЗ «О персональных данных».
+              </p>
+
+              <h2 className="font-display text-xl text-foreground mt-8 mb-4">Какие данные обрабатываются</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Имя (ник или псевдоним)</li>
+                <li>Контактные данные в Telegram</li>
+                <li>Содержание сообщения</li>
+              </ul>
+
+              <h2 className="font-display text-xl text-foreground mt-8 mb-4">Цель обработки</h2>
+              <p>
+                Персональные данные используются исключительно для связи с вами по вопросам 
+                предоставления услуг стилиста и контент-креатора.
+              </p>
+
+              <h2 className="font-display text-xl text-foreground mt-8 mb-4">Хранение данных</h2>
+              <p>
+                Данные хранятся в защищённом виде и не передаются третьим лицам без вашего согласия, 
+                за исключением случаев, предусмотренных законодательством РФ.
+              </p>
+
+              <h2 className="font-display text-xl text-foreground mt-8 mb-4">Ваши права</h2>
+              <p>
+                Вы имеете право на доступ к своим персональным данным, их изменение или удаление. 
+                Для этого свяжитесь через Telegram: @Bella_hasias
+              </p>
+
+              <p className="text-sm text-muted-foreground/60 mt-12 pt-6 border-t border-border">
+                Дата последнего обновления: 7 февраля 2026 г.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
+    </>
+  );
+};
+
+export default Consent;

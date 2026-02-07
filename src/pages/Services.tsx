@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send } from 'lucide-react';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import Footer from '@/components/Footer';
 
 // User's own photos
 import heroLeft from '@/assets/hero/hero-left.jpg';
@@ -13,68 +12,64 @@ import heroRight from '@/assets/hero/hero-right.jpg';
 import photo3 from '@/assets/hero/photo-3.jpg';
 import user1 from '@/assets/portfolio/user-1.jpg';
 import user2 from '@/assets/portfolio/user-2.jpg';
+import work1 from '@/assets/portfolio/work-1.jpg';
+import work2 from '@/assets/portfolio/work-2.jpg';
+import work3 from '@/assets/portfolio/work-3.jpg';
 
-// User photos array to cycle through
-const userPhotos = [heroLeft, heroCenter, heroRight, photo3, user1, user2];
-
-// Stylist services
-const stylistServices = [
+// All services (no filter)
+const allServices = [
   {
     id: 'brand-styling',
     title: 'Стилизация съёмки',
-    image: userPhotos[0],
+    image: heroLeft,
     href: '/services/brand-styling',
   },
   {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
-    image: userPhotos[1],
+    image: heroCenter,
     href: '/services/wardrobe-audit',
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
-    image: userPhotos[2],
+    image: heroRight,
     href: '/services/personal-shopping',
   },
   {
     id: 'capsule-wardrobe',
     title: 'Капсульный гардероб',
-    image: userPhotos[3],
+    image: photo3,
     href: '/services/capsule-wardrobe',
   },
   {
     id: 'event-look',
     title: 'Образ на мероприятие',
-    image: userPhotos[4],
+    image: user1,
     href: '/services/event-look',
   },
   {
     id: 'client-shoot',
     title: 'Съёмка для клиента',
-    image: userPhotos[5],
+    image: user2,
     href: '/services/client-shoot',
   },
-];
-
-// Content creator services
-const creatorServices = [
   {
     id: 'ugc-content',
     title: 'UGC-контент',
-    image: userPhotos[3],
+    image: work1,
     href: '/services/ugc',
   },
   {
     id: 'photo-video',
     title: 'Фото и видео',
-    image: userPhotos[4],
+    image: work2,
     href: '/services/photo-video',
   },
   {
     id: 'ai-content',
     title: 'AI-контент',
-    image: userPhotos[5],
+    image: work3,
     href: '/services/ai-content',
   },
 ];
@@ -88,13 +83,6 @@ const containerVariants = {
       delayChildren: 0.1,
     },
   },
-  exit: {
-    opacity: 0,
-    transition: {
-      staggerChildren: 0.05,
-      staggerDirection: -1,
-    },
-  },
 };
 
 const itemVariants = {
@@ -105,19 +93,10 @@ const itemVariants = {
     scale: 1,
     transition: { duration: 0.5, ease: "easeOut" as const },
   },
-  exit: {
-    opacity: 0,
-    y: -20,
-    scale: 0.95,
-    transition: { duration: 0.3 },
-  },
 };
 
 const Services = () => {
-  const [activeFilter, setActiveFilter] = useState<'stylist' | 'creator'>('stylist');
   const navigate = useNavigate();
-
-  const currentServices = activeFilter === 'stylist' ? stylistServices : creatorServices;
 
   return (
     <>
@@ -137,7 +116,7 @@ const Services = () => {
           <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
             <Link
               to="/"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px]"
             >
               <ArrowLeft size={20} />
               <span className="font-sans text-sm">Назад</span>
@@ -152,7 +131,7 @@ const Services = () => {
               href="https://t.me/Bella_hasias"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-luxury text-xs py-2 px-4"
+              className="btn-luxury text-xs py-2 px-4 min-h-[44px]"
             >
               <Send size={14} className="mr-2" />
               Написать в Telegram
@@ -168,59 +147,54 @@ const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-10"
+              className="text-center mb-12"
             >
-              <h1 className="font-display text-h1 text-foreground mb-8">
+              <h1 className="font-display text-h1 text-foreground">
                 Услуги
               </h1>
-
-              {/* Toggle Filter */}
-              <ToggleGroup 
-                type="single" 
-                value={activeFilter}
-                onValueChange={(value) => value && setActiveFilter(value as 'stylist' | 'creator')}
-                className="inline-flex bg-muted/50 p-1 rounded-xl"
-              >
-                <ToggleGroupItem 
-                  value="stylist" 
-                  className="px-5 py-2.5 rounded-lg font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
-                >
-                  Стилист
-                </ToggleGroupItem>
-                <ToggleGroupItem 
-                  value="creator"
-                  className="px-5 py-2.5 rounded-lg font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
-                >
-                  Контент-креатор
-                </ToggleGroupItem>
-              </ToggleGroup>
             </motion.div>
 
-            {/* Services Grid - 3D Cards */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeFilter}
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            {/* Services Grid - All services, no filter */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {allServices.map((service) => (
+                <motion.div key={service.id} variants={itemVariants}>
+                  <InteractiveTravelCard
+                    title={service.title}
+                    imageUrl={service.image}
+                    actionText="Подробнее"
+                    href={service.href}
+                    onActionClick={() => navigate(service.href)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-center mt-16"
+            >
+              <a
+                href="https://t.me/Bella_hasias"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-luxury inline-flex min-h-[48px]"
               >
-                {currentServices.map((service) => (
-                  <motion.div key={service.id} variants={itemVariants}>
-                    <InteractiveTravelCard
-                      title={service.title}
-                      imageUrl={service.image}
-                      actionText="Подробнее"
-                      href={service.href}
-                      onActionClick={() => navigate(service.href)}
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+                <Send size={16} className="mr-2" />
+                Оставить заявку
+              </a>
+            </motion.div>
           </div>
         </section>
+
+        <Footer />
       </main>
     </>
   );

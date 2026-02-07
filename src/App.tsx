@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Portfolio from "./pages/Portfolio";
@@ -15,6 +16,9 @@ import ServicePhotographer from "./pages/ServicePhotographer";
 import AdminDocumentation from "./pages/AdminDocumentation";
 import Admin from "./pages/Admin";
 import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Consent from "./pages/Consent";
+import Feedback from "./pages/Feedback";
 import VKLanding from "./pages/VKLanding";
 
 // New service pages
@@ -36,6 +40,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/portfolio" element={<Portfolio />} />
@@ -55,7 +60,11 @@ const App = () => (
             <Route path="/services/ai-content" element={<AIContent />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/documentation" element={<AdminDocumentation />} />
+            {/* Legal pages */}
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/consent" element={<Consent />} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/vk" element={<VKLanding />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

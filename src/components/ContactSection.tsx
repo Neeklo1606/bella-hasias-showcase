@@ -43,7 +43,7 @@ const ContactSection = () => {
 
           {/* Instagram */}
           <a
-            href="https://instagram.com/bellahasias"
+            href="https://www.instagram.com/bellahasias/"
             target="_blank"
             rel="noopener noreferrer"
             className="card-luxury p-8 text-center group hover:shadow-xl transition-all duration-300"
