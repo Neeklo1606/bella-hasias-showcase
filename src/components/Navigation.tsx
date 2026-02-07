@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Send } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,7 +40,6 @@ const Navigation = () => {
   const navLinks = [
     { href: '/services', label: 'Услуги', isPage: true },
     { href: '/portfolio', label: 'Портфолио', isPage: true },
-    { href: 'https://t.me/bellahasias', label: 'Telegram', external: true },
     { href: '/contacts', label: 'Контакты', isPage: true },
   ];
 
@@ -55,9 +54,9 @@ const Navigation = () => {
   };
 
   const handleNavClick = (link: typeof navLinks[0], e: React.MouseEvent) => {
-    if (link.isPage || link.external) {
+    if (link.isPage) {
       setIsMobileMenuOpen(false);
-      return; // Let Link/anchor handle it
+      return;
     }
     e.preventDefault();
     scrollToSection(link.href);
@@ -108,39 +107,17 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
-              link.external ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 flex items-center gap-1"
-                >
-                  <Send size={14} />
-                  {link.label}
-                </a>
-              ) : link.isPage ? (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className={`font-sans text-sm font-medium transition-colors duration-300 ${
-                    location.pathname === link.href 
-                      ? 'text-primary' 
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(link, e)}
-                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {link.label}
-                </a>
-              )
+              <Link
+                key={link.href}
+                to={link.href}
+                className={`font-sans text-sm font-medium transition-colors duration-300 ${
+                  location.pathname === link.href 
+                    ? 'text-primary' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {link.label}
+              </Link>
             ))}
             <a
               href="https://t.me/Bella_hasias"
@@ -175,56 +152,25 @@ const Navigation = () => {
           >
             <div className="flex flex-col items-start justify-center min-h-screen px-10 py-20">
               {navLinks.map((link, index) => (
-                link.external ? (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    custom={index}
-                    variants={linkVariants}
-                    initial="closed"
-                    animate="open"
+                <motion.div
+                  key={link.href}
+                  custom={index}
+                  variants={linkVariants}
+                  initial="closed"
+                  animate="open"
+                >
+                  <Link
+                    to={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6 flex items-center gap-3"
-                  >
-                    <Send size={24} />
-                    {link.label}
-                  </motion.a>
-                ) : link.isPage ? (
-                  <motion.div
-                    key={link.href}
-                    custom={index}
-                    variants={linkVariants}
-                    initial="closed"
-                    animate="open"
-                  >
-                    <Link
-                      to={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`font-display text-4xl font-semibold transition-colors duration-300 mb-6 block ${
-                        location.pathname === link.href 
-                          ? 'text-primary' 
-                          : 'text-foreground hover:text-primary'
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ) : (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    custom={index}
-                    variants={linkVariants}
-                    initial="closed"
-                    animate="open"
-                    onClick={(e) => handleNavClick(link, e)}
-                    className="font-display text-4xl font-semibold text-foreground hover:text-primary transition-colors duration-300 mb-6"
+                    className={`font-display text-4xl font-semibold transition-colors duration-300 mb-6 block ${
+                      location.pathname === link.href 
+                        ? 'text-primary' 
+                        : 'text-foreground hover:text-primary'
+                    }`}
                   >
                     {link.label}
-                  </motion.a>
-                )
+                  </Link>
+                </motion.div>
               ))}
 
               <motion.a
