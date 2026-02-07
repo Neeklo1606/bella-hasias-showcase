@@ -7,8 +7,8 @@ import heroCenter from '@/assets/hero/hero-center.jpg';
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
-  // Placeholder video URL - replace with actual video
-  const videoUrl = "https://videos.pexels.com/video-files/4536584/4536584-uhd_2560_1440_25fps.mp4";
+  // User's own video
+  const videoUrl = "/videos/hero-video.mp4";
 
   return (
     <section className="min-h-[90vh] flex items-center bg-background overflow-hidden">
