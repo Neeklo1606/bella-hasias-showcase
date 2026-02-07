@@ -12,10 +12,10 @@ const Hero = () => {
 
   return (
     <section className="min-h-[90vh] flex items-center bg-background overflow-hidden">
-      <div className="container-luxury w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
           {/* Left - Typography */}
-          <div className="order-2 lg:order-1 py-12 lg:py-0">
+          <div className="order-2 lg:order-1 py-12 lg:py-0 px-6 md:px-12 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-12">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -83,20 +83,20 @@ const Hero = () => {
 
           {/* Right - Video (Desktop only) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="order-1 lg:order-2 hidden lg:block"
+            className="order-1 lg:order-2 hidden lg:block relative"
           >
-            <div className="relative rounded-3xl overflow-hidden">
-              {/* Video Element */}
+            <div className="relative overflow-hidden h-[90vh]">
+              {/* Video Element - stretches to right edge */}
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
                 poster={heroCenter}
-                className="w-full h-[500px] md:h-[600px] lg:h-[700px] object-cover"
+                className="w-full h-full object-cover"
               >
                 <source src={videoUrl} type="video/mp4" />
                 {/* Fallback to image if video doesn't load */}
@@ -107,8 +107,8 @@ const Hero = () => {
                 />
               </video>
               
-              {/* Gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/20 to-transparent pointer-events-none" />
+              {/* Gradient overlay for text readability - smoother blend */}
+              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent pointer-events-none" />
             </div>
           </motion.div>
 
