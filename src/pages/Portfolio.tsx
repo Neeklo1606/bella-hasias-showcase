@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Send } from 'lucide-react';
+import Footer from '@/components/Footer';
 import heroLeft from '@/assets/hero/hero-left.jpg';
 import heroRight from '@/assets/hero/hero-right.jpg';
 import heroCenter from '@/assets/hero/hero-center.jpg';
@@ -21,39 +22,27 @@ import work11 from '@/assets/portfolio/work-11.jpg';
 import work12 from '@/assets/portfolio/work-12.jpg';
 
 const allWorks = [
-  { id: 1, src: heroLeft, title: 'Editorial Portrait', category: 'styling' },
-  { id: 2, src: heroRight, title: 'Fashion Story', category: 'photo' },
-  { id: 3, src: heroCenter, title: 'Brand Identity', category: 'ugc' },
-  { id: 4, src: photo3, title: 'Personal Style', category: 'styling' },
-  { id: 5, src: work1, title: 'Brand Campaign', category: 'ugc' },
-  { id: 6, src: work2, title: 'Content Creation', category: 'photo' },
-  { id: 7, src: work3, title: 'Studio Session', category: 'photo' },
-  { id: 8, src: work4, title: 'Lifestyle Shoot', category: 'ugc' },
-  { id: 9, src: work5, title: 'Fashion Editorial', category: 'styling' },
-  { id: 10, src: work6, title: 'Product Story', category: 'ugc' },
-  { id: 11, src: work7, title: 'Portrait Session', category: 'photo' },
-  { id: 12, src: work8, title: 'Brand Collab', category: 'ugc' },
-  { id: 13, src: work9, title: 'Style Guide', category: 'styling' },
-  { id: 14, src: work10, title: 'Mood Board', category: 'styling' },
-  { id: 15, src: work11, title: 'Visual Story', category: 'photo' },
-  { id: 16, src: work12, title: 'Creative Direction', category: 'ugc' },
-];
-
-const categories = [
-  { id: 'all', label: 'Все работы' },
-  { id: 'styling', label: 'Стилизация' },
-  { id: 'ugc', label: 'UGC' },
-  { id: 'photo', label: 'Фото' },
+  { id: 1, src: heroLeft, alt: 'Стилизация для бренда — портретная съёмка' },
+  { id: 2, src: heroRight, alt: 'Fashion-съёмка для каталога одежды' },
+  { id: 3, src: heroCenter, alt: 'Визуальный контент для бренда' },
+  { id: 4, src: photo3, alt: 'Персональный стиль — образ для клиента' },
+  { id: 5, src: work1, alt: 'UGC-контент для рекламной кампании' },
+  { id: 6, src: work2, alt: 'Контент-съёмка для социальных сетей' },
+  { id: 7, src: work3, alt: 'Студийная съёмка в Москве' },
+  { id: 8, src: work4, alt: 'Lifestyle-съёмка для бренда' },
+  { id: 9, src: work5, alt: 'Fashion editorial — стилизация образа' },
+  { id: 10, src: work6, alt: 'Продуктовая съёмка для каталога' },
+  { id: 11, src: work7, alt: 'Портретная сессия — персональный стиль' },
+  { id: 12, src: work8, alt: 'Коллаборация с брендом — UGC-контент' },
+  { id: 13, src: work9, alt: 'Стайл-гайд для клиента' },
+  { id: 14, src: work10, alt: 'Мудборд и концепция съёмки' },
+  { id: 15, src: work11, alt: 'Визуальная история для бренда' },
+  { id: 16, src: work12, alt: 'Креативная направление съёмки' },
 ];
 
 const Portfolio = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-
-  const filteredWorks = activeCategory === 'all' 
-    ? allWorks 
-    : allWorks.filter(work => work.category === activeCategory);
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -67,12 +56,12 @@ const Portfolio = () => {
   }, []);
 
   const nextImage = useCallback(() => {
-    setLightboxIndex((prev) => (prev + 1) % filteredWorks.length);
-  }, [filteredWorks.length]);
+    setLightboxIndex((prev) => (prev + 1) % allWorks.length);
+  }, []);
 
   const prevImage = useCallback(() => {
-    setLightboxIndex((prev) => (prev - 1 + filteredWorks.length) % filteredWorks.length);
-  }, [filteredWorks.length]);
+    setLightboxIndex((prev) => (prev - 1 + allWorks.length) % allWorks.length);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -103,7 +92,7 @@ const Portfolio = () => {
           <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
             <Link
               to="/"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px]"
             >
               <ArrowLeft size={20} />
               <span className="font-sans text-sm">Назад</span>
@@ -118,7 +107,7 @@ const Portfolio = () => {
               href="https://t.me/bellahasias"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-luxury text-xs py-2 px-4"
+              className="btn-luxury text-xs py-2 px-4 min-h-[44px]"
             >
               <Send size={14} className="mr-2" />
               Telegram
@@ -141,34 +130,12 @@ const Portfolio = () => {
               </h1>
             </motion.div>
 
-            {/* Category Filter */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="flex flex-wrap justify-center gap-3 mb-12"
-            >
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-6 py-3 rounded-full font-sans text-sm transition-all duration-300 ${
-                    activeCategory === cat.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </motion.div>
-
             {/* Works Grid */}
             <motion.div
               layout
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
             >
-              {filteredWorks.map((work, index) => (
+              {allWorks.map((work, index) => (
                 <motion.button
                   key={work.id}
                   layout
@@ -177,19 +144,15 @@ const Portfolio = () => {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
                   onClick={() => openLightbox(index)}
-                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] bg-secondary"
+                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] bg-secondary min-h-[200px]"
                 >
                   <img
                     src={work.src}
-                    alt={work.title}
+                    alt={work.alt}
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-all duration-500 flex items-end p-4">
-                    <span className="font-sans text-sm text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                      {work.title}
-                    </span>
-                  </div>
+                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-all duration-500" />
                 </motion.button>
               ))}
             </motion.div>
@@ -202,14 +165,17 @@ const Portfolio = () => {
               className="text-center mt-16"
             >
               <div className="card-luxury p-8 max-w-lg mx-auto">
-                <h2 className="font-display text-2xl text-foreground mb-6">
-                  Больше работ и жизни
+                <h2 className="font-display text-2xl text-foreground mb-4">
+                  Больше работ из жизни
                 </h2>
+                <span className="inline-block px-4 py-1.5 rounded-full bg-muted text-muted-foreground text-sm font-sans mb-6">
+                  Telegram-канал
+                </span>
                 <a
                   href="https://t.me/bellahasias"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-luxury inline-flex"
+                  className="btn-luxury inline-flex min-h-[48px]"
                 >
                   <Send size={16} className="mr-2" />
                   Подписаться на канал
@@ -218,6 +184,8 @@ const Portfolio = () => {
             </motion.div>
           </div>
         </section>
+
+        <Footer />
 
         {/* Lightbox */}
         {lightboxOpen && (
@@ -230,7 +198,7 @@ const Portfolio = () => {
           >
             <button
               onClick={closeLightbox}
-              className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+              className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
               aria-label="Закрыть"
             >
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -241,12 +209,12 @@ const Portfolio = () => {
             <div className="absolute top-6 left-6 font-sans text-sm text-white/60">
               <span className="text-white">{String(lightboxIndex + 1).padStart(2, '0')}</span>
               <span className="mx-2">/</span>
-              <span>{String(filteredWorks.length).padStart(2, '0')}</span>
+              <span>{String(allWorks.length).padStart(2, '0')}</span>
             </div>
 
             <button
               onClick={(e) => { e.stopPropagation(); prevImage(); }}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
               aria-label="Предыдущее"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -256,7 +224,7 @@ const Portfolio = () => {
 
             <button
               onClick={(e) => { e.stopPropagation(); nextImage(); }}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
               aria-label="Следующее"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -273,8 +241,8 @@ const Portfolio = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={filteredWorks[lightboxIndex].src}
-                alt={filteredWorks[lightboxIndex].title}
+                src={allWorks[lightboxIndex].src}
+                alt={allWorks[lightboxIndex].alt}
                 className="max-w-full max-h-[85vh] object-contain"
               />
             </motion.div>
