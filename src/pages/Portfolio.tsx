@@ -193,20 +193,36 @@ const Portfolio = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-sm flex items-center justify-center"
+            className="fixed inset-0 z-[1100] bg-black/95 backdrop-blur-sm flex items-center justify-center"
             onClick={closeLightbox}
+            onTouchStart={(e) => {
+              const touch = e.touches[0];
+              (e.currentTarget as any).startX = touch.clientX;
+            }}
+            onTouchEnd={(e) => {
+              const startX = (e.currentTarget as any).startX;
+              const endX = e.changedTouches[0].clientX;
+              const diff = startX - endX;
+              if (Math.abs(diff) > 50) {
+                if (diff > 0) nextImage();
+                else prevImage();
+              }
+            }}
           >
             <button
-              onClick={closeLightbox}
-              className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeLightbox();
+              }}
+              className="absolute top-6 right-6 z-10 text-white/80 hover:text-white transition-colors p-3 rounded-full bg-white/10 hover:bg-white/20 min-w-[48px] min-h-[48px]"
               aria-label="Закрыть"
             >
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <div className="absolute top-6 left-6 font-sans text-sm text-white/60">
+            <div className="absolute top-6 left-6 font-sans text-sm text-white/60 z-10">
               <span className="text-white">{String(lightboxIndex + 1).padStart(2, '0')}</span>
               <span className="mx-2">/</span>
               <span>{String(allWorks.length).padStart(2, '0')}</span>
@@ -214,7 +230,7 @@ const Portfolio = () => {
 
             <button
               onClick={(e) => { e.stopPropagation(); prevImage(); }}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              className="hidden md:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
               aria-label="Предыдущее"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -224,7 +240,7 @@ const Portfolio = () => {
 
             <button
               onClick={(e) => { e.stopPropagation(); nextImage(); }}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              className="hidden md:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 min-w-[44px] min-h-[44px]"
               aria-label="Следующее"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -237,15 +253,22 @@ const Portfolio = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
-              className="max-w-[90vw] max-h-[85vh] overflow-hidden rounded-2xl"
+              className="max-w-[92vw] max-h-[80vh] overflow-hidden rounded-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={allWorks[lightboxIndex].src}
                 alt={allWorks[lightboxIndex].alt}
-                className="max-w-full max-h-[85vh] object-contain"
+                className="max-w-full max-h-[80vh] object-contain"
+                loading="lazy"
+                draggable={false}
               />
             </motion.div>
+
+            {/* Swipe hint on mobile */}
+            <div className="md:hidden absolute bottom-10 left-1/2 -translate-x-1/2 text-white/40 text-xs">
+              ← Свайп для навигации →
+            </div>
           </motion.div>
         )}
       </main>

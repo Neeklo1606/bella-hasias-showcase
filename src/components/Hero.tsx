@@ -1,14 +1,74 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play, X } from 'lucide-react';
-import heroCenter from '@/assets/hero/hero-center.jpg';
 
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [videoPoster, setVideoPoster] = useState<string>('');
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const modalVideoRef = useRef<HTMLVideoElement>(null);
 
   // User's own video
   const videoUrl = "/videos/hero-video.mp4";
+
+  // Generate poster from video first frame
+  useEffect(() => {
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.crossOrigin = 'anonymous';
+    video.muted = true;
+    video.preload = 'metadata';
+    
+    video.onloadeddata = () => {
+      video.currentTime = 0.1;
+    };
+    
+    video.onseeked = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0);
+        setVideoPoster(canvas.toDataURL('image/jpeg', 0.8));
+      }
+    };
+    
+    video.load();
+  }, [videoUrl]);
+
+  // Close modal with escape key
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape' && isVideoOpen) {
+      setIsVideoOpen(false);
+    }
+  }, [isVideoOpen]);
+
+  useEffect(() => {
+    if (isVideoOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isVideoOpen, handleKeyDown]);
+
+  // Stop video when modal closes
+  useEffect(() => {
+    if (!isVideoOpen && modalVideoRef.current) {
+      modalVideoRef.current.pause();
+      modalVideoRef.current.currentTime = 0;
+    }
+  }, [isVideoOpen]);
+
+  const closeVideo = useCallback(() => {
+    setIsVideoOpen(false);
+  }, []);
 
   return (
     <section className="min-h-[90vh] flex items-center bg-background overflow-hidden">
@@ -89,30 +149,26 @@ const Hero = () => {
             className="order-1 lg:order-2 hidden lg:block relative"
           >
             <div className="relative overflow-hidden h-[90vh]">
-              {/* Video Element - stretches to right edge */}
+              {/* Video Element with lazy loading */}
               <video
+                ref={videoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
-                poster={heroCenter}
+                preload="metadata"
+                poster={videoPoster || undefined}
                 className="w-full h-full object-cover"
               >
                 <source src={videoUrl} type="video/mp4" />
-                {/* Fallback to image if video doesn't load */}
-                <img
-                  src={heroCenter}
-                  alt="Bella Hasias"
-                  className="w-full h-full object-cover"
-                />
               </video>
               
-              {/* Gradient overlay for text readability - smoother blend */}
+              {/* Gradient overlay for text readability */}
               <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent pointer-events-none" />
             </div>
           </motion.div>
 
-          {/* Mobile - Static Image Preview */}
+          {/* Mobile - Video Preview (first frame) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -123,12 +179,16 @@ const Hero = () => {
               className="relative rounded-3xl overflow-hidden cursor-pointer group"
               onClick={() => setIsVideoOpen(true)}
             >
-              <img
-                src={heroCenter}
-                alt="Bella Hasias"
-                loading="lazy"
-                className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              {videoPoster ? (
+                <img
+                  src={videoPoster}
+                  alt="Видео-превью Bella Hasias"
+                  loading="lazy"
+                  className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="w-full h-[400px] bg-secondary animate-pulse" />
+              )}
               {/* Play button overlay */}
               <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 transition-opacity group-hover:bg-foreground/30">
                 <span className="flex items-center justify-center w-16 h-16 rounded-full bg-background/90 text-foreground shadow-lg">
@@ -140,27 +200,32 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Video Modal (Mobile) */}
+      {/* Video Modal */}
       <AnimatePresence>
         {isVideoOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1100] flex items-center justify-center bg-foreground/95"
-            onClick={() => setIsVideoOpen(false)}
+            className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/95"
+            onClick={closeVideo}
           >
-            {/* Close button - positioned lower to avoid header */}
+            {/* Close button - clearly visible */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setIsVideoOpen(false);
+                closeVideo();
               }}
-              className="absolute top-24 right-4 z-[1101] flex items-center justify-center w-12 h-12 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+              className="absolute top-6 right-6 z-[1102] flex items-center justify-center w-14 h-14 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors backdrop-blur-sm"
               aria-label="Закрыть видео"
             >
-              <X size={24} />
+              <X size={28} />
             </button>
+
+            {/* Tap to close hint on mobile */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-xs md:hidden">
+              Нажмите на фон, чтобы закрыть
+            </div>
 
             {/* Video container */}
             <motion.div
@@ -168,15 +233,17 @@ const Hero = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-full max-w-4xl px-4"
+              className="w-full max-w-4xl px-4 md:px-8"
               onClick={(e) => e.stopPropagation()}
             >
               <video
+                ref={modalVideoRef}
                 autoPlay
                 controls
                 playsInline
-                poster={heroCenter}
-                className="w-full rounded-2xl"
+                preload="auto"
+                poster={videoPoster || undefined}
+                className="w-full rounded-2xl shadow-2xl"
               >
                 <source src={videoUrl} type="video/mp4" />
               </video>

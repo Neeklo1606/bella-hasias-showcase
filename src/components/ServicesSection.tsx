@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-// User's own photos
+// User's own photos - lazy load
 import heroLeft from '@/assets/hero/hero-left.jpg';
 import heroCenter from '@/assets/hero/hero-center.jpg';
 import heroRight from '@/assets/hero/hero-right.jpg';
