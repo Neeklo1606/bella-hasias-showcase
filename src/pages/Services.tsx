@@ -1,47 +1,138 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Send, ArrowRight } from 'lucide-react';
-import serviceStylist from '@/assets/service-stylist.jpg';
-import serviceUgc from '@/assets/service-ugc.jpg';
-import servicePhoto from '@/assets/service-photographer.jpg';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Send } from 'lucide-react';
+import { InteractiveTravelCard } from '@/components/ui/3d-card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-const services = [
+// User's own photos
+import heroLeft from '@/assets/hero/hero-left.jpg';
+import heroCenter from '@/assets/hero/hero-center.jpg';
+import heroRight from '@/assets/hero/hero-right.jpg';
+import photo3 from '@/assets/hero/photo-3.jpg';
+import user1 from '@/assets/portfolio/user-1.jpg';
+import user2 from '@/assets/portfolio/user-2.jpg';
+
+// User photos array to cycle through
+const userPhotos = [heroLeft, heroCenter, heroRight, photo3, user1, user2];
+
+// Stylist services
+const stylistServices = [
   {
-    id: 'styling',
-    title: 'Стилизация',
-    subtitle: 'Персональный стиль и образы',
-    description: 'Создание уникального визуального образа для съёмок, мероприятий и повседневной жизни. Работаю с гардеробом, аксессуарами и общей концепцией.',
-    features: ['Подбор образов', 'Шоппинг-сопровождение', 'Стилизация для съёмок', 'Капсульный гардероб'],
-    image: serviceStylist,
-    link: '/services/stylist',
+    id: 'brand-styling',
+    title: 'Стилизация съёмки',
+    subtitle: 'Каталог • Кампейн • Имидж',
+    image: userPhotos[0],
+    href: '/services/brand-styling',
   },
   {
-    id: 'ugc',
-    title: 'UGC-контент',
-    subtitle: 'Контент для брендов',
-    description: 'Создание аутентичного пользовательского контента для социальных сетей и рекламных кампаний. Естественный стиль, который резонирует с аудиторией.',
-    features: ['Видео для Reels/TikTok', 'Фотоконтент', 'Распаковки и обзоры', 'Stories-контент'],
-    image: serviceUgc,
-    link: '/services/ugc',
+    id: 'wardrobe-audit',
+    title: 'Разбор гардероба',
+    subtitle: 'Анализ • Образы • Рекомендации',
+    image: userPhotos[1],
+    href: '/services/wardrobe-audit',
   },
   {
-    id: 'photo',
-    title: 'Фотосъёмка',
-    subtitle: 'Контент-фотография',
-    description: 'Профессиональная съёмка для личного бренда, портфолио и коммерческих проектов. Студийная и локационная съёмка в Москве.',
-    features: ['Портретная съёмка', 'Предметная съёмка', 'Lifestyle-фото', 'Контент для соцсетей'],
-    image: servicePhoto,
-    link: '/services/photographer',
+    id: 'personal-shopping',
+    title: 'Персональный шоппинг',
+    subtitle: 'Шоп-лист • Совместные покупки',
+    image: userPhotos[2],
+    href: '/services/personal-shopping',
+  },
+  {
+    id: 'capsule-wardrobe',
+    title: 'Капсульный гардероб',
+    subtitle: 'Универсальный • Стильный',
+    image: userPhotos[3],
+    href: '/services/capsule-wardrobe',
+  },
+  {
+    id: 'event-look',
+    title: 'Образ на мероприятие',
+    subtitle: 'Вечерний • Деловой • Casual',
+    image: userPhotos[4],
+    href: '/services/event-look',
+  },
+  {
+    id: 'client-shoot',
+    title: 'Съёмка для клиента',
+    subtitle: 'Портфолио • Личный бренд',
+    image: userPhotos[5],
+    href: '/services/client-shoot',
   },
 ];
 
+// Content creator services
+const creatorServices = [
+  {
+    id: 'ugc-content',
+    title: 'UGC-контент',
+    subtitle: 'User-Generated • Для брендов',
+    image: userPhotos[3],
+    href: '/services/ugc',
+  },
+  {
+    id: 'photo-video',
+    title: 'Фото и видео',
+    subtitle: 'Креатив • Блогеры • Бренды',
+    image: userPhotos[4],
+    href: '/services/photo-video',
+  },
+  {
+    id: 'ai-content',
+    title: 'AI-контент',
+    subtitle: 'Digital • SMM • Визуалы',
+    image: userPhotos[5],
+    href: '/services/ai-content',
+  },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.05,
+      staggerDirection: -1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    scale: 0.95,
+    transition: { duration: 0.3 },
+  },
+};
+
 const Services = () => {
+  const [activeFilter, setActiveFilter] = useState<'stylist' | 'creator'>('stylist');
+  const navigate = useNavigate();
+
+  const currentServices = activeFilter === 'stylist' ? stylistServices : creatorServices;
+
   return (
     <>
       <Helmet>
-        <title>Услуги — Bella Hasias</title>
-        <meta name="description" content="Услуги Bella Hasias: стилизация, UGC-контент и профессиональная фотосъёмка в Москве." />
+        <title>Услуги — Bella Hasias | Стилист и Контент-креатор</title>
+        <meta name="description" content="Полный список услуг Bella Hasias: стилизация съёмок, разбор гардероба, персональный шоппинг, UGC-контент, фото и видео для брендов." />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -81,93 +172,68 @@ const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-16"
+              className="text-center mb-10"
             >
               <h1 className="font-display text-h1 text-foreground mb-4">
                 Услуги
               </h1>
-              <p className="font-sans text-lg text-muted-foreground max-w-xl mx-auto">
+              <p className="font-sans text-lg text-muted-foreground max-w-xl mx-auto mb-8">
                 Выберите направление, которое вам подходит
               </p>
+
+              {/* Toggle Filter */}
+              <ToggleGroup 
+                type="single" 
+                value={activeFilter}
+                onValueChange={(value) => value && setActiveFilter(value as 'stylist' | 'creator')}
+                className="inline-flex bg-muted/50 p-1 rounded-xl"
+              >
+                <ToggleGroupItem 
+                  value="stylist" 
+                  className="px-5 py-2.5 rounded-lg font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
+                >
+                  Стилист
+                </ToggleGroupItem>
+                <ToggleGroupItem 
+                  value="creator"
+                  className="px-5 py-2.5 rounded-lg font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
+                >
+                  Контент-креатор
+                </ToggleGroupItem>
+              </ToggleGroup>
             </motion.div>
 
-            {/* Services List */}
-            <div className="space-y-16">
-              {services.map((service, index) => (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: index * 0.15 }}
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
-                    index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-                  }`}
-                >
-                  {/* Image */}
-                  <div className={`${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                    <div className="relative overflow-hidden rounded-3xl aspect-[4/5]">
-                      <img
-                        src={service.image}
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                    <p className="font-sans text-xs font-medium tracking-wider uppercase text-primary mb-3">
-                      {service.subtitle}
-                    </p>
-                    <h2 className="font-display text-h2 text-foreground mb-4">
-                      {service.title}
-                    </h2>
-                    <p className="font-sans text-muted-foreground mb-6 leading-relaxed">
-                      {service.description}
-                    </p>
-
-                    {/* Features */}
-                    <ul className="space-y-3 mb-8">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                          <span className="font-sans text-sm text-foreground">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* CTA */}
-                    <div className="flex flex-wrap gap-4">
-                      <Link
-                        to={service.link}
-                        className="btn-ghost-luxury inline-flex items-center"
-                      >
-                        Подробнее
-                        <ArrowRight size={16} className="ml-2" />
-                      </Link>
-                      <a
-                        href="https://t.me/Bella_hasias"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-luxury inline-flex"
-                      >
-                        <Send size={16} className="mr-2" />
-                        Заказать
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {/* Services Grid - 3D Cards */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeFilter}
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {currentServices.map((service) => (
+                  <motion.div key={service.id} variants={itemVariants}>
+                    <InteractiveTravelCard
+                      title={service.title}
+                      subtitle={service.subtitle}
+                      imageUrl={service.image}
+                      actionText="Подробнее"
+                      href={service.href}
+                      onActionClick={() => navigate(service.href)}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
 
             {/* Bottom CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-center mt-20"
+              className="text-center mt-16"
             >
               <div className="card-luxury p-10 max-w-2xl mx-auto">
                 <h3 className="font-display text-2xl text-foreground mb-3">
