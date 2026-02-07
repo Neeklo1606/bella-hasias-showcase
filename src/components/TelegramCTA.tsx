@@ -3,7 +3,7 @@ import { Send } from 'lucide-react';
 
 const TelegramCTA = () => {
   return (
-    <section className="section-luxury bg-gradient-to-br from-primary/5 via-background to-primary/10 relative overflow-hidden">
+    <section className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-gradient-to-br from-primary/5 via-background to-primary/10 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-10 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-10 right-10 w-40 h-40 bg-primary/15 rounded-full blur-3xl" />
