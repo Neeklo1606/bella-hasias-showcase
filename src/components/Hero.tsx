@@ -147,13 +147,16 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/95 p-4"
+            className="fixed inset-0 z-[1100] flex items-center justify-center bg-foreground/95"
             onClick={() => setIsVideoOpen(false)}
           >
-            {/* Close button */}
+            {/* Close button - positioned lower to avoid header */}
             <button
-              onClick={() => setIsVideoOpen(false)}
-              className="absolute top-6 right-6 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-background/10 text-background hover:bg-background/20 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsVideoOpen(false);
+              }}
+              className="absolute top-24 right-4 z-[1101] flex items-center justify-center w-12 h-12 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
               aria-label="Закрыть видео"
             >
               <X size={24} />
@@ -165,7 +168,7 @@ const Hero = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-full max-w-4xl"
+              className="w-full max-w-4xl px-4"
               onClick={(e) => e.stopPropagation()}
             >
               <video

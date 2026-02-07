@@ -145,26 +145,45 @@ const PortfolioSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 z-[1100] bg-foreground/95 backdrop-blur-sm flex items-center justify-center"
           onClick={closeLightbox}
+          onTouchStart={(e) => {
+            const touch = e.touches[0];
+            (e.currentTarget as any).startX = touch.clientX;
+          }}
+          onTouchEnd={(e) => {
+            const startX = (e.currentTarget as any).startX;
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) nextImage();
+              else prevImage();
+            }
+          }}
         >
+          {/* Close button - positioned lower to avoid header */}
           <button
-            onClick={closeLightbox}
-            className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
+            onClick={(e) => {
+              e.stopPropagation();
+              closeLightbox();
+            }}
+            className="absolute top-20 right-4 z-10 text-white/80 hover:text-white transition-colors p-3 rounded-full bg-white/10 hover:bg-white/20"
             aria-label="Закрыть"
           >
             <X className="w-6 h-6" />
           </button>
 
-          <div className="absolute top-6 left-6 font-sans text-sm text-white/60">
+          {/* Counter */}
+          <div className="absolute top-20 left-4 font-sans text-sm text-white/60 z-10">
             <span className="text-white font-medium">{String(lightboxIndex + 1).padStart(2, '0')}</span>
             <span className="mx-2">/</span>
             <span>{String(featuredWorks.length).padStart(2, '0')}</span>
           </div>
 
+          {/* Navigation arrows - hidden on mobile, swipe instead */}
           <button
             onClick={(e) => { e.stopPropagation(); prevImage(); }}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
+            className="hidden md:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
             aria-label="Предыдущая"
           >
             <ChevronLeft className="w-8 h-8" />
@@ -172,30 +191,37 @@ const PortfolioSection = () => {
 
           <button
             onClick={(e) => { e.stopPropagation(); nextImage(); }}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
+            className="hidden md:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10"
             aria-label="Следующая"
           >
             <ChevronRight className="w-8 h-8" />
           </button>
 
+          {/* Image */}
           <motion.div
             key={lightboxIndex}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="max-w-[90vw] max-h-[85vh] overflow-hidden rounded-2xl md:rounded-3xl"
+            className="max-w-[92vw] max-h-[75vh] overflow-hidden rounded-2xl md:rounded-3xl"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={featuredWorks[lightboxIndex].src}
               alt={featuredWorks[lightboxIndex].title}
-              className="max-w-full max-h-[85vh] object-contain"
+              className="max-w-full max-h-[75vh] object-contain"
+              draggable={false}
             />
           </motion.div>
 
+          {/* Swipe hint on mobile */}
+          <div className="md:hidden absolute bottom-20 left-1/2 -translate-x-1/2 text-white/40 text-xs">
+            ← Свайп для навигации →
+          </div>
+
           {/* Image title */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
-            <span className="font-display text-lg text-white/80">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+            <span className="font-display text-base md:text-lg text-white/80">
               {featuredWorks[lightboxIndex].title}
             </span>
           </div>
