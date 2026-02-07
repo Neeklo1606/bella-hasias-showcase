@@ -10,7 +10,7 @@ export interface InteractiveTravelCardProps {
   title: string;
   subtitle?: string;
   imageUrl: string;
-  actionText: string;
+  actionText?: string;
   href: string;
   onActionClick: () => void;
   className?: string;
@@ -52,11 +52,9 @@ export const InteractiveTravelCard = React.forwardRef<
       mouseY.set(0);
     };
 
-    // On mobile, the entire card is clickable
+    // Entire card is clickable on both mobile and desktop
     const handleCardClick = () => {
-      if (isMobile) {
-        onActionClick();
-      }
+      onActionClick();
     };
 
     return (
@@ -72,8 +70,8 @@ export const InteractiveTravelCard = React.forwardRef<
           onClick={handleCardClick}
           style={isMobile ? {} : { rotateX, rotateY, transformStyle: "preserve-3d" }}
           className={cn(
-            "relative h-[280px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform md:h-[360px] [backface-visibility:hidden]",
-            isMobile && "cursor-pointer active:scale-[0.98]"
+            "relative h-[280px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform md:h-[360px] [backface-visibility:hidden] cursor-pointer",
+            "active:scale-[0.98] hover:shadow-xl"
           )}
         >
           {/* Background Image */}
@@ -109,24 +107,17 @@ export const InteractiveTravelCard = React.forwardRef<
                 )}
               </div>
 
-              {/* Arrow icon - visible on mobile as tap indicator */}
+              {/* Arrow icon */}
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/30 transition-colors"
                 aria-hidden="true"
               >
                 <ArrowUpRight className="h-4 w-4 text-white" />
               </div>
             </div>
 
-            {/* Footer Button - only on desktop */}
-            {!isMobile && (
-              <button
-                onClick={onActionClick}
-                className="w-full rounded-xl bg-white/95 py-2.5 font-sans text-sm font-medium text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white md:py-3"
-              >
-                {actionText}
-              </button>
-            )}
+            {/* Empty space at bottom - removed button */}
+            <div />
           </div>
         </motion.div>
       </article>
