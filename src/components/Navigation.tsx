@@ -67,21 +67,19 @@ const Navigation = () => {
   return (
     <>
       {/* Main Navigation */}
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${
+      <nav
+        className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
           scrolled 
             ? 'glass py-4' 
             : 'bg-transparent py-6'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
-          {/* Logo */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-12">
+          {/* Logo - always black, never pink */}
           <Link
             to="/"
-            className="font-display text-xl font-semibold text-foreground hover:text-primary transition-colors duration-300"
+            className="font-display text-xl font-semibold transition-opacity duration-300 hover:opacity-70"
+            style={{ color: 'hsl(220, 10%, 15%)' }}
           >
             Bella Hasias
           </Link>
@@ -118,13 +116,13 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-foreground hover:text-primary transition-colors rounded-xl hover:bg-muted min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="md:hidden p-2 text-foreground transition-colors rounded-xl min-w-[44px] min-h-[44px] flex items-center justify-center relative z-[1001]"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -134,9 +132,9 @@ const Navigation = () => {
             initial="closed"
             animate="open"
             exit="closed"
-            className="md:hidden fixed inset-0 z-[999] glass"
+            className="md:hidden fixed inset-0 z-[999] bg-background/98 backdrop-blur-xl"
           >
-            <div className="flex flex-col items-start justify-center min-h-screen px-10 py-20">
+            <div className="flex flex-col items-start justify-center min-h-screen px-10 pt-24 pb-10">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
@@ -148,10 +146,10 @@ const Navigation = () => {
                   <Link
                     to={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`font-display text-4xl font-semibold transition-colors duration-300 mb-6 block min-h-[48px] ${
+                    className={`font-display text-4xl font-semibold transition-colors duration-300 mb-8 block py-2 ${
                       location.pathname === link.href 
                         ? 'text-primary' 
-                        : 'text-foreground hover:text-primary'
+                        : 'text-foreground'
                     }`}
                   >
                     {link.label}
@@ -168,7 +166,7 @@ const Navigation = () => {
                 initial="closed"
                 animate="open"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="btn-luxury mt-8 min-h-[48px]"
+                className="btn-luxury mt-10 py-4 px-10"
               >
                 Связаться
               </motion.a>

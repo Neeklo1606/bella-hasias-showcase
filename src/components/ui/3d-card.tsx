@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export interface InteractiveTravelCardProps {
   title: string;
@@ -23,6 +24,7 @@ export const InteractiveTravelCard = React.forwardRef<
     { title, subtitle, imageUrl, actionText, href, onActionClick, className },
     ref
   ) => {
+    const isMobile = useIsMobile();
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -34,6 +36,7 @@ export const InteractiveTravelCard = React.forwardRef<
     const rotateY = useTransform(springX, [-0.5, 0.5], ["-10.5deg", "10.5deg"]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
+      if (isMobile) return;
       const rect = e.currentTarget.getBoundingClientRect();
       const { width, height, left, top } = rect;
       const mouseXVal = e.clientX - left;
@@ -49,6 +52,13 @@ export const InteractiveTravelCard = React.forwardRef<
       mouseY.set(0);
     };
 
+    // On mobile, the entire card is clickable
+    const handleCardClick = () => {
+      if (isMobile) {
+        onActionClick();
+      }
+    };
+
     return (
       <article
         ref={ref}
@@ -59,10 +69,14 @@ export const InteractiveTravelCard = React.forwardRef<
         <motion.div
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[360px] [backface-visibility:hidden]"
+          onClick={handleCardClick}
+          style={isMobile ? {} : { rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className={cn(
+            "relative h-[280px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform md:h-[360px] [backface-visibility:hidden]",
+            isMobile && "cursor-pointer active:scale-[0.98]"
+          )}
         >
-          {/* Background Image - scaled up to hide edges during 3D rotation */}
+          {/* Background Image */}
           <img
             src={imageUrl}
             alt={title}
@@ -95,23 +109,24 @@ export const InteractiveTravelCard = React.forwardRef<
                 )}
               </div>
 
-              <a
-                href={href}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/40"
-                aria-label={`Перейти к ${title}`}
-                itemProp="url"
+              {/* Arrow icon - visible on mobile as tap indicator */}
+              <div
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm"
+                aria-hidden="true"
               >
                 <ArrowUpRight className="h-4 w-4 text-white" />
-              </a>
+              </div>
             </div>
 
-            {/* Footer Button */}
-            <button
-              onClick={onActionClick}
-              className="w-full rounded-xl bg-white/95 py-2.5 font-sans text-sm font-medium text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white md:py-3"
-            >
-              {actionText}
-            </button>
+            {/* Footer Button - only on desktop */}
+            {!isMobile && (
+              <button
+                onClick={onActionClick}
+                className="w-full rounded-xl bg-white/95 py-2.5 font-sans text-sm font-medium text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white md:py-3"
+              >
+                {actionText}
+              </button>
+            )}
           </div>
         </motion.div>
       </article>
