@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MessageCircle, Mail, MapPin } from 'lucide-react';
+import { ArrowRight, MessageCircle, Instagram, Send } from 'lucide-react';
 
 const ContactSection = () => {
   return (
@@ -23,24 +23,21 @@ const ContactSection = () => {
           >
             <MessageCircle className="w-7 h-7 text-primary" />
           </motion.div>
-          <p className="font-sans text-xs font-medium tracking-[0.3em] uppercase text-primary mb-4">
-            Контакты
-          </p>
           <h2 className="font-display text-h2 text-foreground mb-4">
-            Давайте работать вместе
+            Контакты
           </h2>
           <p className="font-sans text-muted-foreground max-w-lg mx-auto">
             Готова обсудить ваш проект и создать что-то особенное
           </p>
         </motion.div>
 
-        {/* Contact Cards */}
+        {/* Contact Cards - Only Telegram and Instagram */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12"
         >
           {/* Telegram */}
           <a
@@ -50,32 +47,25 @@ const ContactSection = () => {
             className="card-luxury p-8 text-center group hover:shadow-xl transition-all duration-300"
           >
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-              <MessageCircle className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+              <Send className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
             </div>
             <h3 className="font-display text-lg text-foreground mb-2">Telegram</h3>
             <p className="font-sans text-sm text-muted-foreground">@Bella_hasias</p>
           </a>
 
-          {/* Email */}
+          {/* Instagram */}
           <a
-            href="mailto:hello@bellahasias.com"
+            href="https://instagram.com/bellahasias"
+            target="_blank"
+            rel="noopener noreferrer"
             className="card-luxury p-8 text-center group hover:shadow-xl transition-all duration-300"
           >
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-              <Mail className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+              <Instagram className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
             </div>
-            <h3 className="font-display text-lg text-foreground mb-2">Email</h3>
-            <p className="font-sans text-sm text-muted-foreground">hello@bellahasias.com</p>
+            <h3 className="font-display text-lg text-foreground mb-2">Instagram</h3>
+            <p className="font-sans text-sm text-muted-foreground">@bellahasias</p>
           </a>
-
-          {/* Location */}
-          <div className="card-luxury p-8 text-center">
-            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-              <MapPin className="w-6 h-6 text-primary" />
-            </div>
-            <h3 className="font-display text-lg text-foreground mb-2">Локация</h3>
-            <p className="font-sans text-sm text-muted-foreground">Москва, Россия</p>
-          </div>
         </motion.div>
 
         {/* CTA */}

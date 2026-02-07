@@ -83,7 +83,7 @@ const PortfolioSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -94,14 +94,11 @@ const PortfolioSection = () => {
           >
             <Images className="w-7 h-7 text-primary" />
           </motion.div>
-          <p className="font-sans text-xs font-medium tracking-[0.3em] uppercase text-primary mb-4">
-            Портфолио
-          </p>
           <h2 className="font-display text-h2 text-foreground mb-4">
-            Избранные работы
+            Портфолио
           </h2>
           <p className="font-sans text-muted-foreground max-w-lg mx-auto">
-            Коллекция лучших проектов — стилизация, контент и фотосъёмка
+            Мои стилизации, контент и съёмки для брендов
           </p>
         </motion.div>
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Send, Mail } from 'lucide-react';
+import { Instagram, Send } from 'lucide-react';
 
 // Telegram Icon component
 const TelegramIcon = () => (
@@ -21,7 +21,6 @@ const Footer = () => {
     { icon: Instagram, href: 'https://instagram.com/bellahasias', label: 'Instagram' },
     { icon: null, href: 'https://t.me/bellahasias', label: 'Telegram Channel', isTelegram: true },
     { icon: Send, href: 'https://t.me/Bella_hasias', label: 'Telegram DM' },
-    { icon: Mail, href: 'mailto:bella@bellahasias.com', label: 'Email' },
   ];
 
   return (

@@ -99,9 +99,9 @@ const Privacy = () => {
                 <section>
                   <h2 className="font-display text-xl text-foreground mb-4">7. Контактная информация</h2>
                   <p className="leading-relaxed">
-                    По всем вопросам, связанным с обработкой персональных данных, вы можете обратиться по адресу:{' '}
-                    <a href="mailto:bella@bellahasias.com" className="text-primary hover:underline">
-                      bella@bellahasias.com
+                    По всем вопросам, связанным с обработкой персональных данных, вы можете обратиться в Telegram:{' '}
+                    <a href="https://t.me/Bella_hasias" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      @Bella_hasias
                     </a>
                   </p>
                 </section>
