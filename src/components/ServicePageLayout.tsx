@@ -97,7 +97,7 @@ const ServicePageLayout = ({
               src={heroImage}
               alt={heroImageAlt}
               loading="eager"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
           </motion.div>
