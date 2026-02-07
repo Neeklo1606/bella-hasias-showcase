@@ -6,83 +6,85 @@
 
 @layer base {
   :root {
-    /* Pantone 2021 Palette - Ultimate Gray + Illuminating Yellow */
-    --background: 0 0% 98%; /* Off-white #FAFAFA */
-    --foreground: 220 5% 15%; /* Deep Charcoal */
+    /* Elegant Blush & Gray Palette - Pantone PQ-9301C */
+    --background: 0 0% 99%; /* Pure white #FCFCFC */
+    --foreground: 220 10% 15%; /* Deep Charcoal */
 
     --card: 0 0% 100%;
-    --card-foreground: 220 5% 15%;
+    --card-foreground: 220 10% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 5% 15%;
+    --popover-foreground: 220 10% 15%;
 
-    /* Pantone Illuminating Yellow as Primary */
-    --primary: 51 100% 50%; /* #FFE600 - Illuminating Yellow */
-    --primary-foreground: 220 5% 10%; /* Dark text on yellow */
+    /* Pantone PQ-9301C - Soft Blush Pink as Primary */
+    --primary: 345 30% 87%; /* #E8D4D8 - Blush Pink */
+    --primary-foreground: 345 25% 25%; /* Dark rose text */
 
-    /* Pantone Ultimate Gray as Secondary */
-    --secondary: 220 5% 58%; /* #939597 - Ultimate Gray */
+    /* Warm Gray as Secondary */
+    --secondary: 345 8% 70%; /* Warm gray with pink undertone */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 10% 94%;
-    --muted-foreground: 220 5% 45%;
+    --muted: 345 15% 95%; /* Light blush tint */
+    --muted-foreground: 220 5% 40%;
 
-    --accent: 51 100% 50%; /* Yellow accent */
-    --accent-foreground: 220 5% 10%;
+    --accent: 345 35% 82%; /* Slightly deeper blush */
+    --accent-foreground: 345 25% 20%;
     
     /* Extended Palette */
-    --accent-yellow: 51 100% 50%; /* #FFE600 - Illuminating */
-    --accent-yellow-foreground: 220 5% 10%;
+    --accent-blush: 345 30% 87%; /* Primary blush */
+    --accent-blush-foreground: 345 25% 25%;
+    --accent-rose: 345 40% 75%; /* Deeper rose for hover */
     
-    --slate-gray: 220 5% 58%; /* #939597 - Ultimate Gray */
-    --slate-gray-dark: 220 5% 35%; /* Darker gray for text */
+    --slate-gray: 345 5% 55%; /* Warm gray */
+    --slate-gray-dark: 345 8% 35%; /* Darker warm gray */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 10% 90%;
-    --input: 220 10% 94%;
-    --ring: 51 100% 50%; /* Yellow ring */
+    --border: 345 15% 90%;
+    --input: 345 10% 95%;
+    --ring: 345 35% 80%; /* Blush ring */
 
     --radius: 1.5rem;
   }
 
   .dark {
-    --background: 220 10% 8%;
-    --foreground: 0 0% 95%;
+    --background: 345 5% 8%;
+    --foreground: 345 10% 95%;
 
-    --card: 220 10% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 345 5% 12%;
+    --card-foreground: 345 10% 95%;
 
-    --popover: 220 10% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 345 5% 12%;
+    --popover-foreground: 345 10% 95%;
 
-    /* Pantone Illuminating Yellow as Primary */
-    --primary: 51 100% 50%;
-    --primary-foreground: 220 5% 10%;
+    /* Blush Pink as Primary in Dark */
+    --primary: 345 35% 75%;
+    --primary-foreground: 345 20% 15%;
 
-    /* Pantone Ultimate Gray as Secondary */
-    --secondary: 220 5% 40%;
-    --secondary-foreground: 0 0% 95%;
+    /* Warm Gray as Secondary */
+    --secondary: 345 8% 35%;
+    --secondary-foreground: 345 10% 95%;
 
-    --muted: 220 10% 18%;
-    --muted-foreground: 220 5% 60%;
+    --muted: 345 5% 18%;
+    --muted-foreground: 345 10% 60%;
 
-    --accent: 51 100% 50%;
-    --accent-foreground: 220 5% 10%;
+    --accent: 345 35% 70%;
+    --accent-foreground: 345 20% 15%;
     
-    --accent-yellow: 51 100% 50%;
-    --accent-yellow-foreground: 220 5% 10%;
+    --accent-blush: 345 35% 75%;
+    --accent-blush-foreground: 345 20% 15%;
+    --accent-rose: 345 40% 65%;
     
-    --slate-gray: 220 5% 58%;
-    --slate-gray-dark: 220 5% 70%;
+    --slate-gray: 345 8% 55%;
+    --slate-gray-dark: 345 10% 70%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 10% 20%;
-    --input: 220 10% 20%;
-    --ring: 51 100% 50%;
+    --border: 345 5% 20%;
+    --input: 345 5% 20%;
+    --ring: 345 35% 70%;
   }
 }
 
@@ -166,47 +168,51 @@
     -webkit-backdrop-filter: blur(20px);
   }
 
-  /* Premium Button - Yellow Accent */
+  /* Premium Button - Blush Accent */
   .btn-luxury {
     @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-semibold cursor-pointer transition-all duration-300;
     background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
     letter-spacing: 0.02em;
+    border: 1px solid hsl(345 25% 80%);
   }
 
   .btn-luxury:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px -6px hsl(51 100% 50% / 0.4);
-    background: hsl(51 100% 55%);
+    box-shadow: 0 12px 28px -6px hsl(345 30% 87% / 0.5);
+    background: hsl(345 40% 82%);
   }
 
   .btn-luxury:active {
     transform: translateY(0);
   }
 
-  /* Ghost Button - Gray */
+  /* Ghost Button - Elegant outline */
   .btn-ghost-luxury {
     @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-medium cursor-pointer transition-all duration-300;
-    background: hsl(var(--slate-gray) / 0.15);
+    background: transparent;
     color: hsl(var(--foreground));
-    border: 1px solid hsl(var(--slate-gray) / 0.3);
+    border: 1px solid hsl(345 20% 85%);
   }
 
   .btn-ghost-luxury:hover {
-    background: hsl(var(--slate-gray) / 0.25);
+    background: hsl(var(--primary) / 0.15);
+    border-color: hsl(var(--primary));
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px -4px hsl(345 30% 87% / 0.3);
   }
 
-  /* Premium Input - No borders */
+  /* Premium Input - Soft blush tint */
   .input-luxury {
     @apply w-full px-6 py-4 rounded-xl text-base transition-all duration-300;
-    background: hsl(var(--secondary));
-    border: none;
+    background: hsl(var(--muted));
+    border: 1px solid hsl(345 15% 88%);
+    color: hsl(var(--foreground));
   }
 
   .input-luxury:focus {
     @apply outline-none;
+    border-color: hsl(var(--primary));
     box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
   }
 
@@ -261,7 +267,7 @@
   .lumina-counter-current {
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 700;
-    color: hsl(var(--accent-yellow));
+    color: hsl(var(--accent-blush));
     line-height: 1;
   }
 
@@ -330,7 +336,7 @@
   .lumina-slide-progress-fill {
     @apply absolute top-0 left-0 h-full;
     width: 0%;
-    background: hsl(var(--accent-yellow));
+    background: hsl(var(--accent-blush));
     border-radius: 2px;
     transition: width 0.1s ease, opacity 0.3s ease;
   }
@@ -357,7 +363,7 @@
 
   .lumina-slide-nav-item:hover .lumina-slide-title,
   .lumina-slide-nav-item.active .lumina-slide-title {
-    color: hsl(var(--accent-yellow));
+    color: hsl(var(--accent-blush));
   }
 
   .lumina-slide-nav-item.active .lumina-slide-progress {
