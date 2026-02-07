@@ -5,29 +5,16 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * Props for the InteractiveTravelCard component.
- */
 export interface InteractiveTravelCardProps {
-  /** The main title for the card, e.g., "Sapa Valley" */
   title: string;
-  /** A subtitle or location, e.g., "Vietnam" */
   subtitle: string;
-  /** The URL for the background image. */
   imageUrl: string;
-  /** The text for the primary action button, e.g., "Book your trip" */
   actionText: string;
-  /** The destination URL for the top-right link. */
   href: string;
-  /** Callback function when the primary action button is clicked. */
   onActionClick: () => void;
-  /** Optional additional class names for custom styling. */
   className?: string;
 }
 
-/**
- * A responsive and theme-adaptive travel card with a 3D tilt effect on hover.
- */
 export const InteractiveTravelCard = React.forwardRef<
   HTMLDivElement,
   InteractiveTravelCardProps
@@ -36,7 +23,6 @@ export const InteractiveTravelCard = React.forwardRef<
     { title, subtitle, imageUrl, actionText, href, onActionClick, className },
     ref
   ) => {
-    // --- 3D Tilt Animation Logic ---
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -44,8 +30,8 @@ export const InteractiveTravelCard = React.forwardRef<
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    const rotateX = useTransform(springY, [-0.5, 0.5], ["6deg", "-6deg"]);
-    const rotateY = useTransform(springX, [-0.5, 0.5], ["-6deg", "6deg"]);
+    const rotateX = useTransform(springY, [-0.5, 0.5], ["10.5deg", "-10.5deg"]);
+    const rotateY = useTransform(springX, [-0.5, 0.5], ["-10.5deg", "10.5deg"]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
       const rect = e.currentTarget.getBoundingClientRect();
@@ -66,7 +52,7 @@ export const InteractiveTravelCard = React.forwardRef<
     return (
       <article
         ref={ref}
-        className={cn("group [perspective:1000px] [transform-style:preserve-3d]", className)}
+        className={cn("group [perspective:1000px]", className)}
         itemScope
         itemType="https://schema.org/Service"
       >
@@ -74,7 +60,7 @@ export const InteractiveTravelCard = React.forwardRef<
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ rotateX, rotateY }}
-          className="relative h-[420px] w-full overflow-hidden rounded-3xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[480px] [backface-visibility:hidden]"
+          className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[360px]"
         >
           {/* Background Image */}
           <img
@@ -85,22 +71,22 @@ export const InteractiveTravelCard = React.forwardRef<
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
           
-          {/* Darkening overlay for better text contrast over the image */}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
+          {/* Darker overlay for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
 
-          {/* Card Content (Header & Footer) */}
-          <div className="relative flex h-full flex-col justify-between p-5 md:p-6">
-            {/* Header section with text and link */}
+          {/* Card Content */}
+          <div className="relative flex h-full flex-col justify-between p-5">
+            {/* Header */}
             <div className="flex items-start justify-between">
               <div className="space-y-1">
                 <h3 
-                  className="font-display text-xl font-semibold text-background md:text-2xl"
+                  className="font-display text-lg font-semibold text-white md:text-xl"
                   itemProp="name"
                 >
                   {title}
                 </h3>
                 <p 
-                  className="font-sans text-sm text-background/80"
+                  className="font-sans text-xs text-white/90 md:text-sm"
                   itemProp="description"
                 >
                   {subtitle}
@@ -109,18 +95,18 @@ export const InteractiveTravelCard = React.forwardRef<
 
               <a
                 href={href}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-background/20 backdrop-blur-sm transition-all duration-300 hover:bg-background/40"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/40"
                 aria-label={`Перейти к ${title}`}
                 itemProp="url"
               >
-                <ArrowUpRight className="h-5 w-5 text-background" />
+                <ArrowUpRight className="h-4 w-4 text-white" />
               </a>
             </div>
 
             {/* Footer Button */}
             <button
               onClick={onActionClick}
-              className="w-full rounded-2xl bg-background/90 py-3 font-sans text-sm font-medium text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-background md:py-4 md:text-base"
+              className="w-full rounded-xl bg-white/95 py-2.5 font-sans text-sm font-medium text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-white md:py-3"
             >
               {actionText}
             </button>

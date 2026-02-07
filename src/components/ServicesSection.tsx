@@ -8,7 +8,7 @@ import serviceStylist from '@/assets/service-stylist.jpg';
 import serviceUgc from '@/assets/service-ugc.jpg';
 import servicePhotographer from '@/assets/service-photographer.jpg';
 
-// Service data with SEO-optimized titles and subtitles
+// Only 3 services per category
 const stylistServices = [
   {
     id: 'brand-styling',
@@ -18,39 +18,18 @@ const stylistServices = [
     href: '/services/brand-styling',
   },
   {
-    id: 'client-shoot',
-    title: 'Клиентская съёмка',
-    subtitle: 'Персональный образ • Фотосессия',
-    image: servicePhotographer,
-    href: '/services/client-shoot',
-  },
-  {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
     subtitle: 'Анализ • Образы • Рекомендации',
-    image: serviceStylist,
+    image: servicePhotographer,
     href: '/services/wardrobe-audit',
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
     subtitle: 'Шоп-лист • Совместные покупки',
-    image: servicePhotographer,
-    href: '/services/personal-shopping',
-  },
-  {
-    id: 'capsule-wardrobe',
-    title: 'Капсульный гардероб',
-    subtitle: 'Сезон • Событие • Онлайн',
     image: serviceStylist,
-    href: '/services/capsule-wardrobe',
-  },
-  {
-    id: 'event-look',
-    title: 'Образ на мероприятие',
-    subtitle: 'Подбор лука • Стилизация',
-    image: servicePhotographer,
-    href: '/services/event-look',
+    href: '/services/personal-shopping',
   },
 ];
 
@@ -121,7 +100,7 @@ const ServicesSection = () => {
   return (
     <section 
       id="services" 
-      className="section-luxury bg-secondary/30"
+      className="py-16 md:py-20 bg-secondary/30"
       aria-labelledby="services-heading"
     >
       <div className="container-luxury">
@@ -131,11 +110,11 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10"
+          className="text-center mb-8"
         >
           <h2 
             id="services-heading"
-            className="font-display text-h2 text-foreground mb-8"
+            className="font-display text-h2 text-foreground mb-6"
           >
             Услуги
           </h2>
@@ -145,17 +124,17 @@ const ServicesSection = () => {
             type="single" 
             value={activeFilter}
             onValueChange={(value) => value && setActiveFilter(value as 'stylist' | 'creator')}
-            className="inline-flex bg-muted/50 p-1.5 rounded-2xl"
+            className="inline-flex bg-muted/50 p-1 rounded-xl"
           >
             <ToggleGroupItem 
               value="stylist" 
-              className="px-6 py-3 rounded-xl font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
+              className="px-5 py-2.5 rounded-lg font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
             >
               Стилист
             </ToggleGroupItem>
             <ToggleGroupItem 
               value="creator"
-              className="px-6 py-3 rounded-xl font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
+              className="px-5 py-2.5 rounded-lg font-sans text-sm font-medium transition-all duration-300 data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=off]:text-muted-foreground data-[state=off]:hover:text-foreground"
             >
               Контент-креатор
             </ToggleGroupItem>
@@ -170,7 +149,7 @@ const ServicesSection = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+            className="grid grid-cols-1 md:grid-cols-3 gap-5"
           >
             {currentServices.map((service) => (
               <motion.div key={service.id} variants={itemVariants}>
@@ -193,7 +172,7 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12"
+          className="text-center mt-10"
         >
           <Link
             to="/services"
@@ -203,17 +182,6 @@ const ServicesSection = () => {
             <ArrowRight size={16} className="ml-2" />
           </Link>
         </motion.div>
-      </div>
-
-      {/* Mobile Fixed CTA */}
-      <div className="fixed bottom-6 left-4 right-4 z-40 md:hidden">
-        <Link
-          to="/services"
-          className="btn-luxury w-full flex items-center justify-center py-4 shadow-lg"
-        >
-          Все услуги
-          <ArrowRight size={16} className="ml-2" />
-        </Link>
       </div>
     </section>
   );
