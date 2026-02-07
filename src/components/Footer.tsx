@@ -88,7 +88,15 @@ const Footer = () => {
         {/* Bottom Bar with Legal Links */}
         <div className="mt-10 pt-6 border-t flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: 'rgba(31, 33, 33, 0.1)' }}>
           <p className="font-sans text-xs" style={{ color: '#1F2121', opacity: 0.4 }}>
-            Сайт создан для демонстрации стиля и визуального контента.
+            Сайт создан веб студией{' '}
+            <a 
+              href="https://neeklo.ru/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity underline"
+            >
+              neeklo.ru
+            </a>
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             {legalLinks.map((link) => (
