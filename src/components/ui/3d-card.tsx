@@ -44,8 +44,8 @@ export const InteractiveTravelCard = React.forwardRef<
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    const rotateX = useTransform(springY, [-0.5, 0.5], ["10.5deg", "-10.5deg"]);
-    const rotateY = useTransform(springX, [-0.5, 0.5], ["-10.5deg", "10.5deg"]);
+    const rotateX = useTransform(springY, [-0.5, 0.5], ["6deg", "-6deg"]);
+    const rotateY = useTransform(springX, [-0.5, 0.5], ["-6deg", "6deg"]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
       const rect = e.currentTarget.getBoundingClientRect();
@@ -66,7 +66,7 @@ export const InteractiveTravelCard = React.forwardRef<
     return (
       <article
         ref={ref}
-        className={cn("group [perspective:1000px]", className)}
+        className={cn("group [perspective:1000px] [transform-style:preserve-3d]", className)}
         itemScope
         itemType="https://schema.org/Service"
       >
@@ -74,7 +74,7 @@ export const InteractiveTravelCard = React.forwardRef<
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ rotateX, rotateY }}
-          className="relative h-[420px] w-full overflow-hidden rounded-3xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[480px]"
+          className="relative h-[420px] w-full overflow-hidden rounded-3xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[480px] [backface-visibility:hidden]"
         >
           {/* Background Image */}
           <img
