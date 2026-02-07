@@ -25,31 +25,30 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 md:py-16 px-6 md:px-10 lg:px-16" style={{ backgroundColor: '#FBF9F7' }}>
+    <footer className="py-10 md:py-14 px-6 md:px-10 lg:px-16 bg-secondary/50">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 items-center">
+        {/* Main Footer Content */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-6">
           {/* Logo & Copyright */}
           <div className="text-center md:text-left">
             <Link
               to="/"
-              className="font-display text-lg font-semibold transition-colors duration-300"
-              style={{ color: '#1F2121' }}
+              className="font-display text-lg font-semibold text-foreground transition-colors duration-300 hover:text-primary"
             >
               Bella Hasias
             </Link>
-            <p className="font-sans text-sm mt-2" style={{ color: '#1F2121', opacity: 0.6 }}>
-              © {currentYear} Bella Hasias
+            <p className="font-sans text-sm mt-1.5 text-muted-foreground">
+              © {currentYear}
             </p>
           </div>
 
           {/* Navigation Links */}
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {footerNavLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className="font-sans text-sm transition-colors min-h-[44px] flex items-center"
-                style={{ color: '#1F2121', opacity: 0.7 }}
+                className="font-sans text-sm text-foreground/70 hover:text-foreground transition-colors min-h-[44px] flex items-center"
               >
                 <ComesInGoesOutUnderline 
                   label={link.label}
@@ -61,50 +60,52 @@ const Footer = () => {
           </div>
 
           {/* Social Links */}
-          <div className="flex items-center justify-center md:justify-end gap-3">
-            <a
-              href="https://www.instagram.com/bellahasias/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-105"
-              style={{ backgroundColor: 'rgba(31, 33, 33, 0.1)', color: '#1F2121' }}
-            >
-              <Instagram size={18} />
-            </a>
-            <a
-              href="https://t.me/bellahasias"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Telegram-канал"
-              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-105"
-              style={{ backgroundColor: 'rgba(31, 33, 33, 0.1)', color: '#1F2121' }}
-            >
-              <TelegramIcon size={18} />
-            </a>
+          <div className="flex flex-col items-center md:items-end gap-2">
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.instagram.com/bellahasias/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-10 h-10 rounded-xl bg-foreground/5 flex items-center justify-center text-foreground/70 hover:bg-foreground/10 hover:text-foreground transition-all duration-300"
+              >
+                <Instagram size={18} />
+              </a>
+              <a
+                href="https://t.me/bellahasias"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Telegram-канал"
+                className="w-10 h-10 rounded-xl bg-foreground/5 flex items-center justify-center text-foreground/70 hover:bg-foreground/10 hover:text-foreground transition-all duration-300"
+              >
+                <TelegramIcon size={18} />
+              </a>
+            </div>
+            <p className="font-sans text-[10px] text-muted-foreground/60 text-center md:text-right">
+              * Meta запрещена на территории РФ
+            </p>
           </div>
         </div>
 
-        {/* Bottom Bar with Legal Links */}
-        <div className="mt-10 pt-6 border-t flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: 'rgba(31, 33, 33, 0.1)' }}>
-          <p className="font-sans text-xs" style={{ color: '#1F2121', opacity: 0.4 }}>
+        {/* Bottom Bar */}
+        <div className="mt-8 pt-6 border-t border-foreground/5 flex flex-col-reverse md:flex-row items-center justify-between gap-4">
+          <p className="font-sans text-xs text-muted-foreground/50">
             Сайт создан веб студией{' '}
             <a 
               href="https://neeklo.ru/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:opacity-80 transition-opacity underline"
+              className="hover:text-muted-foreground transition-colors"
             >
               neeklo.ru
             </a>
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             {legalLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className="font-sans text-xs transition-colors min-h-[44px] flex items-center"
-                style={{ color: '#1F2121', opacity: 0.5 }}
+                className="font-sans text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
               >
                 {link.label}
               </Link>
