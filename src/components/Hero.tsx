@@ -126,6 +126,7 @@ const Hero = () => {
               <img
                 src={heroCenter}
                 alt="Bella Hasias"
+                loading="lazy"
                 className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {/* Play button overlay */}

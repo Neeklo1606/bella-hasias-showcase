@@ -34,7 +34,7 @@ const BrandStyling = () => {
           <div className="max-w-5xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="relative overflow-hidden rounded-3xl aspect-[4/5]">
-                <img src={heroLeft} alt="Стилизация съёмки для бренда — профессиональный стилист Москва" className="w-full h-full object-cover" />
+                <img src={heroLeft} alt="Стилизация съёмки для бренда — профессиональный стилист Москва" loading="lazy" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
               </div>
               <div>
