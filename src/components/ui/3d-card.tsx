@@ -62,13 +62,13 @@ export const InteractiveTravelCard = React.forwardRef<
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-secondary shadow-lg transition-shadow duration-300 ease-out will-change-transform group-hover:shadow-xl md:h-[360px] [backface-visibility:hidden]"
         >
-          {/* Background Image */}
+          {/* Background Image - scaled up to hide edges during 3D rotation */}
           <img
             src={imageUrl}
             alt={title}
             loading="lazy"
             itemProp="image"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            className="absolute -inset-4 h-[calc(100%+32px)] w-[calc(100%+32px)] object-cover scale-110 transition-transform duration-500 ease-out group-hover:scale-115"
           />
           
           {/* Darker overlay for better text contrast */}
