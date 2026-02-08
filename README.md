@@ -1,73 +1,137 @@
-# Welcome to your Lovable project
+# Bella Hasias — Стилист и контент-креатор
 
-## Project info
+Сайт-визитка с Headless CMS админкой на стеке React + Vite + TypeScript + TailwindCSS + ShadCN UI.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Технологии
 
-## How can I edit this code?
+- **Frontend:** React 18, Vite 6, TypeScript
+- **UI:** TailwindCSS, ShadCN UI, Framer Motion
+- **Роутинг:** React Router v6
+- **CMS:** Локальная админка с хранением в localStorage + JSON-файлы в `src/data/`
 
-There are several ways of editing your application.
+## Установка и запуск
 
-**Use Lovable**
+```bash
+# Установка зависимостей
+npm install
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Режим разработки
 npm run dev
+
+# Сборка для продакшена
+npm run build
+
+# Предпросмотр собранного проекта
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## Админ-панель
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **URL:** `/admin` (редирект на `/admin/dashboard`)
+- **Логин:** `/admin/login`
+- **Учётные данные:** `anastasirezepova@yandex.ru` / `123123123`
 
-**Use GitHub Codespaces**
+### Разделы админки
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Раздел    | Маршрут             | Описание                          |
+|-----------|---------------------|-----------------------------------|
+| Dashboard | /admin/dashboard    | Панель управления, метрики        |
+| Медиа     | /admin/media        | Медиатеки, загрузка файлов        |
+| Услуги    | /admin/services     | CRUD услуг                        |
+| Кейсы     | /admin/cases        | Портфолио и кейсы                 |
+| Страницы  | /admin/pages        | Редактор блоков страниц           |
+| SEO       | /admin/seo          | Мета-теги, sitemap, robots        |
+| Статистика| /admin/stats        | Заглушка                          |
+| Настройки | /admin/settings     | Заглушка                          |
 
-## What technologies are used for this project?
+## Деплой на Бегет (Beget)
 
-This project is built with:
+### 1. Сборка проекта
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+npm run build
+```
 
-## How can I deploy this project?
+Папка `dist/` будет содержать готовый статический сайт.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+### 2. Загрузка на хостинг
 
-## Can I connect a custom domain to my Lovable project?
+- Подключитесь к хостингу по FTP/SFTP
+- Загрузите **содержимое** папки `dist/` в `public_html`
+- Структура на сервере должна быть примерно такой:
 
-Yes, you can!
+```
+public_html/
+├── index.html
+├── assets/
+│   ├── index-*.js
+│   ├── index-*.css
+│   └── [изображения и шрифты]
+├── favicon.png
+├── icons/
+├── manifest.json
+├── og-image.jpg
+├── robots.txt
+├── sitemap.xml
+├── videos/
+└── uploads/
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### 3. Обновление sitemap.xml и robots.txt
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Сгенерируйте файлы в админке: `/admin/seo` → «Скачать sitemap.xml» и «Скачать robots.txt»
+- Замените соответствующие файлы в `public_html` на скачанные
+- В `src/data/seo.json` (или через админку) укажите актуальный **Site URL** (например, `https://yourdomain.ru`)
+
+### 4. Настройка .htaccess (SPA)
+
+Для корректной работы React Router на хостинге убедитесь, что в `public_html` есть `.htaccess`:
+
+```apache
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^ index.html [L]
+</IfModule>
+```
+
+### 5. Проверка после деплоя
+
+- [ ] Главная страница открывается
+- [ ] Маршруты `/contacts`, `/portfolio`, `/services` работают
+- [ ] Страницы кейсов `/portfolio/:slug` открываются
+- [ ] Админка `/admin/login` доступна
+- [ ] Файлы `sitemap.xml` и `robots.txt` доступны по URL
+
+## Конфигурация
+
+- **Vite:** `base: "./"` — относительные пути для корректной работы на хостинге
+- **Данные CMS:** `src/data/*.json` — начальные данные; изменения сохраняются в localStorage браузера
+
+## Структура проекта
+
+```
+src/
+├── admin/           # Админ-панель
+│   ├── components/  # UI-компоненты CMS
+│   ├── hooks/       # useAuth
+│   ├── layout/      # Layout админки
+│   ├── lib/         # Хранилища (media, services, cases, pages, seo)
+│   ├── pages/       # Страницы админки
+│   └── types/       # Типы
+├── components/      # Публичные компоненты
+├── data/            # JSON-данные (users, media, services, cases, pages, seo)
+├── pages/           # Публичные страницы
+└── ...
+```
+
+## Лицензия
+
+Private.

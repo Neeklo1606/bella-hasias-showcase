@@ -1,38 +1,105 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "@/components/ScrollToTop";
 import Navigation from "@/components/Navigation";
+import { AuthProvider } from "@/admin/hooks/useAuth";
+import ProtectedRoute from "@/admin/components/ProtectedRoute";
+import AdminLayout from "@/admin/layout/AdminLayout";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Portfolio from "./pages/Portfolio";
-import Services from "./pages/Services";
-import Contacts from "./pages/Contacts";
-import ServiceStylist from "./pages/ServiceStylist";
-import ServiceUgc from "./pages/ServiceUgc";
-import ServicePhotographer from "./pages/ServicePhotographer";
-import AdminDocumentation from "./pages/AdminDocumentation";
-import Admin from "./pages/Admin";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import Consent from "./pages/Consent";
-import Feedback from "./pages/Feedback";
-import VKLanding from "./pages/VKLanding";
 
-// New service pages
-import BrandStyling from "./pages/services/BrandStyling";
-import ClientShoot from "./pages/services/ClientShoot";
-import WardrobeAudit from "./pages/services/WardrobeAudit";
-import PersonalShopping from "./pages/services/PersonalShopping";
-import CapsuleWardrobe from "./pages/services/CapsuleWardrobe";
-import EventLook from "./pages/services/EventLook";
-import PhotoVideo from "./pages/services/PhotoVideo";
-import AIContent from "./pages/services/AIContent";
+const AdminLogin = lazy(() => import("@/admin/pages/Login"));
+const AdminDashboard = lazy(() => import("@/admin/pages/Dashboard"));
+const AdminMedia = lazy(() => import("@/admin/pages/Media"));
+const AdminServices = lazy(() => import("@/admin/pages/Services"));
+const AdminCases = lazy(() => import("@/admin/pages/Cases"));
+const AdminPages = lazy(() => import("@/admin/pages/Pages"));
+const AdminSEO = lazy(() => import("@/admin/pages/SEO"));
+const AdminStats = lazy(() => import("@/admin/pages/Stats"));
+const AdminSettings = lazy(() => import("@/admin/pages/Settings"));
+
+const Portfolio = lazy(() => import("./pages/Portfolio"));
+const CasePage = lazy(() => import("./pages/CasePage"));
+const Services = lazy(() => import("./pages/Services"));
+const Contacts = lazy(() => import("./pages/Contacts"));
+const ServiceStylist = lazy(() => import("./pages/ServiceStylist"));
+const ServiceUgc = lazy(() => import("./pages/ServiceUgc"));
+const ServicePhotographer = lazy(() => import("./pages/ServicePhotographer"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Consent = lazy(() => import("./pages/Consent"));
+const Feedback = lazy(() => import("./pages/Feedback"));
+const VKLanding = lazy(() => import("./pages/VKLanding"));
+
+const BrandStyling = lazy(() => import("./pages/services/BrandStyling"));
+const ClientShoot = lazy(() => import("./pages/services/ClientShoot"));
+const WardrobeAudit = lazy(() => import("./pages/services/WardrobeAudit"));
+const PersonalShopping = lazy(() => import("./pages/services/PersonalShopping"));
+const CapsuleWardrobe = lazy(() => import("./pages/services/CapsuleWardrobe"));
+const EventLook = lazy(() => import("./pages/services/EventLook"));
+const PhotoVideo = lazy(() => import("./pages/services/PhotoVideo"));
+const AIContent = lazy(() => import("./pages/services/AIContent"));
 
 const queryClient = new QueryClient();
+
+const AppRoutes = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  return (
+    <>
+      {!isAdminRoute && <Navigation />}
+      <ScrollToTop />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><span className="text-muted-foreground">Загрузка...</span></div>}>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/portfolio/:slug" element={<CasePage />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contacts" element={<Contacts />} />
+        <Route path="/services/stylist" element={<ServiceStylist />} />
+        <Route path="/services/ugc" element={<ServiceUgc />} />
+        <Route path="/services/photographer" element={<ServicePhotographer />} />
+        {/* New service routes */}
+        <Route path="/services/brand-styling" element={<BrandStyling />} />
+        <Route path="/services/client-shoot" element={<ClientShoot />} />
+        <Route path="/services/wardrobe-audit" element={<WardrobeAudit />} />
+        <Route path="/services/personal-shopping" element={<PersonalShopping />} />
+        <Route path="/services/capsule-wardrobe" element={<CapsuleWardrobe />} />
+        <Route path="/services/event-look" element={<EventLook />} />
+        <Route path="/services/photo-video" element={<PhotoVideo />} />
+        <Route path="/services/ai-content" element={<AIContent />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="media" element={<AdminMedia />} />
+            <Route path="services" element={<AdminServices />} />
+            <Route path="cases" element={<AdminCases />} />
+            <Route path="pages" element={<AdminPages />} />
+            <Route path="seo" element={<AdminSEO />} />
+            <Route path="stats" element={<AdminStats />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
+        </Route>
+        {/* Legal pages */}
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/consent" element={<Consent />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/vk" element={<VKLanding />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      </Suspense>
+    </>
+  );
+};
 
 const App = () => (
   <HelmetProvider>
@@ -41,35 +108,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Navigation />
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/contacts" element={<Contacts />} />
-            <Route path="/services/stylist" element={<ServiceStylist />} />
-            <Route path="/services/ugc" element={<ServiceUgc />} />
-            <Route path="/services/photographer" element={<ServicePhotographer />} />
-            {/* New service routes */}
-            <Route path="/services/brand-styling" element={<BrandStyling />} />
-            <Route path="/services/client-shoot" element={<ClientShoot />} />
-            <Route path="/services/wardrobe-audit" element={<WardrobeAudit />} />
-            <Route path="/services/personal-shopping" element={<PersonalShopping />} />
-            <Route path="/services/capsule-wardrobe" element={<CapsuleWardrobe />} />
-            <Route path="/services/event-look" element={<EventLook />} />
-            <Route path="/services/photo-video" element={<PhotoVideo />} />
-            <Route path="/services/ai-content" element={<AIContent />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/documentation" element={<AdminDocumentation />} />
-            {/* Legal pages */}
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/consent" element={<Consent />} />
-            <Route path="/feedback" element={<Feedback />} />
-            <Route path="/vk" element={<VKLanding />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

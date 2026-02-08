@@ -6,6 +6,7 @@ import { ComesInGoesOutUnderline } from '@/components/ui/underline-animation';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -75,13 +76,23 @@ const Navigation = () => {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-12">
-          {/* Logo - always black, never pink */}
+          {/* Logo */}
           <Link
             to="/"
-            className="font-display text-xl font-semibold transition-opacity duration-300 hover:opacity-70"
-            style={{ color: 'hsl(220, 10%, 15%)' }}
+            className="flex items-center transition-opacity duration-300 hover:opacity-70"
           >
-            Bella Hasias
+            {logoError ? (
+              <span className="font-display text-xl font-semibold text-foreground">
+                Bella Hasias
+              </span>
+            ) : (
+              <img
+                src="/logo3.png"
+                alt="Bella Hasias"
+                className="h-6 sm:h-7 w-auto"
+                onError={() => setLogoError(true)}
+              />
+            )}
           </Link>
 
           {/* Desktop Navigation */}

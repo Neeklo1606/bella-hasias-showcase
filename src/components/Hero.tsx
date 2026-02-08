@@ -71,30 +71,29 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-background overflow-hidden">
-      {/* Mobile GIF background */}
-      <div className="absolute inset-0 lg:hidden pointer-events-none">
-        <img
-          src="/11111.gif"
-          alt="Фоновая анимация Bella Hasias"
-          loading="eager"
-          decoding="async"
-          onError={(event) => {
-            event.currentTarget.src = "/11111.jpeg";
-          }}
-          className="h-full w-full object-cover"
-        />
-        {/* Overlay for readability */}
-        <div className="absolute inset-0 bg-black/30" />
-        {/* Subtle gradient to blend with page background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background/90" />
-        {/* Bottom blur to soften GIF edge */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background/90 via-background/60 to-transparent backdrop-blur-2xl" />
-      </div>
+    <section className="relative bg-background overflow-hidden lg:min-h-[90vh]">
       <div className="relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch">
+          {/* Mobile media (separate block) */}
+          <div className="order-1 lg:hidden relative h-[58vh] sm:h-[70vh]">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster={videoPoster}
+              className="h-full w-full object-cover"
+            >
+              <source src={videoUrl} type="video/mp4" />
+            </video>
+            {/* Overlay for readability */}
+            <div className="absolute inset-0 bg-black/25" />
+            {/* Subtle gradient to blend with page background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-background/90" />
+          </div>
           {/* Left - Typography */}
-          <div className="order-2 lg:order-1 py-12 lg:py-0 px-6 md:px-12 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-12">
+          <div className="order-2 lg:order-1 py-12 lg:py-0 px-6 md:px-12 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-12 pt-12 sm:pt-14 lg:pt-20">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -108,7 +107,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="font-display text-display text-foreground mb-8"
+              className="font-sans lg:font-display text-display text-foreground mb-8 mt-6 sm:mt-8"
             >
               Bella
               <br />
@@ -121,7 +120,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="font-sans text-lg text-muted-foreground max-w-md mb-10 leading-relaxed"
             >
-              Создаю визуальный контент и стиль, который рассказывает вашу уникальную историю
+              Услуги стилиста в Москве. Консультации по стилю, шоппинг сопровождение и разбору гардероба.
             </motion.p>
 
             <motion.div

@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { Send } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 // User's own photos
 import heroLeft from '@/assets/hero/hero-left.jpg';
@@ -12,65 +15,79 @@ import heroRight from '@/assets/hero/hero-right.jpg';
 import photo3 from '@/assets/hero/photo-3.jpg';
 import user1 from '@/assets/portfolio/user-1.jpg';
 import user2 from '@/assets/portfolio/user-2.jpg';
-import work1 from '@/assets/portfolio/work-1.jpg';
-import work2 from '@/assets/portfolio/work-2.jpg';
-import work3 from '@/assets/portfolio/work-3.jpg';
+import ugcPreview from '@/assets/portfolio/IMG_1082.JPG';
+import aiPreview from '@/assets/portfolio/IMG_1559.JPG';
 
-// All services (no filter)
-const allServices = [
+type ServiceCategory = "stylist" | "creator";
+
+const categoryLabels: Record<ServiceCategory, string> = {
+  stylist: "Стилист",
+  creator: "Креатор",
+};
+
+// All services with categories
+const allServices: Array<{
+  id: string;
+  title: string;
+  image: string;
+  href: string;
+  category: ServiceCategory;
+}> = [
   {
     id: 'brand-styling',
     title: 'Стилизация съёмки',
     image: heroLeft,
     href: '/services/brand-styling',
+    category: "stylist",
   },
   {
     id: 'wardrobe-audit',
     title: 'Разбор гардероба',
     image: heroCenter,
     href: '/services/wardrobe-audit',
+    category: "stylist",
   },
   {
     id: 'personal-shopping',
     title: 'Персональный шоппинг',
     image: heroRight,
     href: '/services/personal-shopping',
+    category: "stylist",
   },
   {
     id: 'capsule-wardrobe',
     title: 'Капсульный гардероб',
     image: photo3,
     href: '/services/capsule-wardrobe',
+    category: "stylist",
   },
   {
     id: 'event-look',
     title: 'Образ на мероприятие',
     image: user1,
     href: '/services/event-look',
+    category: "stylist",
   },
   {
     id: 'client-shoot',
     title: 'Съёмка для клиента',
     image: user2,
     href: '/services/client-shoot',
+    category: "creator",
   },
   {
     id: 'ugc-content',
     title: 'UGC-контент',
-    image: work1,
+    image: ugcPreview,
     href: '/services/ugc',
-  },
-  {
-    id: 'photo-video',
-    title: 'Фото и видео',
-    image: work2,
-    href: '/services/photo-video',
+    category: "creator",
   },
   {
     id: 'ai-content',
     title: 'AI-контент',
-    image: work3,
+    image: aiPreview,
     href: '/services/ai-content',
+    category: "creator",
   },
 ];
 
@@ -97,6 +114,12 @@ const itemVariants = {
 
 const Services = () => {
   const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState<ServiceCategory>("stylist");
+
+  const filteredServices = useMemo(
+    () => allServices.filter((service) => service.category === activeCategory),
+    [activeCategory]
+  );
 
   return (
     <>
@@ -133,14 +156,38 @@ const Services = () => {
               </h1>
             </motion.div>
 
-            {/* Services Grid - All services, no filter */}
+            {/* Category switcher */}
+            <div className="flex justify-center mb-10">
+              <ToggleGroup
+                type="single"
+                value={activeCategory}
+                onValueChange={(value) => {
+                  if (value) setActiveCategory(value as ServiceCategory);
+                }}
+                variant="outline"
+                className="w-full max-w-md flex-col sm:flex-row sm:w-auto gap-2 sm:gap-3"
+                aria-label="Категории услуг"
+              >
+                {Object.entries(categoryLabels).map(([value, label]) => (
+                  <ToggleGroupItem
+                    key={value}
+                    value={value}
+                    className="w-full sm:w-auto min-w-[140px]"
+                  >
+                    {label}
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+            </div>
+
+            {/* Services Grid */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {allServices.map((service) => (
+              {filteredServices.map((service) => (
                 <motion.div key={service.id} variants={itemVariants}>
                   <InteractiveTravelCard
                     title={service.title}

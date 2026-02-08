@@ -1,47 +1,40 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
-import heroLeft from '@/assets/hero/hero-left.jpg';
-import heroRight from '@/assets/hero/hero-right.jpg';
-import heroCenter from '@/assets/hero/hero-center.jpg';
-import photo3 from '@/assets/hero/photo-3.jpg';
-import work1 from '@/assets/portfolio/work-1.jpg';
-import work2 from '@/assets/portfolio/work-2.jpg';
-import work3 from '@/assets/portfolio/work-3.jpg';
-import work4 from '@/assets/portfolio/work-4.jpg';
-import work5 from '@/assets/portfolio/work-5.jpg';
-import work6 from '@/assets/portfolio/work-6.jpg';
-import work7 from '@/assets/portfolio/work-7.jpg';
-import work8 from '@/assets/portfolio/work-8.jpg';
-import work9 from '@/assets/portfolio/work-9.jpg';
-import work10 from '@/assets/portfolio/work-10.jpg';
-import work11 from '@/assets/portfolio/work-11.jpg';
-import work12 from '@/assets/portfolio/work-12.jpg';
+import type { ComponentType } from 'react';
 
-const allWorks = [
-  { id: 1, src: heroLeft, alt: 'Стилизация для бренда — портретная съёмка' },
-  { id: 2, src: heroRight, alt: 'Fashion-съёмка для каталога одежды' },
-  { id: 3, src: heroCenter, alt: 'Визуальный контент для бренда' },
-  { id: 4, src: photo3, alt: 'Персональный стиль — образ для клиента' },
-  { id: 5, src: work1, alt: 'UGC-контент для рекламной кампании' },
-  { id: 6, src: work2, alt: 'Контент-съёмка для социальных сетей' },
-  { id: 7, src: work3, alt: 'Студийная съёмка в Москве' },
-  { id: 8, src: work4, alt: 'Lifestyle-съёмка для бренда' },
-  { id: 9, src: work5, alt: 'Fashion editorial — стилизация образа' },
-  { id: 10, src: work6, alt: 'Продуктовая съёмка для каталога' },
-  { id: 11, src: work7, alt: 'Портретная сессия — персональный стиль' },
-  { id: 12, src: work8, alt: 'Коллаборация с брендом — UGC-контент' },
-  { id: 13, src: work9, alt: 'Стайл-гайд для клиента' },
-  { id: 14, src: work10, alt: 'Мудборд и концепция съёмки' },
-  { id: 15, src: work11, alt: 'Визуальная история для бренда' },
-  { id: 16, src: work12, alt: 'Креативная направление съёмки' },
-];
+const portfolioImages = import.meta.glob(
+  '@/assets/portfolio/IMG_*.{JPG,jpg,PNG,png,WEBP,webp}',
+  { eager: true, import: 'default' }
+) as Record<string, string>;
+
+const isPortfolioCandidate = (filename: string, src: string) => {
+  const lower = `${filename} ${src}`.toLowerCase();
+  if (lower.includes("/icons/") || lower.includes("favicon")) return false;
+  if (lower.includes("placeholder")) return false;
+  if (lower.includes("og-image") || lower.includes("hero")) return false;
+  if (lower.includes("/videos/")) return false;
+  return true;
+};
 
 const Portfolio = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const allWorks = useMemo(() => {
+    const entries = Object.entries(portfolioImages)
+      .map(([path, src]) => {
+        const filename = path.split('/').pop() ?? '';
+        return {
+          id: filename,
+          src,
+          alt: filename.replace(/\.[^.]+$/, ''),
+        };
+      })
+      .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
+    return entries;
+  }, []);
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -56,11 +49,17 @@ const Portfolio = () => {
 
   const nextImage = useCallback(() => {
     setLightboxIndex((prev) => (prev + 1) % allWorks.length);
-  }, []);
+  }, [allWorks.length]);
 
   const prevImage = useCallback(() => {
     setLightboxIndex((prev) => (prev - 1 + allWorks.length) % allWorks.length);
-  }, []);
+  }, [allWorks.length]);
+
+  useEffect(() => {
+    if (lightboxIndex >= allWorks.length) {
+      setLightboxIndex(0);
+    }
+  }, [allWorks.length, lightboxIndex]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -134,6 +133,12 @@ const Portfolio = () => {
                 </motion.button>
               ))}
             </motion.div>
+
+            {allWorks.length === 0 && (
+              <div className="py-16 text-center text-sm text-muted-foreground">
+                Нет фотографий в портфолио. Добавьте файлы в `src/assets/portfolio/` с префиксом `IMG_`.
+              </div>
+            )}
 
             {/* CTA */}
             <motion.div
@@ -230,22 +235,24 @@ const Portfolio = () => {
               </svg>
             </button>
 
-            <motion.div
-              key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              className="max-w-[92vw] max-h-[80vh] overflow-hidden rounded-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={allWorks[lightboxIndex].src}
-                alt={allWorks[lightboxIndex].alt}
-                className="max-w-full max-h-[80vh] object-contain"
-                loading="lazy"
-                draggable={false}
-              />
-            </motion.div>
+            {allWorks[lightboxIndex] && (
+              <motion.div
+                key={lightboxIndex}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="max-w-[92vw] max-h-[80vh] overflow-hidden rounded-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={allWorks[lightboxIndex].src}
+                  alt={allWorks[lightboxIndex].alt}
+                  className="max-w-full max-h-[80vh] object-contain"
+                  loading="lazy"
+                  draggable={false}
+                />
+              </motion.div>
+            )}
 
             {/* Swipe hint on mobile */}
             <div className="md:hidden absolute bottom-10 left-1/2 -translate-x-1/2 text-white/40 text-xs">

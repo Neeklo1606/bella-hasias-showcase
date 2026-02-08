@@ -22,5 +22,5 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 
-Sitemap: https://bella-hasias-showcase.lovable.app/sitemap.xml
-Host: https://bella-hasias-showcase.lovable.app
+Sitemap: https://bellahasias.ru/sitemap.xml
+Host: https://bellahasias.ru

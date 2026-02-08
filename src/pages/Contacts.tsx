@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import PageSEO from '@/components/PageSEO';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Instagram } from 'lucide-react';
@@ -66,15 +66,13 @@ const Contacts = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Контакты — Bella Hasias | Стилист и контент-креатор Москва</title>
-        <meta name="description" content="Свяжитесь с Bella Hasias для заказа стилизации, UGC-контента или фотосъёмки в Москве. Telegram и Instagram." />
-        <meta name="keywords" content="стилист Москва контакты, UGC-контент заказать, визуальный контент для брендов" />
-        <meta property="og:title" content="Контакты — Bella Hasias" />
-        <meta property="og:description" content="Свяжитесь для заказа стилизации, UGC-контента или фотосъёмки." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://bellahasias.com/contacts" />
-      </Helmet>
+      <PageSEO
+        slug="contacts"
+        fallback={{
+          title: "Контакты — Bella Hasias | Стилист и контент-креатор Москва",
+          description: "Свяжитесь с Bella Hasias для заказа стилизации, UGC-контента или фотосъёмки в Москве. Telegram и Instagram.",
+        }}
+      />
 
       <main className="min-h-screen bg-background">
         <PageHeader
