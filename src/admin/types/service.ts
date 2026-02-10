@@ -3,6 +3,7 @@ export type Service = {
   title: string;
   description: string;
   category?: string;
+  order?: number;
   imageId: string;
   coverId?: string;
   tags: string[];

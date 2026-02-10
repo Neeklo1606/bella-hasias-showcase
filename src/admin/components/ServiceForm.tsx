@@ -41,6 +41,7 @@ const emptyForm: ServiceFormData = {
   title: "",
   description: "",
   category: "stylist",
+  order: 0,
   imageId: "",
   tags: [],
   ctaLabel: "",
@@ -62,6 +63,7 @@ const ServiceForm = ({
         title: service.title,
         description: service.description,
         category: service.category,
+        order: service.order ?? 0,
         imageId: service.imageId,
         coverId: service.coverId,
         tags: service.tags ?? [],
@@ -122,6 +124,19 @@ const ServiceForm = ({
               placeholder="Описание услуги. Поддерживается Markdown."
               rows={4}
               className="resize-none"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="order">Порядок</Label>
+            <Input
+              id="order"
+              type="number"
+              value={form.order ?? 0}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, order: Number(e.target.value) }))
+              }
+              placeholder="1"
             />
           </div>
 

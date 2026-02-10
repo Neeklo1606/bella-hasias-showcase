@@ -24,6 +24,17 @@ const ServicePhotographer = () => {
           name="description"
           content="Fashion и lifestyle фотография от Bella Hasias. Портфолио фотосессии, имиджевая съёмка. От 7000 ₽ за съёмку."
         />
+        <meta name="keywords" content="фотосъемка, fashion съемка, lifestyle, контент для брендов, Bella Hasias" />
+        <meta property="og:title" content="Фотосъёмка | Bella Hasias" />
+        <meta property="og:description" content="Fashion и lifestyle фотография от Bella Hasias. Портфолио фотосессии, имиджевая съёмка. От 7000 ₽ за съёмку." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/services/photographer" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Фотосъёмка | Bella Hasias" />
+        <meta name="twitter:description" content="Fashion и lifestyle фотография от Bella Hasias. Портфолио фотосессии, имиджевая съёмка. От 7000 ₽ за съёмку." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/services/photographer" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -35,7 +46,7 @@ const ServicePhotographer = () => {
           ]}
         />
         
-        <section className="section-luxury pt-32 md:pt-36">
+        <section className="section-luxury pt-24 md:pt-28">
           <div className="container-luxury">
             <Link
               to="/#services"
@@ -56,6 +67,8 @@ const ServicePhotographer = () => {
                 <img
                   src={photographerImage}
                   alt="Контент фотограф"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[400px] md:h-[550px] object-cover"
                 />
               </motion.div>

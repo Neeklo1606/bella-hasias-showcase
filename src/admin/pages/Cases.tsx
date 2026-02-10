@@ -6,13 +6,14 @@ import { AnimatePresence } from "framer-motion";
 import CaseCard from "@/admin/components/CaseCard";
 import CaseForm, { type CaseFormData } from "@/admin/components/CaseForm";
 import ConfirmDialog from "@/admin/components/ConfirmDialog";
-import { loadCases, saveCases } from "@/admin/lib/casesStorage";
-import { loadServices } from "@/admin/lib/servicesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchCases, loadCases, saveCases } from "@/admin/lib/casesStorage";
+import { fetchServices, loadServices } from "@/admin/lib/servicesStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 import type { CaseItem } from "@/admin/types/case";
 import type { MediaItem } from "@/admin/types/media";
 import type { Service } from "@/admin/types/service";
+import { toast } from "@/components/ui/use-toast";
 
 const generateId = () =>
   `case-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -30,12 +31,31 @@ const Cases = () => {
     setItems(loadCases());
     setServices(loadServices());
     setMediaItems(loadMedia());
+    fetchCases().then(setItems).catch(() => undefined);
+    fetchServices().then(setServices).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
   }, []);
 
-  const persist = useCallback((next: CaseItem[]) => {
+  const persist = useCallback(async (next: CaseItem[]) => {
     setItems(next);
-    saveCases(next);
+    await saveCases(next);
   }, []);
+
+  const handleSaveAll = useCallback(async () => {
+    try {
+      await saveCases(items);
+      toast({
+        title: "Сохранено",
+        description: "Портфолио обновлено на сервере.",
+      });
+    } catch {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить портфолио.",
+        variant: "destructive",
+      });
+    }
+  }, [items]);
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
 
@@ -59,10 +79,10 @@ const Cases = () => {
     setFormOpen(true);
   };
 
-  const handleSubmit = (data: CaseFormData) => {
+  const handleSubmit = async (data: CaseFormData) => {
     const now = new Date().toISOString();
     if (editingCase) {
-      persist(
+      await persist(
         items.map((it) =>
           it.id === editingCase.id
             ? { ...data, id: it.id, createdAt: it.createdAt, updatedAt: now }
@@ -70,11 +90,15 @@ const Cases = () => {
         )
       );
     } else {
-      persist([
+      await persist([
         { ...data, id: generateId(), createdAt: now, updatedAt: now },
         ...items,
       ]);
     }
+    toast({
+      title: "Сохранено",
+      description: "Работа обновлена на сервере.",
+    });
     setFormOpen(false);
     setEditingCase(null);
   };
@@ -101,25 +125,32 @@ const Cases = () => {
           it.tags?.some((t) => t.toLowerCase().includes(q))
       );
     }
-    return [...list].sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+    return [...list].sort((a, b) => {
+      const ao = a.order ?? 0;
+      const bo = b.order ?? 0;
+      if (ao !== bo) return ao - bo;
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
   }, [items, search]);
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Кейсы</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Портфолио</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Управление портфолио и кейсами, связь с услугами
+            Управление работами портфолио и связью с услугами
           </p>
         </div>
-        <Button onClick={handleCreate} className="w-fit">
-          <Plus className="mr-2 h-4 w-4" />
-          Добавить кейс
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" onClick={handleSaveAll}>
+            Сохранить
+          </Button>
+          <Button onClick={handleCreate} className="w-fit">
+            <Plus className="mr-2 h-4 w-4" />
+            Добавить работу
+          </Button>
+        </div>
       </div>
 
       <div className="relative">
@@ -150,7 +181,7 @@ const Cases = () => {
       {filtered.length === 0 && (
         <p className="py-12 text-center text-sm text-muted-foreground">
           {items.length === 0
-            ? "Нет кейсов. Добавьте первый."
+            ? "Нет работ. Добавьте первую."
             : "Нет результатов по поиску."}
         </p>
       )}
@@ -167,10 +198,10 @@ const Cases = () => {
       <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-        title="Удалить кейс?"
+        title="Удалить работу?"
         description={
           deleteTarget
-            ? `Кейс «${deleteTarget.title}» будет удалён. Продолжить?`
+            ? `Работа «${deleteTarget.title}» будет удалена. Продолжить?`
             : ""
         }
         confirmLabel="Удалить"

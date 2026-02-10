@@ -1,7 +1,68 @@
 import React, { useEffect, useRef } from 'react';
 
-declare const gsap: any;
-declare const THREE: any;
+type GsapLike = {
+  to: (target: unknown, vars: Record<string, unknown>) => unknown;
+  set: (target: unknown, vars: Record<string, unknown>) => unknown;
+  fromTo: (
+    target: unknown,
+    fromVars: Record<string, unknown>,
+    toVars: Record<string, unknown>
+  ) => unknown;
+};
+
+type Vector2Like = {
+  x: number;
+  y: number;
+  set: (x: number, y: number) => void;
+};
+
+type TextureLike = {
+  image: { width: number; height: number };
+  userData: { size: Vector2Like };
+  minFilter?: unknown;
+  magFilter?: unknown;
+};
+
+type ShaderMaterialLike = {
+  uniforms: Record<string, { value: unknown }>;
+};
+
+type WebGLRendererLike = {
+  setSize: (width: number, height: number) => void;
+  setPixelRatio: (ratio: number) => void;
+  render: (scene: unknown, camera: unknown) => void;
+  domElement: HTMLCanvasElement;
+};
+
+type ThreeLike = {
+  TextureLoader: new () => {
+    load: (
+      src: string,
+      onLoad: (texture: TextureLike) => void,
+      onProgress?: unknown,
+      onError?: unknown
+    ) => void;
+  };
+  Vector2: new (x: number, y: number) => Vector2Like;
+  Scene: new () => { add: (obj: unknown) => void };
+  OrthographicCamera: new (...args: number[]) => { position: { z: number } };
+  PlaneGeometry: new (width: number, height: number) => unknown;
+  ShaderMaterial: new (params: {
+    uniforms: Record<string, { value: unknown }>;
+    vertexShader: string;
+    fragmentShader: string;
+  }) => ShaderMaterialLike;
+  Mesh: new (geometry: unknown, material: unknown) => unknown;
+  WebGLRenderer: new (opts: {
+    canvas: HTMLCanvasElement;
+    antialias?: boolean;
+    alpha?: boolean;
+  }) => WebGLRendererLike;
+  LinearFilter: unknown;
+};
+
+declare const gsap: GsapLike;
+declare const THREE: ThreeLike;
 
 // Portfolio images from the project
 import work1 from '@/assets/portfolio/work-1.jpg';
@@ -30,10 +91,11 @@ const LuminaSlider = () => {
 
     const loadScripts = async () => {
       const loadScript = (src: string, globalName: string) => new Promise<void>((res, rej) => {
-        if ((window as any)[globalName]) { res(); return; }
+        const globals = window as unknown as Record<string, unknown>;
+        if (globals[globalName]) { res(); return; }
         if (document.querySelector(`script[src="${src}"]`)) {
           const check = setInterval(() => {
-            if ((window as any)[globalName]) { clearInterval(check); res(); }
+            if (globals[globalName]) { clearInterval(check); res(); }
           }, 50);
           setTimeout(() => { clearInterval(check); rej(new Error(`Timeout waiting for ${globalName}`)); }, 10000);
           return;
@@ -74,11 +136,14 @@ const LuminaSlider = () => {
 
       let currentSlideIndex = 0;
       let isTransitioning = false;
-      let shaderMaterial: any, renderer: any, scene: any, camera: any;
-      let slideTextures: any[] = [];
+      let shaderMaterial: ShaderMaterialLike;
+      let renderer: WebGLRendererLike;
+      let scene: ReturnType<ThreeLike["Scene"]>;
+      let camera: ReturnType<ThreeLike["OrthographicCamera"]>;
+      const slideTextures: TextureLike[] = [];
       let texturesLoaded = false;
-      let autoSlideTimer: any = null;
-      let progressAnimation: any = null;
+      let autoSlideTimer: ReturnType<typeof setTimeout> | null = null;
+      let progressAnimation: ReturnType<typeof setInterval> | null = null;
       let sliderEnabled = false;
 
       const SLIDE_DURATION = () => SLIDER_CONFIG.settings.autoSlideSpeed;
@@ -289,9 +354,10 @@ const LuminaSlider = () => {
         }
       };
 
-      const loadImageTexture = (src: string) => new Promise((resolve, reject) => {
+      const loadImageTexture = (src: string) =>
+        new Promise<TextureLike>((resolve, reject) => {
         const l = new THREE.TextureLoader();
-        l.load(src, (t: any) => {
+        l.load(src, (t) => {
           t.minFilter = t.magFilter = THREE.LinearFilter;
           t.userData = { size: new THREE.Vector2(t.image.width, t.image.height) };
           resolve(t);

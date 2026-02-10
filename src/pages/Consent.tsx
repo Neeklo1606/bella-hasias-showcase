@@ -8,7 +8,18 @@ const Consent = () => {
       <Helmet>
         <title>Согласие на обработку данных — Bella Hasias</title>
         <meta name="description" content="Согласие на обработку персональных данных в соответствии с ФЗ №152." />
+        <meta name="keywords" content="согласие на обработку данных, персональные данные, Bella Hasias" />
         <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:title" content="Согласие на обработку данных — Bella Hasias" />
+        <meta property="og:description" content="Согласие на обработку персональных данных в соответствии с ФЗ №152." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/consent" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Согласие на обработку данных — Bella Hasias" />
+        <meta name="twitter:description" content="Согласие на обработку персональных данных в соответствии с ФЗ №152." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/consent" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -19,7 +30,7 @@ const Consent = () => {
           ]}
         />
 
-        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-3xl mx-auto">
             <h1 className="font-display text-h1 text-foreground mb-8">
               Согласие на обработку персональных данных

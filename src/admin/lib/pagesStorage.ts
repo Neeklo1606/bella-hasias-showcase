@@ -1,21 +1,27 @@
 import type { PageItem } from "@/admin/types/page";
 import pagesSeed from "@/data/pages.json";
+import { apiGet, apiPost } from "@/admin/lib/apiClient";
 
-export const PAGES_STORAGE_KEY = "cms_pages";
+let pagesCache: PageItem[] = pagesSeed as PageItem[];
 
 export const loadPages = (): PageItem[] => {
-  try {
-    const stored = localStorage.getItem(PAGES_STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored) as PageItem[];
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch {
-    // ignore
-  }
-  return pagesSeed as PageItem[];
+  return pagesCache;
 };
 
-export const savePages = (items: PageItem[]) => {
-  localStorage.setItem(PAGES_STORAGE_KEY, JSON.stringify(items));
+export const fetchPages = async (): Promise<PageItem[]> => {
+  try {
+    const data = await apiGet<PageItem[]>("/pages");
+    if (Array.isArray(data)) {
+      pagesCache = data;
+    }
+  } catch {
+    // ignore, keep cache
+  }
+  return pagesCache;
+};
+
+export const savePages = async (items: PageItem[]) => {
+  pagesCache = items;
+  await apiPost<PageItem[], PageItem[]>("/pages", items);
+  return pagesCache;
 };

@@ -27,7 +27,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-10 md:py-14 px-6 md:px-10 lg:px-16 bg-secondary/50">
+    <footer className="py-8 md:py-12 px-5 sm:px-6 md:px-8 lg:px-12 bg-secondary/50">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-6">
@@ -35,7 +35,7 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <Link
               to="/"
-              className="inline-flex items-center transition-opacity duration-300 hover:opacity-70"
+              className="inline-flex items-center transition-opacity duration-300 hover:opacity-70 leading-none"
             >
               {logoError ? (
                 <span className="font-display text-lg font-semibold text-foreground">
@@ -43,9 +43,9 @@ const Footer = () => {
                 </span>
               ) : (
                 <img
-                  src="/logo3.png"
+                  src="/logo3.svg"
                   alt="Bella Hasias"
-                  className="h-6 w-auto"
+                  className="h-12 w-auto -ml-1 object-left"
                   onError={() => setLogoError(true)}
                 />
               )}

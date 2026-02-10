@@ -8,7 +8,18 @@ const Terms = () => {
       <Helmet>
         <title>Пользовательское соглашение — Bella Hasias</title>
         <meta name="description" content="Пользовательское соглашение сайта Bella Hasias. Условия использования услуг стилиста и контент-креатора." />
+        <meta name="keywords" content="пользовательское соглашение, условия использования, Bella Hasias" />
         <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:title" content="Пользовательское соглашение — Bella Hasias" />
+        <meta property="og:description" content="Пользовательское соглашение сайта Bella Hasias. Условия использования услуг стилиста и контент-креатора." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/terms" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Пользовательское соглашение — Bella Hasias" />
+        <meta name="twitter:description" content="Пользовательское соглашение сайта Bella Hasias. Условия использования услуг стилиста и контент-креатора." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/terms" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -19,7 +30,7 @@ const Terms = () => {
           ]}
         />
 
-        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-3xl mx-auto">
             <h1 className="font-display text-h1 text-foreground mb-8">
               Пользовательское соглашение

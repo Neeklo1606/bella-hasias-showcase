@@ -30,11 +30,11 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6 },
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 };
 
@@ -77,11 +77,11 @@ const FeaturedWorks = () => {
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-left mb-16"
         >
           <p className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-4">
             Избранное
@@ -96,7 +96,7 @@ const FeaturedWorks = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.15 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {featuredWorks.map((work, index) => (
@@ -109,12 +109,12 @@ const FeaturedWorks = () => {
               <img
                 src={work.src}
                 alt={work.title}
-                className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105 group-hover:blur-[2px]"
+                className="w-full h-full object-cover transition-transform duration-500 ease-luxury group-hover:scale-105"
                 loading="lazy"
               />
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-all duration-500 flex items-center justify-center">
-                <span className="font-display text-lg text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-colors duration-300 flex items-center justify-center">
+                <span className="font-display text-lg text-white opacity-0 group-hover:opacity-100 transition-[opacity,transform] duration-300 ease-out transform translate-y-3 group-hover:translate-y-0">
                   {work.title}
                 </span>
               </div>
@@ -124,11 +124,11 @@ const FeaturedWorks = () => {
 
         {/* View All Link */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-left mt-12"
         >
           <Link
             to="/portfolio"

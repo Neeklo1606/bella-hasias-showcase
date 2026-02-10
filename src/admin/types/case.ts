@@ -6,6 +6,7 @@ export type CaseItem = {
   serviceId: string;
   mediaIds: string[];
   tags: string[];
+  order?: number;
   createdAt: string;
   updatedAt: string;
 };

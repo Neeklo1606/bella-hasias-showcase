@@ -1,10 +1,12 @@
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft, ImageIcon } from "lucide-react";
 import Footer from "@/components/Footer";
-import { loadCases } from "@/admin/lib/casesStorage";
-import { loadServices } from "@/admin/lib/servicesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchCases, loadCases } from "@/admin/lib/casesStorage";
+import { fetchServices, loadServices } from "@/admin/lib/servicesStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchSEOConfig, loadSEOConfig } from "@/admin/lib/seoStorage";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 
 const isVideo = (src: string) =>
@@ -12,16 +14,32 @@ const isVideo = (src: string) =>
 
 const CasePage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const cases = loadCases();
-  const services = loadServices();
-  const media = loadMedia();
+  const [cases, setCases] = useState(loadCases());
+  const [services, setServices] = useState(loadServices());
+  const [media, setMedia] = useState(loadMedia());
+  const [config, setConfig] = useState(loadSEOConfig());
   const resolvedMedia = useResolvedMediaItems(media);
+  const canonical = `${config.siteUrl.replace(/\/$/, "")}/portfolio/${slug ?? ""}`;
 
-  const caseItem = cases.find((c) => c.slug === slug);
-  const service = caseItem
-    ? services.find((s) => s.id === caseItem.serviceId)
-    : null;
-  const mediaMap = new Map(resolvedMedia.map((m) => [m.id, m]));
+  useEffect(() => {
+    fetchCases().then(setCases).catch(() => undefined);
+    fetchServices().then(setServices).catch(() => undefined);
+    fetchMedia().then(setMedia).catch(() => undefined);
+    fetchSEOConfig().then(setConfig).catch(() => undefined);
+  }, []);
+
+  const caseItem = useMemo(
+    () => cases.find((c) => c.slug === slug),
+    [cases, slug]
+  );
+  const service = useMemo(
+    () => (caseItem ? services.find((s) => s.id === caseItem.serviceId) : null),
+    [caseItem, services]
+  );
+  const mediaMap = useMemo(
+    () => new Map(resolvedMedia.map((m) => [m.id, m])),
+    [resolvedMedia]
+  );
 
   if (!caseItem) {
     return (
@@ -47,6 +65,17 @@ const CasePage = () => {
       <Helmet>
         <title>{caseItem.title} — Bella Hasias | Портфолио</title>
         <meta name="description" content={caseItem.description.slice(0, 160)} />
+        <meta name="keywords" content={caseItem.tags.join(", ")} />
+        <meta property="og:title" content={`${caseItem.title} — Bella Hasias`} />
+        <meta property="og:description" content={caseItem.description.slice(0, 160)} />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${caseItem.title} — Bella Hasias`} />
+        <meta name="twitter:description" content={caseItem.description.slice(0, 160)} />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href={canonical} />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -109,6 +138,8 @@ const CasePage = () => {
                       <img
                         src={item.src}
                         alt={item.alt || caseItem.title}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover"
                       />
                     )}

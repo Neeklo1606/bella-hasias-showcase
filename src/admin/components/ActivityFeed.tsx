@@ -17,7 +17,7 @@ type ActivityFeedProps = {
 
 const typeConfig = {
   service: { label: "Услуга", icon: FileText },
-  case: { label: "Кейс", icon: Briefcase },
+  case: { label: "Портфолио", icon: Briefcase },
   banner: { label: "Баннер", icon: Image },
 } as const;
 

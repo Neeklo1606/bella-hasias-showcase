@@ -61,8 +61,8 @@ const Admin = () => {
 
       <main className="min-h-screen bg-background">
         {/* Header */}
-        <div className="fixed top-0 left-0 right-0 z-50 glass py-4">
-          <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+        <div className="fixed top-0 left-0 right-0 z-50 glass py-3">
+          <div className="max-w-6xl mx-auto px-5 sm:px-6 md:px-8 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link
                 to="/"
@@ -86,7 +86,7 @@ const Admin = () => {
         </div>
 
         {/* Content */}
-        <section className="pt-28 pb-20 px-6">
+        <section className="pt-24 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Section Header */}
             <div className="flex items-center justify-between mb-8">

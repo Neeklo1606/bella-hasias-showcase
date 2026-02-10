@@ -1,6 +1,6 @@
 export type MediaCategory =
   | "Услуги"
-  | "Кейсы"
+  | "Портфолио"
   | "Баннеры"
   | "Главная страница"
   | "Прочее";
@@ -16,7 +16,7 @@ export type MediaItem = {
 
 export const MEDIA_CATEGORIES: MediaCategory[] = [
   "Услуги",
-  "Кейсы",
+  "Портфолио",
   "Баннеры",
   "Главная страница",
   "Прочее",

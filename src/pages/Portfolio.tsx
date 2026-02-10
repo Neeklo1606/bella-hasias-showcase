@@ -3,38 +3,33 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
-import type { ComponentType } from 'react';
-
-const portfolioImages = import.meta.glob(
-  '@/assets/portfolio/IMG_*.{JPG,jpg,PNG,png,WEBP,webp}',
-  { eager: true, import: 'default' }
-) as Record<string, string>;
-
-const isPortfolioCandidate = (filename: string, src: string) => {
-  const lower = `${filename} ${src}`.toLowerCase();
-  if (lower.includes("/icons/") || lower.includes("favicon")) return false;
-  if (lower.includes("placeholder")) return false;
-  if (lower.includes("og-image") || lower.includes("hero")) return false;
-  if (lower.includes("/videos/")) return false;
-  return true;
-};
+import { fetchCases, loadCases } from '@/admin/lib/casesStorage';
+import { fetchMedia, loadMedia } from '@/admin/lib/mediaStorage';
+import { useResolvedMediaItems } from '@/hooks/use-resolved-media';
+import type { CaseItem } from '@/admin/types/case';
+import type { MediaItem } from '@/admin/types/media';
+import { buildPortfolioWorks } from '@/lib/portfolio';
+import { FlipReveal, FlipRevealItem } from '@/components/ui/flip-reveal';
 
 const Portfolio = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const allWorks = useMemo(() => {
-    const entries = Object.entries(portfolioImages)
-      .map(([path, src]) => {
-        const filename = path.split('/').pop() ?? '';
-        return {
-          id: filename,
-          src,
-          alt: filename.replace(/\.[^.]+$/, ''),
-        };
-      })
-      .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
-    return entries;
+  const [cases, setCases] = useState<CaseItem[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
+  useEffect(() => {
+    setCases(loadCases());
+    setMediaItems(loadMedia());
+    fetchCases().then(setCases).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
   }, []);
+
+  const resolvedMediaItems = useResolvedMediaItems(mediaItems);
+  const allWorks = useMemo(
+    () => buildPortfolioWorks(cases, resolvedMediaItems),
+    [cases, resolvedMediaItems]
+  );
+  const keys = useMemo(() => ["all"], []);
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -80,8 +75,14 @@ const Portfolio = () => {
         <meta name="keywords" content="портфолио стилиста, UGC-контент примеры, визуальный контент для брендов, стилист контент-креатор" />
         <meta property="og:title" content="Портфолио — Bella Hasias" />
         <meta property="og:description" content="Стилизация, UGC-контент и фотосъёмка для брендов." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/portfolio" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://bellahasias.com/portfolio" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Портфолио — Bella Hasias" />
+        <meta name="twitter:description" content="Стилизация, UGC-контент и фотосъёмка для брендов." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/portfolio" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -93,14 +94,14 @@ const Portfolio = () => {
         />
 
         {/* Content */}
-        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Page Title */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-left mb-12"
             >
               <h1 className="font-display text-h1 text-foreground">
                 Портфолио
@@ -108,35 +109,33 @@ const Portfolio = () => {
             </motion.div>
 
             {/* Works Grid */}
-            <motion.div
-              layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+            <FlipReveal
+              keys={keys}
+              showClass="block"
+              hideClass="hidden"
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"
             >
               {allWorks.map((work, index) => (
-                <motion.button
-                  key={work.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  onClick={() => openLightbox(index)}
-                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] bg-secondary min-h-[200px]"
-                >
-                  <img
-                    src={work.src}
-                    alt={work.alt}
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-all duration-500" />
-                </motion.button>
+                <FlipRevealItem key={work.id} flipKey={work.caseId} className="block">
+                  <button
+                    onClick={() => openLightbox(index)}
+                    className="group relative overflow-hidden rounded-2xl aspect-[4/5] bg-secondary min-h-[160px] w-full text-left"
+                  >
+                    <img
+                      src={work.src}
+                      alt={work.alt}
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-all duration-500" />
+                  </button>
+                </FlipRevealItem>
               ))}
-            </motion.div>
+            </FlipReveal>
 
             {allWorks.length === 0 && (
               <div className="py-16 text-center text-sm text-muted-foreground">
-                Нет фотографий в портфолио. Добавьте файлы в `src/assets/portfolio/` с префиксом `IMG_`.
+                Нет работ в портфолио. Добавьте изображения в админке: «Портфолио».
               </div>
             )}
 
@@ -145,7 +144,7 @@ const Portfolio = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-center mt-16"
+              className="text-left mt-16"
             >
               <div className="card-luxury p-8 max-w-lg mx-auto">
                 <h2 className="font-display text-2xl text-foreground mb-4">
@@ -184,10 +183,12 @@ const Portfolio = () => {
             onClick={closeLightbox}
             onTouchStart={(e) => {
               const touch = e.touches[0];
-              (e.currentTarget as any).startX = touch.clientX;
+              const target = e.currentTarget as HTMLDivElement & { startX?: number };
+              target.startX = touch.clientX;
             }}
             onTouchEnd={(e) => {
-              const startX = (e.currentTarget as any).startX;
+              const target = e.currentTarget as HTMLDivElement & { startX?: number };
+              const startX = target.startX ?? 0;
               const endX = e.changedTouches[0].clientX;
               const diff = startX - endX;
               if (Math.abs(diff) > 50) {

@@ -13,10 +13,11 @@ import { Label } from "@/components/ui/label";
 import { AnimatePresence } from "framer-motion";
 import PageCard from "@/admin/components/PageCard";
 import BlockEditor from "@/admin/components/BlockEditor";
-import { loadPages, savePages } from "@/admin/lib/pagesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchPages, loadPages, savePages } from "@/admin/lib/pagesStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 import type { PageItem, BlockItem } from "@/admin/types/page";
+import { toast } from "@/components/ui/use-toast";
 
 const generateId = () =>
   `page-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -41,30 +42,52 @@ const Pages = () => {
   useEffect(() => {
     setItems(loadPages());
     setMediaItems(loadMedia());
+    fetchPages().then(setItems).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
   }, []);
 
-  const persist = useCallback((next: PageItem[]) => {
+  const persist = useCallback(async (next: PageItem[]) => {
     setItems(next);
-    savePages(next);
+    await savePages(next);
   }, []);
+
+  const handleSaveAll = useCallback(async () => {
+    try {
+      await savePages(items);
+      toast({
+        title: "Сохранено",
+        description: "Страницы обновлены на сервере.",
+      });
+    } catch {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить страницы.",
+        variant: "destructive",
+      });
+    }
+  }, [items]);
 
   const handleEdit = (page: PageItem) => {
     setEditingPage(page);
     setEditorOpen(true);
   };
 
-  const handleBlocksChange = (blocks: BlockItem[]) => {
+  const handleBlocksChange = async (blocks: BlockItem[]) => {
     if (!editingPage) return;
     const now = new Date().toISOString();
-    persist(
+    await persist(
       items.map((p) =>
         p.id === editingPage.id ? { ...p, blocks, updatedAt: now } : p
       )
     );
     setEditingPage((prev) => (prev ? { ...prev, blocks, updatedAt: now } : null));
+    toast({
+      title: "Сохранено",
+      description: "Страница обновлена на сервере.",
+    });
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     const slug = newSlug.trim() || slugify(newTitle) || "page";
     const now = new Date().toISOString();
     const newPage: PageItem = {
@@ -74,12 +97,16 @@ const Pages = () => {
       blocks: [],
       updatedAt: now,
     };
-    persist([...items, newPage]);
+    await persist([...items, newPage]);
     setCreateOpen(false);
     setNewTitle("");
     setNewSlug("");
     setEditingPage(newPage);
     setEditorOpen(true);
+    toast({
+      title: "Сохранено",
+      description: "Страница создана на сервере.",
+    });
   };
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
@@ -93,10 +120,15 @@ const Pages = () => {
             Управление контентом страниц: блоки, порядок, видимость
           </p>
         </div>
-        <Button onClick={() => setCreateOpen(true)} className="w-fit">
-          <Plus className="mr-2 h-4 w-4" />
-          Новая страница
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" onClick={handleSaveAll}>
+            Сохранить
+          </Button>
+          <Button onClick={() => setCreateOpen(true)} className="w-fit">
+            <Plus className="mr-2 h-4 w-4" />
+            Новая страница
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -6,11 +6,12 @@ import { AnimatePresence } from "framer-motion";
 import ServiceCard from "@/admin/components/ServiceCard";
 import ServiceForm, { type ServiceFormData } from "@/admin/components/ServiceForm";
 import ConfirmDialog from "@/admin/components/ConfirmDialog";
-import { loadServices, saveServices } from "@/admin/lib/servicesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchServices, loadServices, saveServices } from "@/admin/lib/servicesStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 import type { Service } from "@/admin/types/service";
 import type { MediaItem } from "@/admin/types/media";
+import { toast } from "@/components/ui/use-toast";
 
 const generateId = () =>
   `svc-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -26,12 +27,30 @@ const Services = () => {
   useEffect(() => {
     setItems(loadServices());
     setMediaItems(loadMedia());
+    fetchServices().then(setItems).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
   }, []);
 
-  const persist = useCallback((next: Service[]) => {
+  const persist = useCallback(async (next: Service[]) => {
     setItems(next);
-    saveServices(next);
+    await saveServices(next);
   }, []);
+
+  const handleSaveAll = useCallback(async () => {
+    try {
+      await saveServices(items);
+      toast({
+        title: "Сохранено",
+        description: "Услуги обновлены на сервере.",
+      });
+    } catch {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить услуги.",
+        variant: "destructive",
+      });
+    }
+  }, [items]);
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
 
@@ -50,10 +69,10 @@ const Services = () => {
     setFormOpen(true);
   };
 
-  const handleSubmit = (data: ServiceFormData) => {
+  const handleSubmit = async (data: ServiceFormData) => {
     const now = new Date().toISOString();
     if (editingService) {
-      persist(
+      await persist(
         items.map((it) =>
           it.id === editingService.id
             ? { ...data, id: it.id, updatedAt: now }
@@ -61,11 +80,15 @@ const Services = () => {
         )
       );
     } else {
-      persist([
+      await persist([
         { ...data, id: generateId(), updatedAt: now },
         ...items,
       ]);
     }
+    toast({
+      title: "Сохранено",
+      description: "Услуга обновлена на сервере.",
+    });
     setFormOpen(false);
     setEditingService(null);
   };
@@ -91,10 +114,12 @@ const Services = () => {
           it.tags?.some((t) => t.toLowerCase().includes(q))
       );
     }
-    return [...list].sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+    return [...list].sort((a, b) => {
+      const ao = a.order ?? 0;
+      const bo = b.order ?? 0;
+      if (ao !== bo) return ao - bo;
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
   }, [items, search]);
 
   return (
@@ -106,10 +131,15 @@ const Services = () => {
             Управление услугами и связь с медиа
           </p>
         </div>
-        <Button onClick={handleCreate} className="w-fit">
-          <Plus className="mr-2 h-4 w-4" />
-          Добавить услугу
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" onClick={handleSaveAll}>
+            Сохранить
+          </Button>
+          <Button onClick={handleCreate} className="w-fit">
+            <Plus className="mr-2 h-4 w-4" />
+            Добавить услугу
+          </Button>
+        </div>
       </div>
 
       <div className="relative">

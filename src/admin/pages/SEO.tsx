@@ -6,13 +6,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import SEOForm from "@/admin/components/SEOForm";
 import {
+  fetchPages,
   loadPages,
   savePages,
 } from "@/admin/lib/pagesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
-import { loadCases } from "@/admin/lib/casesStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchCases, loadCases } from "@/admin/lib/casesStorage";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 import {
+  fetchSEOConfig,
   loadSEOConfig,
   saveSEOConfig,
   type SEOConfig,
@@ -20,6 +22,7 @@ import {
 import { downloadSitemap } from "@/admin/lib/sitemapGenerator";
 import { downloadRobots } from "@/admin/lib/robotsGenerator";
 import type { PageItem, PageSEO } from "@/admin/types/page";
+import { toast } from "@/components/ui/use-toast";
 
 const GOOGLE_VALIDATOR = "https://search.google.com/test/rich-results";
 const YANDEX_WEBMASTER = "https://webmaster.yandex.ru/";
@@ -34,24 +37,44 @@ const SEO = () => {
     setPages(loadPages());
     setMediaItems(loadMedia());
     setSiteUrl(loadSEOConfig().siteUrl);
+    fetchPages().then(setPages).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
+    fetchSEOConfig().then((cfg) => setSiteUrl(cfg.siteUrl)).catch(() => undefined);
+    fetchCases().catch(() => undefined);
   }, []);
 
-  const persist = useCallback((next: PageItem[]) => {
+  const persist = useCallback(async (next: PageItem[]) => {
     setPages(next);
-    savePages(next);
+    await savePages(next);
   }, []);
 
   const handleSaveSEO = useCallback(
-    (pageId: string, seo: PageSEO) => {
-      persist(
+    async (pageId: string, seo: PageSEO) => {
+      await persist(
         pages.map((p) => (p.id === pageId ? { ...p, seo } : p))
       );
+      toast({
+        title: "Сохранено",
+        description: "SEO страницы обновлено на сервере.",
+      });
     },
     [pages, persist]
   );
 
-  const handleSaveSiteUrl = () => {
-    saveSEOConfig({ siteUrl: siteUrl.trim() || "https://example.com" });
+  const handleSaveSiteUrl = async () => {
+    try {
+      await saveSEOConfig({ siteUrl: siteUrl.trim() || "https://example.com" });
+      toast({
+        title: "Сохранено",
+        description: "Site URL обновлён на сервере.",
+      });
+    } catch {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить Site URL.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDownloadSitemap = () => {

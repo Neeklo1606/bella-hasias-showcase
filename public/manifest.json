@@ -12,9 +12,9 @@
   "categories": ["lifestyle", "business"],
   "icons": [
     {
-      "src": "/logo3.png",
-      "sizes": "512x512",
-      "type": "image/png",
+      "src": "/logo3.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any"
     }
   ]

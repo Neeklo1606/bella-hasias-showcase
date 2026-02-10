@@ -28,14 +28,25 @@ const Navigation = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Lock body scroll without layout shift: fix body position and restore on close
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!isMobileMenuOpen) return;
+    const scrollY = window.scrollY;
+    const style = document.body.style;
+    style.overflow = 'hidden';
+    style.position = 'fixed';
+    style.top = `-${scrollY}px`;
+    style.left = '0';
+    style.right = '0';
+    style.width = '100%';
     return () => {
-      document.body.style.overflow = '';
+      style.overflow = '';
+      style.position = '';
+      style.top = '';
+      style.left = '';
+      style.right = '';
+      style.width = '';
+      window.scrollTo(0, scrollY);
     };
   }, [isMobileMenuOpen]);
 
@@ -48,20 +59,20 @@ const Navigation = () => {
   const menuVariants = {
     closed: {
       opacity: 0,
-      transition: { duration: 0.3 }
+      transition: { duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }
     },
     open: {
       opacity: 1,
-      transition: { duration: 0.3 }
+      transition: { duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }
     }
   };
 
   const linkVariants = {
-    closed: { opacity: 0, x: -20 },
+    closed: { opacity: 0, x: -16 },
     open: (i: number) => ({
       opacity: 1,
       x: 0,
-      transition: { delay: 0.1 + i * 0.1, duration: 0.4 }
+      transition: { delay: 0.05 + i * 0.06, duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
     })
   };
 
@@ -69,17 +80,14 @@ const Navigation = () => {
     <>
       {/* Main Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
-          scrolled 
-            ? 'glass py-4' 
-            : 'bg-transparent py-6'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-[1000] transition-[background-color,box-shadow] duration-300 py-4 ${scrolled ? 'glass md:py-3' : 'bg-transparent md:py-5'}`}
+        style={{ paddingLeft: 'max(1.25rem, env(safe-area-inset-left))', paddingRight: 'max(1.25rem, env(safe-area-inset-right))' }}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-12">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-8 flex items-center justify-between h-11 sm:h-12 min-h-[44px]">
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center transition-opacity duration-300 hover:opacity-70"
+            className="flex items-center transition-opacity duration-300 hover:opacity-70 leading-none"
           >
             {logoError ? (
               <span className="font-display text-xl font-semibold text-foreground">
@@ -87,9 +95,9 @@ const Navigation = () => {
               </span>
             ) : (
               <img
-                src="/logo3.png"
+                src="/logo3.svg"
                 alt="Bella Hasias"
-                className="h-6 sm:h-7 w-auto"
+                className="h-12 w-auto -ml-1 object-left"
                 onError={() => setLogoError(true)}
               />
             )}
@@ -144,8 +152,18 @@ const Navigation = () => {
             animate="open"
             exit="closed"
             className="md:hidden fixed inset-0 z-[999] bg-background/98 backdrop-blur-xl"
+            style={{
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              paddingTop: 'env(safe-area-inset-top)',
+              paddingBottom: 'env(safe-area-inset-bottom)',
+              paddingLeft: 'max(2.5rem, env(safe-area-inset-left))',
+              paddingRight: 'max(2.5rem, env(safe-area-inset-right))',
+            }}
           >
-            <div className="flex flex-col items-start justify-center min-h-screen px-10 pt-24 pb-10">
+            <div className="flex flex-col items-start justify-center min-h-full pt-24 pb-10">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}

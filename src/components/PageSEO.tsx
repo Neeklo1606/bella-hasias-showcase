@@ -1,7 +1,9 @@
+import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { loadPages } from "@/admin/lib/pagesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
-import { loadSEOConfig } from "@/admin/lib/seoStorage";
+import { fetchPages, loadPages } from "@/admin/lib/pagesStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchSEOConfig, loadSEOConfig } from "@/admin/lib/seoStorage";
+import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 
 type PageSEOProps = {
   slug: string;
@@ -13,23 +15,32 @@ type PageSEOProps = {
 };
 
 const PageSEO = ({ slug, fallback }: PageSEOProps) => {
-  const pages = loadPages();
-  const config = loadSEOConfig();
-  const media = loadMedia();
+  const [pages, setPages] = useState(loadPages());
+  const [config, setConfig] = useState(loadSEOConfig());
+  const [media, setMedia] = useState(loadMedia());
+  const resolvedMediaItems = useResolvedMediaItems(media);
 
-  const page = pages.find((p) => p.slug === slug);
+  useEffect(() => {
+    fetchPages().then(setPages).catch(() => undefined);
+    fetchMedia().then(setMedia).catch(() => undefined);
+    fetchSEOConfig().then(setConfig).catch(() => undefined);
+  }, []);
+
+  const page = useMemo(() => pages.find((p) => p.slug === slug), [pages, slug]);
   const seo = page?.seo;
 
   const title = seo?.metaTitle || fallback?.title || "Bella Hasias";
   const description = seo?.metaDescription || fallback?.description || "";
   const ogImageId = seo?.ogImageId;
-  const mediaItem = ogImageId ? media.find((m) => m.id === ogImageId) : null;
+  const mediaItem = ogImageId
+    ? resolvedMediaItems.find((m) => m.id === ogImageId)
+    : null;
   const base = config.siteUrl.replace(/\/$/, "");
-  const ogImage = mediaItem?.src?.startsWith("http")
-    ? mediaItem.src
-    : mediaItem?.src
-      ? `${base}${mediaItem.src.startsWith("/") ? "" : "/"}${mediaItem.src}`
-      : fallback?.image || `${base}/og-image.jpg`;
+  const ogImage = mediaItem?.src
+    ? mediaItem.src.startsWith("http")
+      ? mediaItem.src
+      : `${base}${mediaItem.src.startsWith("/") ? "" : "/"}${mediaItem.src}`
+    : fallback?.image || `${base}/og-image.jpg`;
 
   const robots = seo?.index === false ? "noindex, nofollow" : "index, follow";
   const url = slug === "home" ? config.siteUrl : `${config.siteUrl}/${slug}`;

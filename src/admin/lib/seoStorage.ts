@@ -1,24 +1,31 @@
 import seoSeed from "@/data/seo.json";
+import { apiGet, apiPost } from "@/admin/lib/apiClient";
 
 export type SEOConfig = {
   siteUrl: string;
 };
 
-const SEO_STORAGE_KEY = "cms_seo_config";
+let seoCache = seoSeed as SEOConfig;
 
 export const loadSEOConfig = (): SEOConfig => {
-  try {
-    const stored = localStorage.getItem(SEO_STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored) as SEOConfig;
-      if (parsed?.siteUrl) return parsed;
-    }
-  } catch {
-    // ignore
-  }
-  return seoSeed as SEOConfig;
+  return seoCache;
 };
 
-export const saveSEOConfig = (config: SEOConfig) => {
-  localStorage.setItem(SEO_STORAGE_KEY, JSON.stringify(config));
+export const fetchSEOConfig = async (): Promise<SEOConfig> => {
+  try {
+    const data = await apiGet<SEOConfig | SEOConfig[]>("/seo");
+    const config = Array.isArray(data) ? data[0] : data;
+    if (config?.siteUrl) {
+      seoCache = config;
+    }
+  } catch {
+    // ignore, keep cache
+  }
+  return seoCache;
+};
+
+export const saveSEOConfig = async (config: SEOConfig) => {
+  seoCache = config;
+  await apiPost<SEOConfig, SEOConfig>("/seo", config);
+  return seoCache;
 };

@@ -24,6 +24,17 @@ const ServiceStylist = () => {
           name="description"
           content="Персональная стилизация от Bella Hasias. Подбор образов, консультации по стилю, разбор гардероба. От 5000 ₽ за сессию."
         />
+        <meta name="keywords" content="стилист, персональная стилизация, разбор гардероба, консультации по стилю, Bella Hasias" />
+        <meta property="og:title" content="Стилист | Bella Hasias" />
+        <meta property="og:description" content="Персональная стилизация от Bella Hasias. Подбор образов, консультации по стилю, разбор гардероба. От 5000 ₽ за сессию." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/services/stylist" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Стилист | Bella Hasias" />
+        <meta name="twitter:description" content="Персональная стилизация от Bella Hasias. Подбор образов, консультации по стилю, разбор гардероба. От 5000 ₽ за сессию." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/services/stylist" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -35,7 +46,7 @@ const ServiceStylist = () => {
           ]}
         />
         
-        <section className="section-luxury pt-32 md:pt-36">
+        <section className="section-luxury pt-24 md:pt-28">
           <div className="container-luxury">
             <Link
               to="/#services"
@@ -56,6 +67,8 @@ const ServiceStylist = () => {
                 <img
                   src={stylistImage}
                   alt="Персональный стилист"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[400px] md:h-[550px] object-cover"
                 />
               </motion.div>

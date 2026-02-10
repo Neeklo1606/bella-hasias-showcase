@@ -83,14 +83,14 @@ const Contacts = () => {
         />
 
         {/* Content */}
-        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-5xl mx-auto">
             {/* Page Title */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-16"
+              className="text-left mb-16"
             >
               <h1 className="font-display text-h1 text-foreground">
                 Контакты

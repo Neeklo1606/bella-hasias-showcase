@@ -7,7 +7,7 @@ const navItems: SidebarItem[] = [
   { label: "Dashboard", to: "/admin/dashboard" },
   { label: "Медиа", to: "/admin/media" },
   { label: "Услуги", to: "/admin/services" },
-  { label: "Кейсы", to: "/admin/cases" },
+  { label: "Портфолио", to: "/admin/cases" },
   { label: "Страницы", to: "/admin/pages" },
   { label: "SEO", to: "/admin/seo" },
   { label: "Статистика", to: "/admin/stats" },

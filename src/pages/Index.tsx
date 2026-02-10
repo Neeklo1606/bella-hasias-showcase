@@ -2,7 +2,6 @@ import PageSEO from '@/components/PageSEO';
 import Hero from '@/components/Hero';
 import PortfolioSection from '@/components/PortfolioSection';
 import ServicesSection from '@/components/ServicesSection';
-import TelegramCTA from '@/components/TelegramCTA';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
@@ -22,7 +21,6 @@ const Index = () => {
         <Hero />
         <ServicesSection />
         <PortfolioSection />
-        <TelegramCTA />
         <ContactSection />
         <Footer />
       </main>

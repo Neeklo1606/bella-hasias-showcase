@@ -1,21 +1,27 @@
 import type { CaseItem } from "@/admin/types/case";
 import casesSeed from "@/data/cases.json";
+import { apiGet, apiPost } from "@/admin/lib/apiClient";
 
-export const CASES_STORAGE_KEY = "cms_cases";
+let casesCache: CaseItem[] = casesSeed as CaseItem[];
 
 export const loadCases = (): CaseItem[] => {
-  try {
-    const stored = localStorage.getItem(CASES_STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored) as CaseItem[];
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch {
-    // ignore
-  }
-  return casesSeed as CaseItem[];
+  return casesCache;
 };
 
-export const saveCases = (items: CaseItem[]) => {
-  localStorage.setItem(CASES_STORAGE_KEY, JSON.stringify(items));
+export const fetchCases = async (): Promise<CaseItem[]> => {
+  try {
+    const data = await apiGet<CaseItem[]>("/cases");
+    if (Array.isArray(data)) {
+      casesCache = data;
+    }
+  } catch {
+    // ignore, keep cache
+  }
+  return casesCache;
+};
+
+export const saveCases = async (items: CaseItem[]) => {
+  casesCache = items;
+  await apiPost<CaseItem[], CaseItem[]>("/cases", items);
+  return casesCache;
 };

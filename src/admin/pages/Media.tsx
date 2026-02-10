@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import MediaUploader from "@/admin/components/MediaUploader";
 import MediaFilter from "@/admin/components/MediaFilter";
 import MediaGrid from "@/admin/components/MediaGrid";
@@ -10,20 +10,11 @@ import {
   type MediaItem,
   type MediaCategory,
 } from "@/admin/types/media";
-import { loadMedia, saveMedia } from "@/admin/lib/mediaStorage";
-import {
-  deleteMediaFile,
-  getIdbMediaId,
-  isIdbMedia,
-  saveMediaFile,
-} from "@/lib/mediaFilesStorage";
+import { fetchMedia, loadMedia, saveMedia, uploadMediaFile, deleteMediaItem } from "@/admin/lib/mediaStorage";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 
 const generateId = () =>
   `m-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
-const isVideo = (filename: string) =>
-  /\.(mp4|webm)$/i.test(filename);
 
 const readFileAsDataUrl = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -42,89 +33,60 @@ const Media = () => {
 
   useEffect(() => {
     setItems(loadMedia());
+    fetchMedia().then(setItems).catch(() => undefined);
   }, []);
 
-  const persist = useCallback((next: MediaItem[]) => {
+  const persist = useCallback(async (next: MediaItem[]) => {
     setItems(next);
-    saveMedia(next);
+    await saveMedia(next);
   }, []);
 
-  const handleSaveAll = useCallback(() => {
-    saveMedia(items);
-    toast({
-      title: "Сохранено",
-      description: "Медиа обновлено в админке.",
-    });
+  const handleSaveAll = useCallback(async () => {
+    try {
+      await saveMedia(items);
+      toast({
+        title: "Сохранено",
+        description: "Медиа обновлено в админке.",
+      });
+    } catch {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить медиа.",
+        variant: "destructive",
+      });
+    }
   }, [items]);
-
-  const [videoObjectUrls, setVideoObjectUrls] = useState<Record<string, string>>({});
-  const videoUrlsRef = useRef(videoObjectUrls);
-  videoUrlsRef.current = videoObjectUrls;
 
   const handleFilesSelected = useCallback(
     async (files: File[]) => {
       const created: MediaItem[] = [];
-      const newVideoUrls: Record<string, string> = {};
 
       for (const file of files) {
-        const id = generateId();
-        const filename = file.name;
-        const createdAt = new Date().toISOString();
-
-        if (isVideo(filename)) {
-          const src = `/uploads/${filename}`;
-          const objectUrl = URL.createObjectURL(file);
-          newVideoUrls[id] = objectUrl;
-          created.push({
-            id,
-            filename,
-            src,
-            category: "Прочее",
-            alt: filename.replace(/\.[^.]+$/, ""),
-            createdAt,
-          });
-        } else {
+        try {
+          const uploaded = await uploadMediaFile(file, "Прочее", file.name.replace(/\.[^.]+$/, ""));
+          created.push(uploaded);
+        } catch {
           try {
-            const src = `idb://${id}`;
-            await saveMediaFile(id, file);
+            const src = await readFileAsDataUrl(file);
             created.push({
-              id,
-              filename,
+              id: generateId(),
+              filename: file.name,
               src,
               category: "Прочее",
-              alt: filename.replace(/\.[^.]+$/, ""),
-              createdAt,
+              alt: file.name.replace(/\.[^.]+$/, ""),
+              createdAt: new Date().toISOString(),
             });
           } catch {
-            try {
-              const src = await readFileAsDataUrl(file);
-              created.push({
-                id,
-                filename,
-                src,
-                category: "Прочее",
-                alt: filename.replace(/\.[^.]+$/, ""),
-                createdAt,
-              });
-            } catch {
-              continue;
-            }
+            continue;
           }
         }
       }
       if (created.length) {
-        setVideoObjectUrls((prev) => ({ ...prev, ...newVideoUrls }));
         persist([...created, ...items]);
       }
     },
     [items, persist]
   );
-
-  useEffect(() => {
-    return () => {
-      Object.values(videoUrlsRef.current).forEach(URL.revokeObjectURL);
-    };
-  }, []);
 
   const handleEdit = useCallback((item: MediaItem) => {
     setEditingItem(item);
@@ -145,22 +107,17 @@ const Media = () => {
   );
 
   const handleDelete = useCallback(
-    (id: string) => {
-      const target = items.find((it) => it.id === id);
-      if (target?.src && isIdbMedia(target.src)) {
-        deleteMediaFile(getIdbMediaId(target.src)).catch(() => undefined);
-      }
-      if (videoObjectUrls[id]) {
-        URL.revokeObjectURL(videoObjectUrls[id]);
-        setVideoObjectUrls((prev) => {
-          const next = { ...prev };
-          delete next[id];
-          return next;
-        });
+    async (id: string) => {
+      try {
+        if (!id.startsWith("static-")) {
+          await deleteMediaItem(id);
+        }
+      } catch {
+        // ignore
       }
       persist(items.filter((it) => it.id !== id));
     },
-    [items, persist, videoObjectUrls]
+    [items, persist]
   );
 
   const handleCategoryChange = useCallback(
@@ -196,13 +153,7 @@ const Media = () => {
       );
   }, [items, resolvedItems, search, category]);
 
-  const displayItems = useMemo(
-    () =>
-      filtered.map((it) =>
-        videoObjectUrls[it.id] ? { ...it, src: videoObjectUrls[it.id] } : it
-      ),
-    [filtered, videoObjectUrls]
-  );
+  const displayItems = useMemo(() => filtered, [filtered]);
 
   return (
     <div className="space-y-6">

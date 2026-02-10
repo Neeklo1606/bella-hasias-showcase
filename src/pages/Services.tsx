@@ -1,22 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-
-// User's own photos
-import heroLeft from '@/assets/hero/hero-left.jpg';
-import heroCenter from '@/assets/hero/hero-center.jpg';
-import heroRight from '@/assets/hero/hero-right.jpg';
-import photo3 from '@/assets/hero/photo-3.jpg';
-import user1 from '@/assets/portfolio/user-1.jpg';
-import user2 from '@/assets/portfolio/user-2.jpg';
-import ugcPreview from '@/assets/portfolio/IMG_1082.JPG';
-import aiPreview from '@/assets/portfolio/IMG_1559.JPG';
+import { fetchServices, loadServices } from '@/admin/lib/servicesStorage';
+import { fetchMedia, loadMedia } from '@/admin/lib/mediaStorage';
+import { useResolvedMediaItems } from '@/hooks/use-resolved-media';
+import type { Service } from '@/admin/types/service';
+import type { MediaItem } from '@/admin/types/media';
 
 type ServiceCategory = "stylist" | "creator";
 
@@ -25,71 +20,6 @@ const categoryLabels: Record<ServiceCategory, string> = {
   creator: "Креатор",
 };
 
-// All services with categories
-const allServices: Array<{
-  id: string;
-  title: string;
-  image: string;
-  href: string;
-  category: ServiceCategory;
-}> = [
-  {
-    id: 'brand-styling',
-    title: 'Стилизация съёмки',
-    image: heroLeft,
-    href: '/services/brand-styling',
-    category: "stylist",
-  },
-  {
-    id: 'wardrobe-audit',
-    title: 'Разбор гардероба',
-    image: heroCenter,
-    href: '/services/wardrobe-audit',
-    category: "stylist",
-  },
-  {
-    id: 'personal-shopping',
-    title: 'Персональный шоппинг',
-    image: heroRight,
-    href: '/services/personal-shopping',
-    category: "stylist",
-  },
-  {
-    id: 'capsule-wardrobe',
-    title: 'Капсульный гардероб',
-    image: photo3,
-    href: '/services/capsule-wardrobe',
-    category: "stylist",
-  },
-  {
-    id: 'event-look',
-    title: 'Образ на мероприятие',
-    image: user1,
-    href: '/services/event-look',
-    category: "stylist",
-  },
-  {
-    id: 'client-shoot',
-    title: 'Съёмка для клиента',
-    image: user2,
-    href: '/services/client-shoot',
-    category: "creator",
-  },
-  {
-    id: 'ugc-content',
-    title: 'UGC-контент',
-    image: ugcPreview,
-    href: '/services/ugc',
-    category: "creator",
-  },
-  {
-    id: 'ai-content',
-    title: 'AI-контент',
-    image: aiPreview,
-    href: '/services/ai-content',
-    category: "creator",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -115,11 +45,43 @@ const itemVariants = {
 const Services = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>("stylist");
+  const [services, setServices] = useState<Service[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
 
-  const filteredServices = useMemo(
-    () => allServices.filter((service) => service.category === activeCategory),
-    [activeCategory]
+  useEffect(() => {
+    setServices(loadServices());
+    setMediaItems(loadMedia());
+    fetchServices().then(setServices).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
+  }, []);
+
+  const resolvedMediaItems = useResolvedMediaItems(mediaItems);
+  const mediaMap = useMemo(
+    () => new Map(resolvedMediaItems.map((m) => [m.id, m])),
+    [resolvedMediaItems]
   );
+
+  const filteredServices = useMemo(() => {
+    return services
+      .filter((service) => (service.category ?? "stylist") === activeCategory)
+      .sort((a, b) => {
+        const ao = a.order ?? 0;
+        const bo = b.order ?? 0;
+        if (ao !== bo) return ao - bo;
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      })
+      .map((service) => {
+        const media =
+          mediaMap.get(service.imageId) ||
+          (service.coverId ? mediaMap.get(service.coverId) : undefined);
+        return {
+          id: service.id,
+          title: service.title,
+          image: media?.src ?? "/placeholder.svg",
+          href: service.ctaLink || "/contacts",
+        };
+      });
+  }, [services, activeCategory, mediaMap]);
 
   return (
     <>
@@ -129,8 +91,14 @@ const Services = () => {
         <meta name="keywords" content="стилист для бренда, стилист на съёмку, персональный шоппинг, визуальный контент для брендов, UGC-контент Москва, стилист контент-креатор" />
         <meta property="og:title" content="Услуги стилиста и контент-креатора — Bella Hasias" />
         <meta property="og:description" content="Стилизация съёмок, персональный шоппинг, UGC-контент и визуальный контент для брендов в Москве." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/services" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://bellahasias.com/services" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Услуги стилиста и контент-креатора — Bella Hasias" />
+        <meta name="twitter:description" content="Стилизация съёмок, персональный шоппинг, UGC-контент и визуальный контент для брендов в Москве." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/services" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -142,14 +110,14 @@ const Services = () => {
         />
 
         {/* Content */}
-        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Page Title */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-left mb-12"
             >
               <h1 className="font-display text-h1 text-foreground">
                 Услуги
@@ -157,7 +125,7 @@ const Services = () => {
             </motion.div>
 
             {/* Category switcher */}
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-start mb-10">
               <ToggleGroup
                 type="single"
                 value={activeCategory}
@@ -205,7 +173,7 @@ const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-center mt-16"
+              className="text-left mt-16"
             >
               <a
                 href="https://t.me/Bella_hasias"

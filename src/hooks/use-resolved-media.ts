@@ -52,9 +52,11 @@ export const useResolvedMediaItems = (items: MediaItem[]) => {
 
   return useMemo(
     () =>
-      items.map((item) =>
-        objectUrls[item.id] ? { ...item, src: objectUrls[item.id] } : item
-      ),
+      items.map((item) => {
+        if (objectUrls[item.id]) return { ...item, src: objectUrls[item.id] };
+        if (isIdbMedia(item.src)) return { ...item, src: "" };
+        return item;
+      }),
     [items, objectUrls]
   );
 };

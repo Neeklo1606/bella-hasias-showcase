@@ -25,9 +25,17 @@ const VKLanding = () => {
       <Helmet>
         <title>Bella Hasias | Стилист и UGC-креатор</title>
         <meta name="description" content="Высококлассный визуальный контент в Москве. Стилизация, UGC, фотосъёмка." />
+        <meta name="keywords" content="стилист, ugc, фотосъемка, контент, Bella Hasias" />
         <meta property="og:title" content="Bella Hasias — Стилист и UGC-креатор" />
         <meta property="og:description" content="Высококлассный визуальный контент в Москве" />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/vk" />
         <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Bella Hasias — Стилист и UGC-креатор" />
+        <meta name="twitter:description" content="Высококлассный визуальный контент в Москве" />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/vk" />
       </Helmet>
 
       <main className="min-h-screen bg-background">

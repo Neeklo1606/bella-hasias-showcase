@@ -23,7 +23,12 @@ npm run build
 
 # Предпросмотр собранного проекта
 npm run preview
+
+# Проверка перед деплоем (lint + typecheck + build)
+npm run predeploy
 ```
+
+Подробный чек-лист и шаги деплоя — в [DEPLOY.md](./DEPLOY.md).
 
 ## Админ-панель
 

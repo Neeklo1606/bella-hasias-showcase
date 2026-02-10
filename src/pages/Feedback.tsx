@@ -60,6 +60,17 @@ const Feedback = () => {
       <Helmet>
         <title>Обратная связь — Bella Hasias</title>
         <meta name="description" content="Форма обратной связи. Свяжитесь с Bella Hasias для заказа услуг стилиста или контент-креатора." />
+        <meta name="keywords" content="обратная связь, контакты, стилист, контент-креатор, Bella Hasias" />
+        <meta property="og:title" content="Обратная связь — Bella Hasias" />
+        <meta property="og:description" content="Форма обратной связи. Свяжитесь с Bella Hasias для заказа услуг стилиста или контент-креатора." />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/feedback" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Обратная связь — Bella Hasias" />
+        <meta name="twitter:description" content="Форма обратной связи. Свяжитесь с Bella Hasias для заказа услуг стилиста или контент-креатора." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/feedback" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -70,7 +81,7 @@ const Feedback = () => {
           ]}
         />
 
-        <section className="pt-32 md:pt-36 pb-20 px-6 md:px-10">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <div className="max-w-xl mx-auto">
             <h1 className="font-display text-h1 text-foreground mb-8 text-center">
               Обратная связь

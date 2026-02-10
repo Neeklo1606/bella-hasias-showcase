@@ -7,36 +7,9 @@ const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-
   // User's own video
   const videoUrl = "/videos/hero-video.mp4";
   const videoPoster = "/og-image.jpg";
-
-  useEffect(() => {
-    const win = window as Window & typeof globalThis & {
-      requestIdleCallback?: (callback: IdleRequestCallback) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-    let idleHandle: number | undefined;
-    let timeoutHandle: number | undefined;
-    const loadVideo = () => setShouldLoadVideo(true);
-
-    if (win.requestIdleCallback) {
-      idleHandle = win.requestIdleCallback(loadVideo);
-    } else {
-      timeoutHandle = window.setTimeout(loadVideo, 600);
-    }
-
-    return () => {
-      if (idleHandle !== undefined && win.cancelIdleCallback) {
-        win.cancelIdleCallback(idleHandle);
-      }
-      if (timeoutHandle) {
-        window.clearTimeout(timeoutHandle);
-      }
-    };
-  }, []);
 
   // Close modal with escape key
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -74,26 +47,8 @@ const Hero = () => {
     <section className="relative bg-background overflow-hidden lg:min-h-[90vh]">
       <div className="relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch">
-          {/* Mobile media (separate block) */}
-          <div className="order-1 lg:hidden relative h-[58vh] sm:h-[70vh]">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              poster={videoPoster}
-              className="h-full w-full object-cover"
-            >
-              <source src={videoUrl} type="video/mp4" />
-            </video>
-            {/* Overlay for readability */}
-            <div className="absolute inset-0 bg-black/25" />
-            {/* Subtle gradient to blend with page background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-background/90" />
-          </div>
           {/* Left - Typography */}
-          <div className="order-2 lg:order-1 py-12 lg:py-0 px-6 md:px-12 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-12 pt-12 sm:pt-14 lg:pt-20">
+          <div className="order-2 lg:order-1 px-5 sm:px-6 md:px-8 lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-10 pt-14 sm:pt-16 lg:pt-20 pb-12 lg:pb-0 text-left">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -107,11 +62,9 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="font-sans lg:font-display text-display text-foreground mb-8 mt-6 sm:mt-8"
+              className="font-sans lg:font-display text-display text-foreground mb-8 mt-6 sm:mt-8 leading-[0.95]"
             >
-              Bella
-              <br />
-              Hasias
+              Bella Hasias
             </motion.h1>
 
             <motion.p
@@ -120,7 +73,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="font-sans text-lg text-muted-foreground max-w-md mb-10 leading-relaxed"
             >
-              Услуги стилиста в Москве. Консультации по стилю, шоппинг сопровождение и разбору гардероба.
+              Услуги стилиста в Москве. Консультации, шоппинг сопровождение и разбор гардероба.
             </motion.p>
 
             <motion.div
@@ -146,26 +99,26 @@ const Hero = () => {
 
           </div>
 
-          {/* Right - Video (Desktop only) */}
+          {/* Right - Video */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="order-1 lg:order-2 hidden lg:block relative"
+            className="order-1 lg:order-2 relative"
           >
-            <div className="relative overflow-hidden h-[90vh]">
-              {/* Video Element with lazy loading */}
+            <div className="relative overflow-hidden h-[58vh] sm:h-[70vh] lg:h-[90vh]">
+              {/* Video Element */}
               <video
                 ref={videoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
-                preload="none"
+                preload="auto"
                 poster={videoPoster}
                 className="w-full h-full object-cover"
               >
-                {shouldLoadVideo && <source src={videoUrl} type="video/mp4" />}
+                <source src={videoUrl} type="video/mp4" />
               </video>
               
               {/* Gradient overlay for text readability */}

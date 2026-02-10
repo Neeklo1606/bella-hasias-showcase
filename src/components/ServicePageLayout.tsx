@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Send } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
+import { useLocation } from 'react-router-dom';
+import { fetchSEOConfig, loadSEOConfig } from '@/admin/lib/seoStorage';
 
 interface ServicePageLayoutProps {
   title: string;
@@ -32,6 +35,13 @@ const ServicePageLayout = ({
     telegram: '',
     comment: '',
   });
+  const location = useLocation();
+  const [config, setConfig] = useState(loadSEOConfig());
+  const canonical = `${config.siteUrl.replace(/\/$/, "")}${location.pathname}`;
+
+  useEffect(() => {
+    fetchSEOConfig().then(setConfig).catch(() => undefined);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,10 +58,13 @@ const ServicePageLayout = ({
         <meta property="og:title" content={`${title} — Bella Hasias`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={canonical} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} — Bella Hasias`} />
         <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <link rel="canonical" href={canonical} />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -64,7 +77,7 @@ const ServicePageLayout = ({
         />
 
         {/* Hero Section - Full Width Image */}
-        <section className="pt-28 md:pt-32">
+        <section className="pt-24 md:pt-28">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -82,7 +95,7 @@ const ServicePageLayout = ({
         </section>
 
         {/* Content Section */}
-        <section className="py-12 md:py-16 px-6 md:px-10">
+        <section className="py-10 md:py-14 px-5 sm:px-6 md:px-8">
           <div className="max-w-3xl mx-auto">
             {/* Title */}
             <motion.h1

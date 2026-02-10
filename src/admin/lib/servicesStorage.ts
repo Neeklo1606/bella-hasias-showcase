@@ -1,7 +1,6 @@
 import type { Service } from "@/admin/types/service";
 import servicesSeed from "@/data/services.json";
-
-export const SERVICES_STORAGE_KEY = "cms_services";
+import { apiGet, apiPost } from "@/admin/lib/apiClient";
 
 const normalizeCategory = (category?: string) => {
   switch (category) {
@@ -17,27 +16,35 @@ const normalizeCategory = (category?: string) => {
   }
 };
 
+let servicesCache: Service[] = (servicesSeed as Service[]).map((item) => ({
+  ...item,
+  category: normalizeCategory(item.category),
+}));
+
 export const loadServices = (): Service[] => {
+  return servicesCache;
+};
+
+export const fetchServices = async (): Promise<Service[]> => {
   try {
-    const stored = localStorage.getItem(SERVICES_STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored) as Service[];
-      if (Array.isArray(parsed)) {
-        return parsed.map((item) => ({
-          ...item,
-          category: normalizeCategory(item.category),
-        }));
-      }
+    const data = await apiGet<Service[]>("/services");
+    if (Array.isArray(data)) {
+      servicesCache = data.map((item) => ({
+        ...item,
+        category: normalizeCategory(item.category),
+      }));
     }
   } catch {
-    // ignore
+    // ignore, keep cache
   }
-  return (servicesSeed as Service[]).map((item) => ({
+  return servicesCache;
+};
+
+export const saveServices = async (items: Service[]) => {
+  servicesCache = items.map((item) => ({
     ...item,
     category: normalizeCategory(item.category),
   }));
-};
-
-export const saveServices = (items: Service[]) => {
-  localStorage.setItem(SERVICES_STORAGE_KEY, JSON.stringify(items));
+  await apiPost<Service[], Service[]>("/services", servicesCache);
+  return servicesCache;
 };

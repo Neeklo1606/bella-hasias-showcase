@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Briefcase,
@@ -14,10 +15,11 @@ import RecentMedia from "@/admin/components/RecentMedia";
 import type { MediaItem } from "@/admin/types/media";
 import ActivityFeed, { ActivityItem } from "@/admin/components/ActivityFeed";
 import { useAuth } from "@/admin/hooks/useAuth";
-import { loadServices } from "@/admin/lib/servicesStorage";
-import { loadCases } from "@/admin/lib/casesStorage";
+import { fetchServices, loadServices } from "@/admin/lib/servicesStorage";
+import { fetchCases, loadCases } from "@/admin/lib/casesStorage";
 import bannersData from "@/data/banners.json";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { fetchMedia, loadMedia } from "@/admin/lib/mediaStorage";
+import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 
 type BannerJson = { id: string; title: string; updatedAt: string };
 
@@ -59,10 +61,17 @@ const buildActivityItems = (
 const Dashboard = () => {
   const { user } = useAuth();
   const greeting = getGreeting();
-  const services = loadServices();
-  const cases = loadCases();
-  const media = loadMedia();
+  const [services, setServices] = useState(loadServices());
+  const [cases, setCases] = useState(loadCases());
+  const [media, setMedia] = useState(loadMedia());
+  const resolvedMedia = useResolvedMediaItems(media);
   const activityItems = buildActivityItems(services, cases);
+
+  useEffect(() => {
+    fetchServices().then(setServices).catch(() => undefined);
+    fetchCases().then(setCases).catch(() => undefined);
+    fetchMedia().then(setMedia).catch(() => undefined);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -90,7 +99,7 @@ const Dashboard = () => {
           icon={FileText}
         />
         <DashboardCard
-          title="Кейсы"
+          title="Портфолио"
           value={cases.length}
           icon={Briefcase}
         />
@@ -128,7 +137,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent media */}
-      <RecentMedia items={media} limit={4} />
+        <RecentMedia items={resolvedMedia} limit={4} />
     </div>
   );
 };

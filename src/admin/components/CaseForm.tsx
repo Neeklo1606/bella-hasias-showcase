@@ -49,6 +49,7 @@ const emptyForm: CaseFormData = {
   serviceId: "",
   mediaIds: [],
   tags: [],
+  order: 0,
 };
 
 const CaseForm = ({
@@ -71,6 +72,7 @@ const CaseForm = ({
         serviceId: caseItem.serviceId,
         mediaIds: caseItem.mediaIds ?? [],
         tags: caseItem.tags ?? [],
+        order: caseItem.order ?? 0,
       });
       setSlugEdited(true);
     } else {
@@ -104,7 +106,7 @@ const CaseForm = ({
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>
-            {caseItem ? "Редактировать кейс" : "Новый кейс"}
+            {caseItem ? "Редактировать работу" : "Новая работа"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -119,7 +121,7 @@ const CaseForm = ({
               id="title"
               value={form.title}
               onChange={(e) => handleTitleChange(e.target.value)}
-              placeholder="Название кейса"
+              placeholder="Название работы"
               required
             />
           </div>
@@ -145,9 +147,22 @@ const CaseForm = ({
               onChange={(e) =>
                 setForm((f) => ({ ...f, description: e.target.value }))
               }
-              placeholder="Описание кейса"
+              placeholder="Описание работы"
               rows={4}
               className="resize-none"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="order">Порядок</Label>
+            <Input
+              id="order"
+              type="number"
+              value={form.order ?? 0}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, order: Number(e.target.value) }))
+              }
+              placeholder="1"
             />
           </div>
 

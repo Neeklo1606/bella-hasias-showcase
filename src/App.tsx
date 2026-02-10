@@ -44,6 +44,9 @@ const CapsuleWardrobe = lazy(() => import("./pages/services/CapsuleWardrobe"));
 const EventLook = lazy(() => import("./pages/services/EventLook"));
 const PhotoVideo = lazy(() => import("./pages/services/PhotoVideo"));
 const AIContent = lazy(() => import("./pages/services/AIContent"));
+const StylingSupport = lazy(() => import("./pages/services/StylingSupport"));
+const Consultation = lazy(() => import("./pages/services/Consultation"));
+const StyleCollages = lazy(() => import("./pages/services/StyleCollages"));
 
 const queryClient = new QueryClient();
 
@@ -74,6 +77,9 @@ const AppRoutes = () => {
         <Route path="/services/event-look" element={<EventLook />} />
         <Route path="/services/photo-video" element={<PhotoVideo />} />
         <Route path="/services/ai-content" element={<AIContent />} />
+        <Route path="/services/styling-support" element={<StylingSupport />} />
+        <Route path="/services/consultation" element={<Consultation />} />
+        <Route path="/services/style-collages" element={<StyleCollages />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
@@ -107,7 +113,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.VITE_APP_BASE || ""}>
           <AuthProvider>
             <AppRoutes />
           </AuthProvider>

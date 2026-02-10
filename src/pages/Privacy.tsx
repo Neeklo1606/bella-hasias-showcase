@@ -9,8 +9,18 @@ const Privacy = () => {
       <Helmet>
         <title>Политика конфиденциальности — Bella Hasias</title>
         <meta name="description" content="Политика конфиденциальности и обработки персональных данных Bella Hasias" />
+        <meta name="keywords" content="политика конфиденциальности, персональные данные, Bella Hasias" />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href="https://bellahasias.com/privacy" />
+        <meta property="og:title" content="Политика конфиденциальности — Bella Hasias" />
+        <meta property="og:description" content="Политика конфиденциальности и обработки персональных данных Bella Hasias" />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:url" content="https://bellahasias.ru/privacy" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Политика конфиденциальности — Bella Hasias" />
+        <meta name="twitter:description" content="Политика конфиденциальности и обработки персональных данных Bella Hasias" />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href="https://bellahasias.ru/privacy" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -22,7 +32,7 @@ const Privacy = () => {
         />
 
         {/* Content */}
-        <section className="pt-32 md:pt-36 pb-20 px-6">
+        <section className="pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-6 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

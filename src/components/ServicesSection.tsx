@@ -1,17 +1,14 @@
 import { motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-
-// New service images
-import serviceBrandStyling from '@/assets/service-brand-styling.jpg';
-import serviceClientShoot from '@/assets/service-client-shoot.jpg';
-import serviceWardrobe from '@/assets/service-wardrobe.jpg';
-import heroRight from '@/assets/hero/hero-right.jpg';
-import ugcPreview from '@/assets/portfolio/IMG_1082.JPG';
-import aiPreview from '@/assets/portfolio/IMG_1559.JPG';
+import { fetchServices, loadServices } from '@/admin/lib/servicesStorage';
+import { fetchMedia, loadMedia } from '@/admin/lib/mediaStorage';
+import { useResolvedMediaItems } from '@/hooks/use-resolved-media';
+import type { Service } from '@/admin/types/service';
+import type { MediaItem } from '@/admin/types/media';
 
 type ServiceCategory = "stylist" | "creator";
 
@@ -20,57 +17,6 @@ const categoryLabels: Record<ServiceCategory, string> = {
   creator: "Креатор",
 };
 
-// Services array with categories
-const services: Array<{
-  id: string;
-  title: string;
-  image: string;
-  href: string;
-  category: ServiceCategory;
-}> = [
-  {
-    id: 'brand-styling',
-    title: 'Стилизация съёмки для бренда',
-    image: serviceBrandStyling,
-    href: '/services/brand-styling',
-    category: "stylist",
-  },
-  {
-    id: 'client-shoot',
-    title: 'Клиентская съёмка',
-    image: serviceClientShoot,
-    href: '/services/client-shoot',
-    category: "creator",
-  },
-  {
-    id: 'wardrobe-audit',
-    title: 'Разбор гардероба',
-    image: serviceWardrobe,
-    href: '/services/wardrobe-audit',
-    category: "stylist",
-  },
-  {
-    id: 'personal-shopping',
-    title: 'Персональный шоппинг',
-    image: heroRight,
-    href: '/services/personal-shopping',
-    category: "stylist",
-  },
-  {
-    id: 'ugc-content',
-    title: 'UGC-контент',
-    image: ugcPreview,
-    href: '/services/ugc',
-    category: "creator",
-  },
-  {
-    id: 'ai-content',
-    title: 'AI-контент',
-    image: aiPreview,
-    href: '/services/ai-content',
-    category: "creator",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -96,26 +42,59 @@ const itemVariants = {
 const ServicesSection = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>("stylist");
+  const [services, setServices] = useState<Service[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
 
-  const filteredServices = useMemo(
-    () => services.filter((service) => service.category === activeCategory),
-    [activeCategory]
+  useEffect(() => {
+    setServices(loadServices());
+    setMediaItems(loadMedia());
+    fetchServices().then(setServices).catch(() => undefined);
+    fetchMedia().then(setMediaItems).catch(() => undefined);
+  }, []);
+
+  const resolvedMediaItems = useResolvedMediaItems(mediaItems);
+  const mediaMap = useMemo(
+    () => new Map(resolvedMediaItems.map((m) => [m.id, m])),
+    [resolvedMediaItems]
   );
 
+  const filteredServices = useMemo(() => {
+    return services
+      .filter((service) => (service.category ?? "stylist") === activeCategory)
+      .sort((a, b) => {
+        const ao = a.order ?? 0;
+        const bo = b.order ?? 0;
+        if (ao !== bo) return ao - bo;
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      })
+      .map((service) => {
+        const media =
+          mediaMap.get(service.imageId) ||
+          (service.coverId ? mediaMap.get(service.coverId) : undefined);
+        return {
+          id: service.id,
+          title: service.title,
+          image: media?.src ?? "/placeholder.svg",
+          href: service.ctaLink || "/contacts",
+        };
+      })
+      .slice(0, 3);
+  }, [services, activeCategory, mediaMap]);
+
   return (
-    <section 
-      id="services" 
-      className="py-16 md:py-20 bg-secondary/30"
+    <section
+      id="services"
+      className="py-12 md:py-16 bg-secondary/30"
       aria-labelledby="services-heading"
     >
-      <div className="container-luxury">
+      <div className="container-luxury px-5 sm:px-6 md:px-8 lg:px-12">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-left mb-10"
         >
           <h2 
             id="services-heading"
@@ -126,7 +105,7 @@ const ServicesSection = () => {
         </motion.div>
 
         {/* Category switcher */}
-        <div className="flex justify-center mb-10">
+        <div className="flex justify-start mb-10">
           <ToggleGroup
             type="single"
             value={activeCategory}
@@ -175,7 +154,7 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-10"
+          className="text-left mt-10"
         >
           <Link
             to="/services"
