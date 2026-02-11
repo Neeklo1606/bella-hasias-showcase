@@ -44,7 +44,7 @@ class CaseItem extends Model
      */
     public function media(): BelongsToMany
     {
-        return $this->belongsToMany(MediaFile::class, 'case_media')
+        return $this->belongsToMany(MediaFile::class, 'case_media', 'case_id', 'media_file_id')
             ->withPivot('sort_order')
             ->withTimestamps()
             ->orderByPivot('sort_order');
