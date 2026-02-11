@@ -35,10 +35,12 @@ class DeployController extends Controller
         $repoPath = base_path('../');
         $logs = [];
 
+        $backendPath = base_path();
         $commands = [
             ['cmd' => "cd {$repoPath} && git fetch {$remote}", 'allowFail' => false],
             ['cmd' => "cd {$repoPath} && git checkout {$branch}", 'allowFail' => false],
             ['cmd' => "cd {$repoPath} && git pull {$remote} {$branch}", 'allowFail' => false],
+            ['cmd' => "cd {$backendPath} && php composer.phar install --no-dev --optimize-autoloader", 'allowFail' => false],
             ['cmd' => 'php artisan down', 'allowFail' => true],
             ['cmd' => 'php artisan migrate --force', 'allowFail' => false],
             ['cmd' => 'php artisan optimize:clear', 'allowFail' => false],
