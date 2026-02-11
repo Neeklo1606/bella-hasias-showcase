@@ -55,7 +55,8 @@ class ImportJsonCommand extends Command
         }
 
         $users = json_decode(file_get_contents($file), true);
-        $this->info("Importing {$count = count($users)} users...");
+        $count = count($users);
+        $this->info("Importing {$count} users...");
 
         foreach ($users as $userData) {
             User::updateOrCreate(
@@ -81,7 +82,8 @@ class ImportJsonCommand extends Command
         }
 
         $media = json_decode(file_get_contents($file), true);
-        $this->info("Importing {$count = count($media)} media files...");
+        $count = count($media);
+        $this->info("Importing {$count} media files...");
         $map = [];
 
         foreach ($media as $mediaData) {
@@ -113,7 +115,8 @@ class ImportJsonCommand extends Command
         }
 
         $services = json_decode(file_get_contents($file), true);
-        $this->info("Importing {$count = count($services)} services...");
+        $count = count($services);
+        $this->info("Importing {$count} services...");
 
         foreach ($services as $serviceData) {
             Service::updateOrCreate(
@@ -144,7 +147,8 @@ class ImportJsonCommand extends Command
         }
 
         $cases = json_decode(file_get_contents($file), true);
-        $this->info("Importing {$count = count($cases)} cases...");
+        $count = count($cases);
+        $this->info("Importing {$count} cases...");
 
         DB::transaction(function () use ($cases, $mediaMap) {
             foreach ($cases as $caseData) {
@@ -181,7 +185,8 @@ class ImportJsonCommand extends Command
         }
 
         $pages = json_decode(file_get_contents($file), true);
-        $this->info("Importing {$count = count($pages)} pages...");
+        $count = count($pages);
+        $this->info("Importing {$count} pages...");
 
         foreach ($pages as $pageData) {
             $seo = $pageData['seo'] ?? null;
