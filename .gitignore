@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+composer.phar
 public/11111.gif
 dist-ssr
 *.local
