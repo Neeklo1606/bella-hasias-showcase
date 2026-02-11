@@ -15,7 +15,8 @@ git pull origin main
 
 # 3. Перейти в Laravel и установить зависимости
 cd laravel
-composer install --no-dev --optimize-autoloader
+# ВАЖНО: Используйте php8.2 для composer, так как системный php может быть 5.6
+php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader
 
 # 4. Скопировать .env.example в .env (если .env еще не существует)
 if [ ! -f .env ]; then
@@ -53,7 +54,7 @@ ls -la build/manifest.json 2>/dev/null || echo "⚠️  ВНИМАНИЕ: /build
 cd ~/bellahasias.ru/public_html && \
 git pull origin main && \
 cd laravel && \
-composer install --no-dev --optimize-autoloader && \
+php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader && \
 php8.2 artisan migrate --force && \
 php8.2 artisan config:clear && \
 php8.2 artisan route:clear && \
