@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Если файл существует, отдать его
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # SPA fallback - все запросы на index.html
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# Настройка MIME типов для правильной загрузки модулей
+<IfModule mod_mime.c>
+    AddType application/javascript js mjs
+    AddType application/json json
+    AddType text/css css
+    AddType image/svg+xml svg
+    AddType image/png png
+    AddType image/jpeg jpg jpeg
+    AddType image/webp webp
+</IfModule>
