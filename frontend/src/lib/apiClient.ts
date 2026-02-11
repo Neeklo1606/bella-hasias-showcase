@@ -127,8 +127,10 @@ apiClient.interceptors.response.use(
       const isAdminApiRequest = url.includes("/api/admin/");
       const isAuthMeRequest = url.includes("/api/auth/me");
       
-      // Redirect only if we're on admin route OR making admin API request
-      // But NOT if it's /api/auth/me on a public page (guests checking auth)
+      // Redirect only if:
+      // 1. We're on admin route (any /admin/* page), OR
+      // 2. Making admin API request (but NOT /api/auth/me which is used by AuthProvider on public pages)
+      // Do NOT redirect for /api/auth/me on public pages (guests checking auth status)
       if (isAdminRoute || (isAdminApiRequest && !isAuthMeRequest)) {
         if (!sessionExpiredShown) {
           sessionExpiredShown = true;
