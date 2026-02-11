@@ -59,9 +59,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     @php
-        // Manifest находится в корне репозитория в /build/manifest.json
+        // Vite manifest находится в /build/.vite/manifest.json
         // Используем прямой путь, так как public_path() может не работать корректно
-        $manifestPath = base_path('../build/manifest.json');
+        $manifestPath = base_path('../build/.vite/manifest.json');
         $manifest = null;
         if (file_exists($manifestPath)) {
             $manifestContent = file_get_contents($manifestPath);
