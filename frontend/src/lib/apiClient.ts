@@ -115,10 +115,21 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // Handle 401: Unauthorized - redirect to login (show toast once)
+    // Handle 401: Unauthorized - redirect to login only for admin routes
     if (status === 401) {
       const url = originalRequest.url || "";
-      if (url.includes("/api/admin/") || url.includes("/api/auth/me")) {
+      const currentPath = window.location.pathname;
+      
+      // Only redirect if:
+      // a) Current page is in /admin/* OR
+      // b) Request is to /api/admin/* (but NOT /api/auth/me for guests on public pages)
+      const isAdminRoute = currentPath.startsWith("/admin");
+      const isAdminApiRequest = url.includes("/api/admin/");
+      const isAuthMeRequest = url.includes("/api/auth/me");
+      
+      // Redirect only if we're on admin route OR making admin API request
+      // But NOT if it's /api/auth/me on a public page (guests checking auth)
+      if (isAdminRoute || (isAdminApiRequest && !isAuthMeRequest)) {
         if (!sessionExpiredShown) {
           sessionExpiredShown = true;
           toast.error("Сессия истекла", {
@@ -132,6 +143,7 @@ apiClient.interceptors.response.use(
         // Clear auth state by redirecting to login
         window.location.href = "/admin/login";
       }
+      // For public routes (/api/auth/me for guests), just reject without redirect/toast
       return Promise.reject(error);
     }
 

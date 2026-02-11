@@ -1,0 +1,1 @@
+import{j as e}from"./index-Db0xCNCn.js";const a=({title:s,description:t})=>e.jsxs("div",{className:"space-y-2",children:[e.jsx("h2",{className:"text-2xl font-semibold",children:s}),e.jsx("p",{className:"text-sm text-muted-foreground",children:t??"Страница в разработке."})]});export{a as A};
