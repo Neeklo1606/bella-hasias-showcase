@@ -1,0 +1,21 @@
+{
+  "name": "Bella Hasias — Стилист и Контент-Креатор",
+  "short_name": "Bella Hasias",
+  "description": "Визуальный стиль, стилизация и контент для брендов и людей. Сайт стилиста и контент-креатора в Москве.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF9F7",
+  "theme_color": "#1F2121",
+  "orientation": "portrait",
+  "lang": "ru",
+  "dir": "ltr",
+  "categories": ["lifestyle", "business"],
+  "icons": [
+    {
+      "src": "/logo3.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
