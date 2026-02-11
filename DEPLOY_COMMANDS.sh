@@ -15,36 +15,41 @@ git pull origin main
 echo "📦 Установка зависимостей..."
 cd laravel
 
-# Попытка найти composer
-if command -v composer &> /dev/null; then
-    composer install --no-dev --optimize-autoloader
-elif [ -f ~/composer.phar ]; then
-    php8.2 ~/composer.phar install --no-dev --optimize-autoloader
+# Попытка найти composer (используем PHP 8.2)
+PHP_CMD="php8.2"
+
+if [ -f ~/composer.phar ]; then
+    echo "📦 Использование composer из ~/composer.phar"
+    $PHP_CMD ~/composer.phar install --no-dev --optimize-autoloader
 elif [ -f /usr/local/bin/composer ]; then
-    php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader
+    echo "📦 Использование composer из /usr/local/bin/composer"
+    $PHP_CMD /usr/local/bin/composer install --no-dev --optimize-autoloader
+elif command -v composer &> /dev/null; then
+    echo "📦 Использование composer из PATH (проверьте версию PHP!)"
+    $PHP_CMD composer install --no-dev --optimize-autoloader
 else
     echo "❌ Composer не найден. Установите composer или укажите путь вручную."
     exit 1
 fi
 
 echo "🗄️  Выполнение миграций..."
-php artisan migrate --force
+$PHP_CMD artisan migrate --force
 
 echo "🧹 Очистка кэшей..."
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
+$PHP_CMD artisan config:clear
+$PHP_CMD artisan route:clear
+$PHP_CMD artisan view:clear
 
 echo "💾 Создание кэшей..."
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+$PHP_CMD artisan config:cache
+$PHP_CMD artisan route:cache
+$PHP_CMD artisan view:cache
 
 echo "✅ Деплой завершен!"
 echo ""
 echo "📊 Статус миграций:"
-php artisan migrate:status
+$PHP_CMD artisan migrate:status
 
 echo ""
 echo "🔍 Проверка таблицы audit_logs:"
-php artisan tinker --execute="echo \Illuminate\Support\Facades\Schema::hasTable('audit_logs') ? '✅ Таблица audit_logs существует' : '❌ Таблица audit_logs не найдена';"
+$PHP_CMD artisan tinker --execute="echo \Illuminate\Support\Facades\Schema::hasTable('audit_logs') ? '✅ Таблица audit_logs существует' : '❌ Таблица audit_logs не найдена';"
