@@ -45,6 +45,8 @@ export const casesApi = {
       id: String(c.id),
       serviceId: c.serviceId ? String(c.serviceId) : "",
       mediaIds: c.mediaIds ? c.mediaIds.map((id: number) => String(id)) : [],
+      // Preserve media array for image URLs
+      media: c.media || [],
     }));
     return {
       ...response.data,

@@ -39,8 +39,18 @@ export const servicesApi = {
    * Get list of services (public)
    */
   list: async (params?: ServiceListParams): Promise<ServiceListResponse> => {
-    const response = await apiClient.get<ServiceListResponse>("/api/services", { params });
-    return response.data;
+    const response = await apiClient.get<any>("/api/services", { params });
+    // Transform API response to match Service type
+    const transformedData = response.data.data.map((s: any) => ({
+      ...s,
+      id: String(s.id),
+      imageId: s.image?.id ? String(s.image.id) : s.imageId || "",
+      coverId: s.cover?.id ? String(s.cover.id) : s.coverId || "",
+    }));
+    return {
+      ...response.data,
+      data: transformedData,
+    };
   },
 
   /**

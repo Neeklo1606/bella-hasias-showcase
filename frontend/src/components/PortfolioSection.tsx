@@ -1,24 +1,12 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { casesApi } from '@/lib/api/cases.api';
+import { toast } from '@/components/ui/use-toast';
+import type { CaseItem } from '@/admin/types/case';
 
-// Portfolio images
-import portfolio1 from '@/assets/portfolio/portfolio-1.jpg';
-import portfolio2 from '@/assets/portfolio/portfolio-2.jpg';
-import portfolio3 from '@/assets/portfolio/portfolio-3.jpg';
-import portfolio4 from '@/assets/portfolio/portfolio-4.jpg';
-import portfolio5 from '@/assets/portfolio/portfolio-5.webp';
-import portfolio6 from '@/assets/portfolio/portfolio-6.jpg';
-
-const featuredWorks = [
-  { id: 1, src: portfolio1, title: 'Editorial' },
-  { id: 2, src: portfolio2, title: 'Стилизация' },
-  { id: 3, src: portfolio3, title: 'Fashion Съёмка' },
-  { id: 4, src: portfolio4, title: 'Кампейн' },
-  { id: 5, src: portfolio5, title: 'Lookbook' },
-  { id: 6, src: portfolio6, title: 'Beauty' },
-];
+const FEATURED_COUNT = 6; // Number of featured cases to show
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -40,9 +28,72 @@ const itemVariants = {
   },
 };
 
+// Get featured cases: first N by sort_order (if available) or updated_at
+const getFeaturedCases = (cases: CaseItem[]): CaseItem[] => {
+  return [...cases]
+    .sort((a, b) => {
+      // First sort by sortOrder if available
+      const aOrder = (a as any).sortOrder ?? 0;
+      const bOrder = (b as any).sortOrder ?? 0;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      // Then by updated_at (newest first)
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    })
+    .slice(0, FEATURED_COUNT);
+};
+
 const PortfolioSection = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [cases, setCases] = useState<CaseItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadCases = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await casesApi.list({ 
+          status: 'published',
+          per_page: 50 
+        });
+        // Filter published cases (API should already filter, but double-check)
+        const published = response.data.filter((c: CaseItem) => c.status === 'published' || !c.status);
+        setCases(published);
+      } catch (err: any) {
+        console.error("Failed to load cases:", err);
+        setError("Не удалось загрузить портфолио");
+        toast({
+          title: "Ошибка",
+          description: "Не удалось загрузить портфолио. Попробуйте обновить страницу.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCases();
+  }, []);
+
+  const featuredWorks = useMemo(() => {
+    const featured = getFeaturedCases(cases);
+    // Transform to display format with media
+    return featured.map((caseItem) => {
+      // Get first media item from API response
+      const media = (caseItem as any).media || [];
+      const firstMedia = media[0];
+      const imageUrl = firstMedia?.url || firstMedia?.src || "";
+      
+      return {
+        id: caseItem.id,
+        src: imageUrl,
+        title: caseItem.title,
+        slug: caseItem.slug,
+      };
+    }).filter((work) => work.src); // Only show cases with images
+  }, [cases]);
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -57,11 +108,11 @@ const PortfolioSection = () => {
 
   const nextImage = useCallback(() => {
     setLightboxIndex((prev) => (prev + 1) % featuredWorks.length);
-  }, []);
+  }, [featuredWorks.length]);
 
   const prevImage = useCallback(() => {
     setLightboxIndex((prev) => (prev - 1 + featuredWorks.length) % featuredWorks.length);
-  }, []);
+  }, [featuredWorks.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -73,6 +124,59 @@ const PortfolioSection = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, closeLightbox, nextImage, prevImage]);
+
+  // Loading skeleton
+  if (loading) {
+    return (
+      <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
+        <div className="container-luxury">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-h2 text-foreground">
+              Портфолио
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-2xl md:rounded-3xl" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
+        <div className="container-luxury">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-h2 text-foreground mb-4">
+              Портфолио
+            </h2>
+            <p className="text-muted-foreground">{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (featuredWorks.length === 0) {
+    return (
+      <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
+        <div className="container-luxury">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-h2 text-foreground">
+              Портфолио
+            </h2>
+          </div>
+          <div className="text-center py-12 text-muted-foreground">
+            Нет работ в портфолио
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
@@ -140,7 +244,7 @@ const PortfolioSection = () => {
       </div>
 
       {/* Lightbox */}
-      {lightboxOpen && (
+      {lightboxOpen && featuredWorks[lightboxIndex] && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
