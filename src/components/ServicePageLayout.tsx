@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { Send } from 'lucide-react';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
 
