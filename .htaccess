@@ -1,0 +1,33 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Безопасность: не отдавать скрытые файлы
+    RewriteRule (^|/)\. - [F]
+
+    # API и Sanctum -> Laravel
+    RewriteCond %{REQUEST_URI} ^/api(/|$) [NC]
+    RewriteRule ^ backend/public/index.php [L,QSA]
+
+    RewriteCond %{REQUEST_URI} ^/sanctum(/|$) [NC]
+    RewriteRule ^ backend/public/index.php [L,QSA]
+
+    # Реальные файлы и папки — отдать как есть
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Редирект / на SPA
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^ /build/ [R=301,L]
+
+    # /build/ — статика: если файл есть — отдать
+    RewriteCond %{REQUEST_URI} ^/build/
+    RewriteCond %{DOCUMENT_ROOT}/backend/public/build/$1 -f
+    RewriteRule ^build/(.*)$ backend/public/build/$1 [L]
+
+    # /build/ — SPA fallback (клиентский роутинг)
+    RewriteCond %{REQUEST_URI} ^/build/
+    RewriteRule ^build/ backend/public/build/index.html [L]
+</IfModule>
+
+DirectoryIndex index.html index.php
