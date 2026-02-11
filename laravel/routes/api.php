@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\AuditController;
 use App\Http\Controllers\Admin\CasesController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HealthController;
 use App\Http\Controllers\Public\CasesController as PublicCasesController;
+use App\Http\Controllers\Public\MediaController as PublicMediaController;
 use App\Http\Controllers\Public\PagesController as PublicPagesController;
 use App\Http\Controllers\Public\ServicesController as PublicServicesController;
 use Illuminate\Support\Facades\Route;
@@ -16,11 +19,21 @@ Route::get('/ping', function () {
     return response()->json(['ok' => true, 'message' => 'API is working']);
 });
 
-// Auth routes
+Route::get('/health', [HealthController::class, 'health']);
+
+// Auth routes with rate limiting
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+    // Login: 5 attempts per minute per IP+email
+    Route::post('/login', [AuthController::class, 'login'])
+        ->middleware('throttle:5,1');
+    
+    // Forgot password: 3 attempts per 10 minutes per IP
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])
+        ->middleware('throttle:3,10');
+    
+    // Reset password: 3 attempts per 10 minutes per IP
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])
+        ->middleware('throttle:3,10');
     
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
@@ -42,6 +55,10 @@ Route::prefix('pages')->group(function () {
     Route::get('/{slug}', [PublicPagesController::class, 'show']);
 });
 
+Route::prefix('media')->group(function () {
+    Route::get('/{id}', [PublicMediaController::class, 'show']);
+});
+
 Route::get('/seo', [PublicPagesController::class, 'seo']);
 
 // Admin API (protected)
@@ -50,15 +67,22 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::apiResource('cases', CasesController::class);
     Route::apiResource('pages', PagesController::class);
     
-    Route::prefix('media')->group(function () {
-        Route::get('/', [MediaController::class, 'index']);
-        Route::post('/upload', [MediaController::class, 'upload']);
-        Route::put('/{media}', [MediaController::class, 'update']);
-        Route::delete('/{media}', [MediaController::class, 'destroy']);
-    });
+        Route::prefix('media')->group(function () {
+            Route::get('/', [MediaController::class, 'index']);
+            // Upload: 30 attempts per minute per user
+            Route::post('/upload', [MediaController::class, 'upload'])
+                ->middleware('throttle:30,1');
+            Route::put('/{media}', [MediaController::class, 'update']);
+            Route::delete('/{media}', [MediaController::class, 'destroy']);
+        });
     
-    Route::prefix('seo')->group(function () {
-        Route::get('/', [SeoController::class, 'index']);
-        Route::put('/', [SeoController::class, 'update']);
+        Route::prefix('seo')->group(function () {
+            Route::get('/', [SeoController::class, 'index']);
+            Route::put('/', [SeoController::class, 'update']);
+        });
+        
+        Route::prefix('audit')->group(function () {
+            Route::get('/', [AuditController::class, 'index']);
+            Route::get('/{auditLog}', [AuditController::class, 'show']);
+        });
     });
-});

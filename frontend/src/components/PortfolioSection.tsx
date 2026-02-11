@@ -2,8 +2,8 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { casesApi } from '@/lib/api/cases.api';
-import { toast } from '@/components/ui/use-toast';
 import type { CaseItem } from '@/admin/types/case';
 
 const FEATURED_COUNT = 6; // Number of featured cases to show
@@ -45,37 +45,22 @@ const getFeaturedCases = (cases: CaseItem[]): CaseItem[] => {
 const PortfolioSection = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [cases, setCases] = useState<CaseItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadCases = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await casesApi.list({ 
-          status: 'published',
-          per_page: 50 
-        });
-        // Filter published cases (API should already filter, but double-check)
-        const published = response.data.filter((c: CaseItem) => c.status === 'published' || !c.status);
-        setCases(published);
-      } catch (err: any) {
-        console.error("Failed to load cases:", err);
-        setError("Не удалось загрузить портфолио");
-        toast({
-          title: "Ошибка",
-          description: "Не удалось загрузить портфолио. Попробуйте обновить страницу.",
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: casesResponse, isLoading: loading, isError } = useQuery({
+    queryKey: ['cases', 'public', { status: 'published', per_page: 50 }],
+    queryFn: () => casesApi.list({ 
+      status: 'published',
+      per_page: 50 
+    }),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-    loadCases();
-  }, []);
+  const cases = useMemo(() => {
+    if (!casesResponse?.data) return [];
+    // Filter published cases (API should already filter, but double-check)
+    return casesResponse.data.filter((c: CaseItem) => c.status === 'published' || !c.status);
+  }, [casesResponse]);
 
   const featuredWorks = useMemo(() => {
     const featured = getFeaturedCases(cases);
@@ -146,7 +131,7 @@ const PortfolioSection = () => {
   }
 
   // Error state
-  if (error) {
+  if (isError) {
     return (
       <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
         <div className="container-luxury">
@@ -154,7 +139,7 @@ const PortfolioSection = () => {
             <h2 className="font-display text-h2 text-foreground mb-4">
               Портфолио
             </h2>
-            <p className="text-muted-foreground">{error}</p>
+            <p className="text-muted-foreground">Не удалось загрузить портфолио</p>
           </div>
         </div>
       </section>

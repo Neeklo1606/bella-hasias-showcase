@@ -30,6 +30,24 @@ export interface UpdateMediaRequest {
 
 export const mediaApi = {
   /**
+   * Get single media file by ID (public)
+   */
+  get: async (id: number): Promise<MediaItem> => {
+    const response = await apiClient.get<any>(`/api/media/${id}`);
+    const m = response.data;
+    return {
+      id: String(m.id),
+      filename: m.filename,
+      src: m.src || "",
+      category: m.category,
+      alt: m.alt || "",
+      mimeType: m.mimeType,
+      size: m.size,
+      createdAt: m.createdAt,
+    };
+  },
+
+  /**
    * Get list of media (admin)
    */
   adminList: async (params?: MediaListParams): Promise<MediaListResponse> => {

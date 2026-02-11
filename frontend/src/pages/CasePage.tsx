@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ImageIcon } from "lucide-react";
 import Footer from "@/components/Footer";
 import { casesApi } from "@/lib/api/cases.api";
@@ -15,62 +15,46 @@ const isVideo = (src: string) =>
 
 const CasePage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [caseItem, setCaseItem] = useState<CaseItem | null>(null);
-  const [service, setService] = useState<Service | null>(null);
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadData = async () => {
-      if (!slug) {
-        setError("Slug не указан");
-        setLoading(false);
-        return;
-      }
+  const { data: caseData, isLoading: caseLoading, isError: caseError } = useQuery({
+    queryKey: ['case', 'public', slug],
+    queryFn: () => {
+      if (!slug) throw new Error("Slug не указан");
+      return casesApi.getBySlug(slug);
+    },
+    enabled: !!slug,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-      try {
-        setLoading(true);
-        const [caseData, servicesRes] = await Promise.all([
-          casesApi.getBySlug(slug),
-          servicesApi.list({ per_page: 100 }),
-        ]);
+  const { data: servicesResponse } = useQuery({
+    queryKey: ['services', 'public', { per_page: 100 }],
+    queryFn: () => servicesApi.list({ per_page: 100 }),
+    refetchOnWindowFocus: false,
+    retry: 1,
+    enabled: !!caseData?.serviceId, // Only fetch if we need to find service
+  });
 
-        setCaseItem(caseData);
-        
-        // Find service
-        if (caseData.serviceId) {
-          const foundService = servicesRes.data.find(
-            (s) => s.id === caseData.serviceId
-          );
-          setService(foundService || null);
-        }
+  const service = caseData?.serviceId && servicesResponse?.data
+    ? servicesResponse.data.find((s) => s.id === caseData.serviceId)
+    : null;
 
-        // Extract media from caseData (API returns media array)
-        const media = (caseData as any).media || [];
-        setMediaItems(media.map((m: any) => ({
-          id: String(m.id),
-          filename: m.filename,
-          src: m.url || m.src,
-          category: m.category || "Прочее",
-          alt: m.alt || "",
-          createdAt: m.createdAt || new Date().toISOString(),
-        })));
-      } catch (err: any) {
-        console.error("Failed to load case:", err);
-        setError(err.response?.status === 404 ? "Кейс не найден" : "Ошибка загрузки");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, [slug]);
+  // Extract media from caseData (API returns media array)
+  const mediaItems: MediaItem[] = caseData
+    ? ((caseData as any).media || []).map((m: any) => ({
+        id: String(m.id),
+        filename: m.filename,
+        src: m.url || m.src,
+        category: m.category || "Прочее",
+        alt: m.alt || "",
+        createdAt: m.createdAt || new Date().toISOString(),
+      }))
+    : [];
 
   const resolvedMedia = useResolvedMediaItems(mediaItems);
   const mediaMap = new Map(resolvedMedia.map((m) => [m.id, m]));
 
-  if (loading) {
+  if (caseLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-sm text-muted-foreground">Загрузка...</div>
@@ -78,10 +62,10 @@ const CasePage = () => {
     );
   }
 
-  if (error || !caseItem) {
+  if (caseError || !caseData) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-        <h1 className="text-2xl font-bold">{error || "Кейс не найден"}</h1>
+        <h1 className="text-2xl font-bold">Кейс не найден</h1>
         <Link
           to="/portfolio"
           className="mt-4 text-primary hover:underline flex items-center gap-2"
@@ -93,15 +77,15 @@ const CasePage = () => {
     );
   }
 
-  const caseMedia = caseItem.mediaIds
+  const caseMedia = caseData.mediaIds
     .map((id) => mediaMap.get(id))
     .filter(Boolean) as MediaItem[];
 
   return (
     <>
       <Helmet>
-        <title>{caseItem.title} — Bella Hasias | Портфолио</title>
-        <meta name="description" content={caseItem.description.slice(0, 160)} />
+        <title>{caseData.title} — Bella Hasias | Портфолио</title>
+        <meta name="description" content={caseData.description.slice(0, 160)} />
       </Helmet>
 
       <main className="min-h-screen bg-background">
@@ -121,11 +105,11 @@ const CasePage = () => {
               </p>
             )}
             <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-              {caseItem.title}
+              {caseData.title}
             </h1>
-            {caseItem.tags && caseItem.tags.length > 0 && (
+            {caseData.tags && caseData.tags.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
-                {caseItem.tags.map((tag) => (
+                {caseData.tags.map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full bg-secondary px-3 py-1 text-sm text-muted-foreground"
@@ -137,10 +121,10 @@ const CasePage = () => {
             )}
           </header>
 
-          {caseItem.description && (
+          {caseData.description && (
             <div className="prose prose-neutral dark:prose-invert max-w-none mb-12">
               <p className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
-                {caseItem.description}
+                {caseData.description}
               </p>
             </div>
           )}
@@ -162,7 +146,7 @@ const CasePage = () => {
                   ) : (
                     <img
                       src={item.src}
-                      alt={item.alt || caseItem.title}
+                      alt={item.alt || caseData.title}
                       className="h-full w-full object-cover"
                     />
                   )}

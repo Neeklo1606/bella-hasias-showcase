@@ -7,6 +7,7 @@ use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
+use App\Services\AuditService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,9 @@ class PagesController extends Controller
         $data['seo'] = $data['seo'] ?? null;
         
         $page = Page::create($data);
+        
+        // Log audit
+        AuditService::logCreate($page, $request);
 
         return (new PageResource($page))
             ->response()
@@ -69,13 +73,36 @@ class PagesController extends Controller
             $data['blocks'] = $data['blocks'] ?? [];
         }
         
+        // Get original values before update
+        $original = $page->getOriginal();
         $page->update($data);
+        
+        // Get changed fields after update
+        $page->refresh();
+        $newAttributes = $page->getAttributes();
+        $oldValues = [];
+        $newValues = [];
+        
+        foreach ($data as $key => $value) {
+            if (isset($original[$key]) && $original[$key] !== $newAttributes[$key]) {
+                $oldValues[$key] = $original[$key];
+                $newValues[$key] = $newAttributes[$key];
+            }
+        }
+        
+        // Log audit if there are changes
+        if (!empty($newValues)) {
+            AuditService::logUpdate($page, $newValues, $request, $oldValues);
+        }
 
         return (new PageResource($page))->response();
     }
 
-    public function destroy(Page $page): JsonResponse
+    public function destroy(Page $page, Request $request): JsonResponse
     {
+        // Log audit before deletion
+        AuditService::logDelete($page, $request);
+        
         $page->delete();
 
         return response()->json(['message' => 'Page deleted successfully']);

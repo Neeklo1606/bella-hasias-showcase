@@ -22,6 +22,7 @@ const AdminPages = lazy(() => import("@/admin/pages/Pages"));
 const AdminSEO = lazy(() => import("@/admin/pages/SEO"));
 const AdminStats = lazy(() => import("@/admin/pages/Stats"));
 const AdminSettings = lazy(() => import("@/admin/pages/Settings"));
+const AdminAudit = lazy(() => import("@/admin/pages/Audit"));
 
 const Portfolio = lazy(() => import("./pages/Portfolio"));
 const CasePage = lazy(() => import("./pages/CasePage"));
@@ -45,7 +46,15 @@ const EventLook = lazy(() => import("./pages/services/EventLook"));
 const PhotoVideo = lazy(() => import("./pages/services/PhotoVideo"));
 const AIContent = lazy(() => import("./pages/services/AIContent"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -86,6 +95,7 @@ const AppRoutes = () => {
             <Route path="seo" element={<AdminSEO />} />
             <Route path="stats" element={<AdminStats />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="audit" element={<AdminAudit />} />
           </Route>
         </Route>
         {/* Legal pages */}

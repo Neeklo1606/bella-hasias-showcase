@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { servicesApi } from '@/lib/api/services.api';
-import { toast } from '@/components/ui/use-toast';
 import type { Service } from '@/admin/types/service';
 
 type ServiceCategory = "stylist" | "creator";
@@ -61,37 +61,22 @@ const itemVariants = {
 const ServicesSection = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>("stylist");
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadServices = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await servicesApi.list({ 
-          status: 'published',
-          per_page: 50 
-        });
-        // Filter published services (API should already filter, but double-check)
-        const published = response.data.filter((s: Service) => s.status === 'published' || !s.status);
-        setServices(published);
-      } catch (err: any) {
-        console.error("Failed to load services:", err);
-        setError("Не удалось загрузить услуги");
-        toast({
-          title: "Ошибка",
-          description: "Не удалось загрузить услуги. Попробуйте обновить страницу.",
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: servicesResponse, isLoading: loading, isError, error } = useQuery({
+    queryKey: ['services', 'public', { status: 'published', per_page: 50 }],
+    queryFn: () => servicesApi.list({ 
+      status: 'published',
+      per_page: 50 
+    }),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-    loadServices();
-  }, []);
+  const services = useMemo(() => {
+    if (!servicesResponse?.data) return [];
+    // Filter published services (API should already filter, but double-check)
+    return servicesResponse.data.filter((s: Service) => s.status === 'published' || !s.status);
+  }, [servicesResponse]);
 
   const filteredServices = useMemo(() => {
     return services
@@ -136,7 +121,7 @@ const ServicesSection = () => {
   }
 
   // Error state
-  if (error) {
+  if (isError) {
     return (
       <section 
         id="services" 
@@ -151,7 +136,7 @@ const ServicesSection = () => {
             >
               Услуги
             </h2>
-            <p className="text-muted-foreground">{error}</p>
+            <p className="text-muted-foreground">Не удалось загрузить услуги</p>
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Search, Download, ExternalLink } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Search, Download, ExternalLink, Loader2 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +11,7 @@ import { casesApi } from "@/lib/api/cases.api";
 import { mediaApi } from "@/lib/api/media.api";
 import { seoApi } from "@/lib/api/seo.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { downloadSitemap } from "@/admin/lib/sitemapGenerator";
 import { downloadRobots } from "@/admin/lib/robotsGenerator";
 import type { PageItem, PageSEO } from "@/admin/types/page";
@@ -19,98 +20,77 @@ const GOOGLE_VALIDATOR = "https://search.google.com/test/rich-results";
 const YANDEX_WEBMASTER = "https://webmaster.yandex.ru/";
 
 const SEO = () => {
-  const [pages, setPages] = useState<PageItem[]>([]);
-  const [mediaItems, setMediaItems] = useState<import("@/admin/types/media").MediaItem[]>([]);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [siteUrl, setSiteUrl] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [siteUrlInput, setSiteUrlInput] = useState("");
 
-  const loadData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [pagesRes, mediaRes, seoRes] = await Promise.all([
-        pagesApi.adminList({ per_page: 100 }),
-        mediaApi.adminList({ per_page: 100 }),
-        seoApi.adminGet(),
-      ]);
+  const params = { per_page: 100 };
 
-      setPages(pagesRes.data);
-      setMediaItems(mediaRes.data);
-      setSiteUrl(seoRes.siteUrl);
-    } catch (error) {
-      console.error("Failed to load SEO data:", error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось загрузить данные.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: pagesResponse, isLoading: pagesLoading } = useQuery({
+    queryKey: ['pages', 'admin', params],
+    queryFn: () => pagesApi.adminList(params),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
+  const { data: mediaResponse, isLoading: mediaLoading } = useQuery({
+    queryKey: ['media', 'admin', params],
+    queryFn: () => mediaApi.adminList(params),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const { data: seoConfig, isLoading: seoLoading } = useQuery({
+    queryKey: ['seo', 'admin'],
+    queryFn: () => seoApi.adminGet(),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const pages = pagesResponse?.data || [];
+  const mediaItems = mediaResponse?.data || [];
+  const siteUrl = seoConfig?.siteUrl || "https://bellahasias.ru";
+  const loading = pagesLoading || mediaLoading || seoLoading;
+
+  // Sync input with query data
   useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  const handleSaveSEO = useCallback(
-    async (pageId: string, seo: PageSEO) => {
-      try {
-        const page = pages.find((p) => p.id === pageId);
-        if (!page) return;
-
-        await pagesApi.adminUpdate(Number(pageId), {
-          seo,
-        });
-
-        // Update local state
-        setPages(pages.map((p) => (p.id === pageId ? { ...p, seo } : p)));
-        toast({
-          title: "Сохранено",
-          description: "SEO настройки страницы обновлены.",
-        });
-      } catch (error) {
-        console.error("Failed to save SEO:", error);
-        toast({
-          title: "Ошибка",
-          description: "Не удалось сохранить SEO настройки.",
-          variant: "destructive",
-        });
-      }
-    },
-    [pages]
-  );
-
-  const handleSaveSiteUrl = async () => {
-    try {
-      await seoApi.adminUpdate({
-        siteUrl: siteUrl.trim() || "https://bellahasias.ru",
-      });
-      toast({
-        title: "Сохранено",
-        description: "URL сайта обновлён.",
-      });
-    } catch (error) {
-      console.error("Failed to save site URL:", error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось сохранить URL сайта.",
-        variant: "destructive",
-      });
+    if (seoConfig?.siteUrl) {
+      setSiteUrlInput(seoConfig.siteUrl);
     }
+  }, [seoConfig]);
+
+  const updatePageSEOMutation = useMutation({
+    mutationFn: ({ pageId, seo }: { pageId: number; seo: PageSEO }) =>
+      pagesApi.adminUpdate(pageId, { seo }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pages', 'admin'] });
+      toast.success("SEO настройки страницы обновлены");
+    },
+  });
+
+  const updateSiteUrlMutation = useMutation({
+    mutationFn: (url: string) => seoApi.adminUpdate({ siteUrl: url }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['seo', 'admin'] });
+      toast.success("URL сайта обновлён");
+    },
+  });
+
+  const handleSaveSEO = (pageId: string, seo: PageSEO) => {
+    updatePageSEOMutation.mutate({ pageId: Number(pageId), seo });
+  };
+
+  const handleSaveSiteUrl = () => {
+    updateSiteUrlMutation.mutate(siteUrlInput.trim() || "https://bellahasias.ru");
   };
 
   const handleDownloadSitemap = async () => {
     try {
       const casesRes = await casesApi.adminList({ per_page: 100 });
       downloadSitemap(pages, casesRes.data);
+      toast.success("Sitemap.xml скачан");
     } catch (error) {
-      console.error("Failed to load cases for sitemap:", error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось загрузить кейсы для sitemap.",
-        variant: "destructive",
-      });
+      // Error toast is shown by apiClient interceptor
     }
   };
 
@@ -136,7 +116,8 @@ const SEO = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-sm text-muted-foreground">Загрузка...</div>
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="text-sm text-muted-foreground ml-3">Загрузка SEO данных...</div>
       </div>
     );
   }
@@ -162,8 +143,8 @@ const SEO = () => {
             <Label htmlFor="siteUrl">Site URL</Label>
             <Input
               id="siteUrl"
-              value={siteUrl}
-              onChange={(e) => setSiteUrl(e.target.value)}
+              value={siteUrlInput}
+              onChange={(e) => setSiteUrlInput(e.target.value)}
               placeholder="https://your-site.com"
             />
           </div>

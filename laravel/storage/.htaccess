@@ -1,0 +1,17 @@
+# Защита storage от выполнения PHP и других скриптов
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# Запретить выполнение скриптов
+<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|jsp|asp|sh|cgi)$">
+    Require all denied
+</FilesMatch>
+
+# Разрешить только статические файлы
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|pdf|svg|ico|css|js|json|xml|txt|mp4|webm|ogg)$">
+    Require all granted
+</FilesMatch>
+
+# Защита от directory listing
+Options -Indexes

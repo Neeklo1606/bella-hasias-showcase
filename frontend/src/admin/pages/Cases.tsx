@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Plus, Search } from "lucide-react";
+import { useState } from "react";
+import { Plus, Search, Loader2 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import CaseCard from "@/admin/components/CaseCard";
 import CaseForm, { type CaseFormData } from "@/admin/components/CaseForm";
 import ConfirmDialog from "@/admin/components/ConfirmDialog";
+import Pagination from "@/admin/components/Pagination";
 import { casesApi } from "@/lib/api/cases.api";
 import { servicesApi } from "@/lib/api/services.api";
 import { mediaApi } from "@/lib/api/media.api";
@@ -15,37 +18,49 @@ import type { MediaItem } from "@/admin/types/media";
 import type { Service } from "@/admin/types/service";
 
 const Cases = () => {
-  const [items, setItems] = useState<CaseItem[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(25);
   const [formOpen, setFormOpen] = useState(false);
   const [editingCase, setEditingCase] = useState<CaseItem | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<CaseItem | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  const loadData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [casesRes, servicesRes, mediaRes] = await Promise.all([
-        casesApi.adminList({ per_page: 100 }),
-        servicesApi.adminList({ per_page: 100 }),
-        mediaApi.adminList({ per_page: 100 }),
-      ]);
+  const params = { per_page: perPage, page, ...(search.trim() && { q: search.trim() }) };
 
-      setItems(casesRes.data);
-      setServices(servicesRes.data);
-      setMediaItems(mediaRes.data);
-    } catch (error) {
-      console.error("Failed to load cases:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: casesResponse, isLoading: casesLoading } = useQuery({
+    queryKey: ['cases', 'admin', params],
+    queryFn: () => casesApi.adminList(params),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  const { data: servicesResponse, isLoading: servicesLoading } = useQuery({
+    queryKey: ['services', 'admin', { per_page: 100 }],
+    queryFn: () => servicesApi.adminList({ per_page: 100 }),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const { data: mediaResponse, isLoading: mediaLoading } = useQuery({
+    queryKey: ['media', 'admin', { per_page: 100 }],
+    queryFn: () => mediaApi.adminList({ per_page: 100 }),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const items = casesResponse?.data || [];
+  const services = servicesResponse?.data || [];
+  const mediaItems = mediaResponse?.data || [];
+  const loading = casesLoading || servicesLoading || mediaLoading;
+  const pagination = casesResponse
+    ? {
+        currentPage: casesResponse.current_page,
+        lastPage: casesResponse.last_page,
+        perPage: casesResponse.per_page,
+        total: casesResponse.total,
+      }
+    : null;
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
 
@@ -64,49 +79,61 @@ const Cases = () => {
     setFormOpen(true);
   };
 
-  const handleEdit = async (caseItem: CaseItem) => {
-    try {
-      // Load full case data from API
-      const fullCase = await casesApi.adminGet(Number(caseItem.id));
-      setEditingCase(fullCase);
-      setFormOpen(true);
-    } catch (error) {
-      console.error("Failed to load case:", error);
-      // Fallback to local data
-      setEditingCase(caseItem);
-      setFormOpen(true);
-    }
+  const createMutation = useMutation({
+    mutationFn: (data: CaseFormData) => casesApi.adminCreate({
+      title: data.title,
+      slug: data.slug,
+      description: data.description,
+      serviceId: data.serviceId ? Number(data.serviceId) : undefined,
+      mediaIds: data.mediaIds ? data.mediaIds.map((id) => Number(id)) : [],
+      tags: data.tags || [],
+      status: data.status || "published",
+    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cases', 'admin'] });
+      toast.success("Кейс создан");
+      setFormOpen(false);
+      setEditingCase(null);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: CaseFormData }) => casesApi.adminUpdate(id, {
+      title: data.title,
+      slug: data.slug,
+      description: data.description,
+      serviceId: data.serviceId ? Number(data.serviceId) : undefined,
+      mediaIds: data.mediaIds ? data.mediaIds.map((id) => Number(id)) : [],
+      tags: data.tags || [],
+      status: data.status || "published",
+    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cases', 'admin'] });
+      toast.success("Кейс обновлён");
+      setFormOpen(false);
+      setEditingCase(null);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => casesApi.adminDelete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cases', 'admin'] });
+      toast.success("Кейс удалён");
+      setDeleteTarget(null);
+    },
+  });
+
+  const handleEdit = (caseItem: CaseItem) => {
+    setEditingCase(caseItem);
+    setFormOpen(true);
   };
 
   const handleSubmit = async (data: CaseFormData) => {
-    try {
-      if (editingCase) {
-        await casesApi.adminUpdate(Number(editingCase.id), {
-          title: data.title,
-          slug: data.slug,
-          description: data.description,
-          serviceId: data.serviceId ? Number(data.serviceId) : undefined,
-          mediaIds: data.mediaIds ? data.mediaIds.map((id) => Number(id)) : [],
-          tags: data.tags || [],
-          status: data.status || "published",
-        });
-      } else {
-        await casesApi.adminCreate({
-          title: data.title,
-          slug: data.slug,
-          description: data.description,
-          serviceId: data.serviceId ? Number(data.serviceId) : undefined,
-          mediaIds: data.mediaIds ? data.mediaIds.map((id) => Number(id)) : [],
-          tags: data.tags || [],
-          status: data.status || "published",
-        });
-      }
-      setFormOpen(false);
-      setEditingCase(null);
-      await loadData(); // Reload data
-    } catch (error) {
-      console.error("Failed to save case:", error);
-      // TODO: Show error toast
+    if (editingCase) {
+      await updateMutation.mutateAsync({ id: Number(editingCase.id), data });
+    } else {
+      await createMutation.mutateAsync(data);
     }
   };
 
@@ -114,40 +141,20 @@ const Cases = () => {
     setDeleteTarget(caseItem);
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = () => {
     if (deleteTarget) {
-      try {
-        await casesApi.adminDelete(Number(deleteTarget.id));
-        setDeleteTarget(null);
-        await loadData(); // Reload data
-      } catch (error) {
-        console.error("Failed to delete case:", error);
-        // TODO: Show error toast
-      }
+      deleteMutation.mutate(Number(deleteTarget.id));
     }
   };
 
-  const filtered = useMemo(() => {
-    let list = items;
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      list = list.filter(
-        (it) =>
-          it.title.toLowerCase().includes(q) ||
-          it.slug.toLowerCase().includes(q) ||
-          it.tags?.some((t) => t.toLowerCase().includes(q))
-      );
-    }
-    return [...list].sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
-  }, [items, search]);
+  // Search is handled on backend
+  const filtered = items;
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-sm text-muted-foreground">Загрузка...</div>
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="text-sm text-muted-foreground ml-3">Загрузка кейсов...</div>
       </div>
     );
   }
@@ -172,7 +179,15 @@ const Cases = () => {
         <Input
           placeholder="Поиск по заголовку, slug или тегам..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1); // Reset to first page on search
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              queryClient.invalidateQueries({ queryKey: ['cases', 'admin'] });
+            }
+          }}
           className="pl-9 max-w-md"
         />
       </div>
@@ -192,12 +207,29 @@ const Cases = () => {
         </AnimatePresence>
       </div>
 
-      {filtered.length === 0 && (
+      {filtered.length === 0 && !loading && (
         <p className="py-12 text-center text-sm text-muted-foreground">
-          {items.length === 0
+          {pagination?.total === 0
             ? "Нет кейсов. Добавьте первый."
             : "Нет результатов по поиску."}
         </p>
+      )}
+
+      {pagination && (
+        <Pagination
+          currentPage={pagination.currentPage}
+          lastPage={pagination.lastPage}
+          perPage={pagination.perPage}
+          total={pagination.total}
+          onPageChange={(newPage) => {
+            setPage(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onPerPageChange={(newPerPage) => {
+            setPerPage(newPerPage);
+            setPage(1);
+          }}
+        />
       )}
 
       <CaseForm

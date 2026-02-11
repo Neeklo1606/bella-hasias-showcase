@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { pagesApi } from "@/lib/api/pages.api";
 import { seoApi } from "@/lib/api/seo.api";
+import { mediaApi } from "@/lib/api/media.api";
 import type { PageItem } from "@/admin/types/page";
 
 type PageSEOProps = {
@@ -29,10 +30,40 @@ const PageSEO = ({ slug, fallback }: PageSEOProps) => {
         setSiteUrl(seoConfig.siteUrl);
         setPage(pageData);
 
-        // Get OG image
+        // Get OG image from media if ogImageId is present
         if (pageData?.seo?.ogImageId) {
-          // OG image ID is stored in seo.ogImageId
-          // We need to construct the URL - for now use fallback
+          try {
+            // ogImageId can be string or number, convert to number
+            const imageId = typeof pageData.seo.ogImageId === 'string' 
+              ? parseInt(pageData.seo.ogImageId, 10) 
+              : pageData.seo.ogImageId;
+            
+            if (!isNaN(imageId) && imageId > 0) {
+              const mediaItem = await mediaApi.get(imageId);
+              
+              // Form absolute URL
+              const base = seoConfig.siteUrl.replace(/\/$/, "");
+              const imageUrl = mediaItem.src || "";
+              
+              // If URL is already absolute (starts with http), use it as is
+              if (imageUrl && (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"))) {
+                setOgImage(imageUrl);
+              } else if (imageUrl) {
+                // If relative, make it absolute
+                const cleanUrl = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
+                setOgImage(`${base}${cleanUrl}`);
+              } else {
+                setOgImage(null);
+              }
+            } else {
+              setOgImage(null);
+            }
+          } catch (error) {
+            // If media not found or error, fallback will be used
+            console.warn("Failed to load OG image media:", error);
+            setOgImage(null);
+          }
+        } else {
           setOgImage(null);
         }
       } catch (error) {

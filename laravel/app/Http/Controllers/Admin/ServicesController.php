@@ -7,6 +7,7 @@ use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
+use App\Services\AuditService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -59,6 +60,9 @@ class ServicesController extends Controller
         $data['tags'] = $data['tags'] ?? [];
         
         $service = Service::create($data);
+        
+        // Log audit
+        AuditService::logCreate($service, $request);
 
         return (new ServiceResource($service->load(['image', 'cover'])))
             ->response()
@@ -86,13 +90,36 @@ class ServicesController extends Controller
             $data['tags'] = $data['tags'] ?? [];
         }
         
+        // Get original values before update
+        $original = $service->getOriginal();
         $service->update($data);
+        
+        // Get changed fields after update
+        $service->refresh();
+        $newAttributes = $service->getAttributes();
+        $oldValues = [];
+        $newValues = [];
+        
+        foreach ($data as $key => $value) {
+            if (isset($original[$key]) && $original[$key] !== $newAttributes[$key]) {
+                $oldValues[$key] = $original[$key];
+                $newValues[$key] = $newAttributes[$key];
+            }
+        }
+        
+        // Log audit if there are changes
+        if (!empty($newValues)) {
+            AuditService::logUpdate($service, $newValues, $request, $oldValues);
+        }
 
         return (new ServiceResource($service->load(['image', 'cover'])))->response();
     }
 
-    public function destroy(Service $service): JsonResponse
+    public function destroy(Service $service, Request $request): JsonResponse
     {
+        // Log audit before deletion
+        AuditService::logDelete($service, $request);
+        
         $service->delete();
 
         return response()->json(['message' => 'Service deleted successfully']);

@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MediaUploader from "@/admin/components/MediaUploader";
 import MediaFilter from "@/admin/components/MediaFilter";
 import MediaGrid from "@/admin/components/MediaGrid";
 import MediaEditDialog from "@/admin/components/MediaEditDialog";
+import Pagination from "@/admin/components/Pagination";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   MEDIA_CATEGORIES,
   type MediaItem,
@@ -14,160 +17,113 @@ import { mediaApi } from "@/lib/api/media.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 
 const Media = () => {
-  const [items, setItems] = useState<MediaItem[]>([]);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(25);
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
   const [editOpen, setEditOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  const loadData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const mediaRes = await mediaApi.adminList({ per_page: 100 });
-      setItems(mediaRes.data);
-    } catch (error) {
-      console.error("Failed to load media:", error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось загрузить медиа-файлы.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const params = {
+    per_page: perPage,
+    page,
+    ...(search.trim() && { q: search.trim() }),
+    ...(category !== "all" && { category }),
+  };
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  const { data: mediaResponse, isLoading: mediaLoading } = useQuery({
+    queryKey: ['media', 'admin', params],
+    queryFn: () => mediaApi.adminList(params),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-  const handleFilesSelected = useCallback(
-    async (files: File[]) => {
-      try {
-        const uploadPromises = files.map((file) =>
+  const items = mediaResponse?.data || [];
+  const loading = mediaLoading;
+  const pagination = mediaResponse
+    ? {
+        currentPage: mediaResponse.current_page,
+        lastPage: mediaResponse.last_page,
+        perPage: mediaResponse.per_page,
+        total: mediaResponse.total,
+      }
+    : null;
+
+  const uploadMutation = useMutation({
+    mutationFn: (files: File[]) =>
+      Promise.all(
+        files.map((file) =>
           mediaApi.adminUpload({
             file,
             category: "Прочее",
             alt: file.name.replace(/\.[^.]+$/, ""),
           })
-        );
-
-        await Promise.all(uploadPromises);
-        toast({
-          title: "Успешно",
-          description: `Загружено ${files.length} файл(ов).`,
-        });
-        await loadData(); // Reload data
-      } catch (error) {
-        console.error("Failed to upload files:", error);
-        toast({
-          title: "Ошибка",
-          description: "Не удалось загрузить файлы.",
-          variant: "destructive",
-        });
-      }
+        )
+      ),
+    onSuccess: (_, files) => {
+      queryClient.invalidateQueries({ queryKey: ['media', 'admin'] });
+      toast.success(`Загружено ${files.length} файл(ов)`);
     },
-    [loadData]
-  );
+  });
 
-  const handleEdit = useCallback((item: MediaItem) => {
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: { alt: string; category: MediaCategory } }) =>
+      mediaApi.adminUpdate(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['media', 'admin'] });
+      toast.success("Медиа-файл обновлён");
+      setEditOpen(false);
+      setEditingItem(null);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => mediaApi.adminDelete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['media', 'admin'] });
+      toast.success("Медиа-файл удалён");
+    },
+  });
+
+  const categoryChangeMutation = useMutation({
+    mutationFn: ({ id, category }: { id: number; category: MediaCategory }) =>
+      mediaApi.adminUpdate(id, { category }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['media', 'admin'] });
+    },
+  });
+
+  const handleFilesSelected = (files: File[]) => {
+    uploadMutation.mutate(files);
+  };
+
+  const handleEdit = (item: MediaItem) => {
     setEditingItem(item);
     setEditOpen(true);
-  }, []);
+  };
 
-  const handleSaveEdit = useCallback(
-    async (id: string, data: { alt: string; category: MediaCategory }) => {
-      try {
-        await mediaApi.adminUpdate(Number(id), {
-          alt: data.alt,
-          category: data.category,
-        });
-        setEditOpen(false);
-        setEditingItem(null);
-        await loadData(); // Reload data
-        toast({
-          title: "Сохранено",
-          description: "Медиа-файл обновлён.",
-        });
-      } catch (error) {
-        console.error("Failed to update media:", error);
-        toast({
-          title: "Ошибка",
-          description: "Не удалось обновить медиа-файл.",
-          variant: "destructive",
-        });
-      }
-    },
-    [loadData]
-  );
+  const handleSaveEdit = (id: string, data: { alt: string; category: MediaCategory }) => {
+    updateMutation.mutate({ id: Number(id), data });
+  };
 
-  const handleDelete = useCallback(
-    async (id: string) => {
-      try {
-        await mediaApi.adminDelete(Number(id));
-        await loadData(); // Reload data
-        toast({
-          title: "Удалено",
-          description: "Медиа-файл удалён.",
-        });
-      } catch (error) {
-        console.error("Failed to delete media:", error);
-        toast({
-          title: "Ошибка",
-          description: "Не удалось удалить медиа-файл.",
-          variant: "destructive",
-        });
-      }
-    },
-    [loadData]
-  );
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate(Number(id));
+  };
 
-  const handleCategoryChange = useCallback(
-    async (id: string, category: MediaCategory) => {
-      try {
-        await mediaApi.adminUpdate(Number(id), { category });
-        await loadData(); // Reload data
-      } catch (error) {
-        console.error("Failed to update category:", error);
-        toast({
-          title: "Ошибка",
-          description: "Не удалось обновить категорию.",
-          variant: "destructive",
-        });
-      }
-    },
-    [loadData]
-  );
+  const handleCategoryChange = (id: string, category: MediaCategory) => {
+    categoryChangeMutation.mutate({ id: Number(id), category });
+  };
 
+  // Filtering is handled on backend, but we still need to resolve media items
   const resolvedItems = useResolvedMediaItems(items);
-
-  const filtered = useMemo(() => {
-    let list = items;
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      list = list.filter(
-        (it) =>
-          it.filename.toLowerCase().includes(q) ||
-          it.alt.toLowerCase().includes(q)
-      );
-    }
-    if (category !== "all") {
-      list = list.filter((it) => it.category === category);
-    }
-    const resolvedMap = new Map(resolvedItems.map((it) => [it.id, it]));
-    return [...list]
-      .map((it) => resolvedMap.get(it.id) ?? it)
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-  }, [items, resolvedItems, search, category]);
+  const filtered = resolvedItems;
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-sm text-muted-foreground">Загрузка...</div>
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="text-sm text-muted-foreground ml-3">Загрузка медиа...</div>
       </div>
     );
   }
@@ -191,9 +147,15 @@ const Media = () => {
 
       <MediaFilter
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={(value) => {
+          setSearch(value);
+          setPage(1); // Reset to first page on search
+        }}
         category={category}
-        onCategoryChange={setCategory}
+        onCategoryChange={(value) => {
+          setCategory(value);
+          setPage(1); // Reset to first page on category change
+        }}
       />
 
       <MediaGrid
@@ -203,12 +165,29 @@ const Media = () => {
         onCategoryChange={handleCategoryChange}
       />
 
-      {filtered.length === 0 && (
+      {filtered.length === 0 && !loading && (
         <p className="py-12 text-center text-sm text-muted-foreground">
-          {items.length === 0
+          {pagination?.total === 0
             ? "Нет медиа. Загрузите файлы выше."
             : "Нет результатов по фильтру."}
         </p>
+      )}
+
+      {pagination && (
+        <Pagination
+          currentPage={pagination.currentPage}
+          lastPage={pagination.lastPage}
+          perPage={pagination.perPage}
+          total={pagination.total}
+          onPageChange={(newPage) => {
+            setPage(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onPerPageChange={(newPerPage) => {
+            setPerPage(newPerPage);
+            setPage(1);
+          }}
+        />
       )}
 
       <MediaEditDialog

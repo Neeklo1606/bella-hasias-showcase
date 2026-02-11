@@ -13,17 +13,19 @@ class AuthController extends Controller
 {
     /**
      * Login user
+     * Rate limited: 5 attempts per minute per IP+email
      */
     public function login(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'email' => ['required', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8', 'max:255'],
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
+            // Use same error message to prevent user enumeration
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);

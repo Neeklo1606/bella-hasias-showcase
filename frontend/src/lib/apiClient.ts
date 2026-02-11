@@ -1,15 +1,55 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { toast } from "sonner";
 
 let csrfTokenEnsured = false;
+let sessionExpiredShown = false;
 
-const apiClient: AxiosInstance = axios.create({
-  baseURL: "/",
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-});
+/**
+ * Extract error message from API response
+ */
+const getErrorMessage = (error: AxiosError): string => {
+  const response = error.response;
+  
+  if (!response) {
+    return "Ошибка сети. Проверьте подключение к интернету.";
+  }
+
+  // Laravel validation errors
+  if (response.data && typeof response.data === 'object') {
+    const data = response.data as any;
+    
+    // Laravel validation: { errors: { field: ["message"] } }
+    if (data.errors && typeof data.errors === 'object') {
+      const errors = Object.values(data.errors).flat() as string[];
+      if (errors.length > 0) {
+        return errors[0]; // Show first error
+      }
+    }
+    
+    // Generic message
+    if (data.message) {
+      return data.message;
+    }
+  }
+
+  // Status-based messages
+  switch (response.status) {
+    case 403:
+      return "Доступ запрещен. У вас нет прав для выполнения этого действия.";
+    case 404:
+      return "Ресурс не найден.";
+    case 422:
+      return "Ошибка валидации данных.";
+    case 429:
+      return "Слишком много запросов. Попробуйте позже.";
+    case 500:
+      return "Внутренняя ошибка сервера. Попробуйте позже.";
+    case 503:
+      return "Сервис временно недоступен. Попробуйте позже.";
+    default:
+      return `Ошибка ${response.status}: ${response.statusText || "Неизвестная ошибка"}`;
+  }
+};
 
 /**
  * Ensure CSRF cookie is set before making authenticated requests
@@ -45,14 +85,15 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor: handle 419 (CSRF token mismatch) and 401 (Unauthorized)
+// Response interceptor: handle errors and show toast notifications
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const status = error.response?.status;
 
-    // Handle 419: CSRF token mismatch - refresh and retry once
-    if (error.response?.status === 419 && !originalRequest._retry) {
+    // Handle 419: CSRF token mismatch - refresh and retry once (silently)
+    if (status === 419 && !originalRequest._retry) {
       originalRequest._retry = true;
       csrfTokenEnsured = false; // Reset to force refresh
 
@@ -64,13 +105,33 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // Handle 401: Unauthorized - redirect to login if admin route
-    if (error.response?.status === 401) {
+    // Handle 401: Unauthorized - redirect to login (show toast once)
+    if (status === 401) {
       const url = originalRequest.url || "";
       if (url.includes("/api/admin/") || url.includes("/api/auth/me")) {
+        if (!sessionExpiredShown) {
+          sessionExpiredShown = true;
+          toast.error("Сессия истекла", {
+            description: "Пожалуйста, войдите снова.",
+          });
+          // Reset flag after 5 seconds
+          setTimeout(() => {
+            sessionExpiredShown = false;
+          }, 5000);
+        }
         // Clear auth state by redirecting to login
         window.location.href = "/admin/login";
       }
+      return Promise.reject(error);
+    }
+
+    // Handle other errors (4xx, 5xx) - show toast
+    if (status && status >= 400 && status !== 401 && status !== 419) {
+      const message = getErrorMessage(error);
+      toast.error("Ошибка", {
+        description: message,
+        duration: 5000,
+      });
     }
 
     return Promise.reject(error);

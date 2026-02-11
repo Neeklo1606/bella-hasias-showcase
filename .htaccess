@@ -2,8 +2,30 @@
     RewriteEngine On
     RewriteBase /
 
+    # Защита от доступа к служебным файлам и папкам
+    RewriteRule ^laravel/\.env$ - [F,L]
+    RewriteRule ^laravel/vendor/ - [F,L]
+    RewriteRule ^laravel/storage/logs/ - [F,L]
+    RewriteRule ^laravel/storage/framework/ - [F,L]
+    RewriteRule ^laravel/bootstrap/cache/ - [F,L]
+    RewriteRule ^laravel/database/ - [F,L]
+    RewriteRule ^laravel/tests/ - [F,L]
+    RewriteRule ^laravel/\.git/ - [F,L]
+    RewriteRule ^laravel/\.gitignore$ - [F,L]
+    RewriteRule ^laravel/composer\.(json|lock)$ - [F,L]
+    RewriteRule ^laravel/package\.json$ - [F,L]
+    RewriteRule ^laravel/phpunit\.xml$ - [F,L]
+    RewriteRule ^\.env$ - [F,L]
+    RewriteRule ^\.git/ - [F,L]
+    RewriteRule ^frontend/ - [F,L]
+
     # Статические файлы из /build отдавать напрямую
     RewriteCond %{REQUEST_URI} ^/build/
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Storage files - отдавать как статику (без выполнения PHP)
+    RewriteCond %{REQUEST_URI} ^/storage/
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
@@ -13,6 +35,7 @@
     RewriteRule ^ - [L]
 
     # Все остальные запросы направлять в index.php (Laravel)
+    # Это включает /api/*, /admin/*, /sanctum/* и все SPA роуты
     RewriteRule ^ index.php [L]
 </IfModule>
 
@@ -26,3 +49,8 @@
     AddType image/jpeg jpg jpeg
     AddType image/webp webp
 </IfModule>
+
+# Защита от прямого доступа к .env и другим служебным файлам
+<FilesMatch "^(\.env|\.gitignore|composer\.(json|lock)|package\.json|phpunit\.xml)$">
+    Require all denied
+</FilesMatch>

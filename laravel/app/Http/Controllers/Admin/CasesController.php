@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCaseRequest;
 use App\Http\Requests\UpdateCaseRequest;
 use App\Http\Resources\CaseResource;
 use App\Models\CaseItem;
+use App\Services\AuditService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -71,6 +72,9 @@ class CasesController extends Controller
             }
             $case->media()->sync($syncData);
         }
+        
+        // Log audit
+        AuditService::logCreate($case, $request);
 
         return (new CaseResource($case->load(['service', 'media'])))
             ->response()
@@ -92,6 +96,8 @@ class CasesController extends Controller
         $mediaIds = $data['media_ids'] ?? null;
         unset($data['media_ids']);
         
+        // Get original values before update
+        $original = $case->getOriginal();
         $case->update($data);
         
         // Sync media if provided
@@ -102,12 +108,33 @@ class CasesController extends Controller
             }
             $case->media()->sync($syncData);
         }
+        
+        // Get changed fields after update
+        $case->refresh();
+        $newAttributes = $case->getAttributes();
+        $oldValues = [];
+        $newValues = [];
+        
+        foreach ($data as $key => $value) {
+            if (isset($original[$key]) && $original[$key] !== $newAttributes[$key]) {
+                $oldValues[$key] = $original[$key];
+                $newValues[$key] = $newAttributes[$key];
+            }
+        }
+        
+        // Log audit if there are changes
+        if (!empty($newValues)) {
+            AuditService::logUpdate($case, $newValues, $request, $oldValues);
+        }
 
         return (new CaseResource($case->load(['service', 'media'])))->response();
     }
 
-    public function destroy(CaseItem $case): JsonResponse
+    public function destroy(CaseItem $case, Request $request): JsonResponse
     {
+        // Log audit before deletion
+        AuditService::logDelete($case, $request);
+        
         $case->delete();
 
         return response()->json(['message' => 'Case deleted successfully']);

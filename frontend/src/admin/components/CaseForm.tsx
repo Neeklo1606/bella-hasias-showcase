@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
 import MediaMultiSelect from "./MediaMultiSelect";
 import TagsInput from "./TagsInput";
 import type { CaseItem } from "@/admin/types/case";
@@ -61,6 +62,7 @@ const CaseForm = ({
 }: CaseFormProps) => {
   const [form, setForm] = useState<CaseFormData>(emptyForm);
   const [slugEdited, setSlugEdited] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (caseItem) {
@@ -80,6 +82,7 @@ const CaseForm = ({
       });
       setSlugEdited(false);
     }
+    setIsSubmitting(false);
   }, [caseItem, services, open]);
 
   const handleTitleChange = (title: string) => {
@@ -89,14 +92,21 @@ const CaseForm = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim()) return;
+    if (!form.title.trim() || isSubmitting) return;
     if (!form.slug.trim()) {
       setForm((f) => ({ ...f, slug: slugify(form.title) }));
     }
-    onSubmit(form);
-    onOpenChange(false);
+    setIsSubmitting(true);
+    try {
+      await onSubmit(form);
+      onOpenChange(false);
+    } catch (error) {
+      // Error is handled by apiClient interceptor
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -109,7 +119,8 @@ const CaseForm = ({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="sticky top-0 z-10 flex justify-end bg-background/95 py-2 backdrop-blur-sm">
-            <Button type="submit" size="sm">
+            <Button type="submit" size="sm" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Сохранить
             </Button>
           </div>
@@ -191,10 +202,14 @@ const CaseForm = ({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isSubmitting}
             >
               Отмена
             </Button>
-            <Button type="submit">Сохранить</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Сохранить
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

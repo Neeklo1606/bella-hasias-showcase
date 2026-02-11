@@ -12,6 +12,7 @@ const navItems: SidebarItem[] = [
   { label: "SEO", to: "/admin/seo" },
   { label: "Статистика", to: "/admin/stats" },
   { label: "Настройки", to: "/admin/settings" },
+  { label: "Журнал действий", to: "/admin/audit" },
 ];
 
 const AdminLayout = () => {
