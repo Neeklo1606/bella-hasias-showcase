@@ -19,23 +19,20 @@
 cd ~/bellahasias.ru/public_html && \
 git pull origin main && \
 cd laravel && \
-php8.2 ~/composer.phar install --no-dev --optimize-autoloader && \
+php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader && \
 php8.2 artisan migrate --force && \
 php8.2 artisan config:cache && \
 php8.2 artisan route:cache && \
 php8.2 artisan view:cache
 ```
 
-**Или если composer в PATH:**
+**Проверка после деплоя:**
 ```bash
-cd ~/bellahasias.ru/public_html && \
-git pull origin main && \
-cd laravel && \
-php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader && \
-php8.2 artisan migrate --force && \
-php8.2 artisan config:cache && \
-php8.2 artisan route:cache && \
-php8.2 artisan view:cache
+# Проверить статус миграций
+php8.2 artisan migrate:status
+
+# Проверить наличие таблицы audit_logs
+php8.2 artisan tinker --execute="echo \Illuminate\Support\Facades\Schema::hasTable('audit_logs') ? '✅ Таблица audit_logs существует' : '❌ Таблица audit_logs не найдена';"
 ```
 
 ### Вариант 2: Пошаговый деплой
@@ -53,24 +50,18 @@ git pull origin main
 cd laravel
 ```
 
-**Выберите один вариант (в зависимости от расположения composer):**
+**На сервере Beget composer обычно находится в `/usr/local/bin/composer`:**
 
-**Вариант 1: composer локально в домашней директории**
-```bash
-php8.2 ~/composer.phar install --no-dev --optimize-autoloader
-```
-
-**Вариант 2: composer установлен глобально**
 ```bash
 php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader
 ```
 
-**Вариант 3: если composer в PATH (проверьте версию PHP)**
+**Если этот путь не работает, попробуйте найти composer:**
 ```bash
-# Сначала проверьте версию PHP
-php8.2 -v
-# Если версия 8.2+, то можно использовать:
-php8.2 composer install --no-dev --optimize-autoloader
+# Поиск composer
+which composer
+# Или
+find /usr -name composer 2>/dev/null
 ```
 
 #### 3. Миграции (новая таблица audit_logs)
@@ -203,17 +194,11 @@ git pull origin main
 # Переход в Laravel директорию
 cd laravel
 
-# Установка зависимостей (выберите один вариант)
+# Установка зависимостей
 # ⚠️ ВАЖНО: Используйте PHP 8.2 для всех команд!
 
-# Вариант 1: composer локально в домашней директории
-php8.2 ~/composer.phar install --no-dev --optimize-autoloader
-
-# Вариант 2: если composer установлен глобально
+# На сервере Beget composer обычно в /usr/local/bin/composer
 php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader
-
-# Вариант 3: если composer в PATH (проверьте версию PHP)
-# php8.2 composer install --no-dev --optimize-autoloader
 
 # Выполнение миграций (создание таблицы audit_logs)
 php8.2 artisan migrate --force

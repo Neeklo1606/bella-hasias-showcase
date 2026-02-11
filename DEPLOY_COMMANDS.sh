@@ -18,12 +18,12 @@ cd laravel
 # Попытка найти composer (используем PHP 8.2)
 PHP_CMD="php8.2"
 
-if [ -f ~/composer.phar ]; then
-    echo "📦 Использование composer из ~/composer.phar"
-    $PHP_CMD ~/composer.phar install --no-dev --optimize-autoloader
-elif [ -f /usr/local/bin/composer ]; then
+if [ -f /usr/local/bin/composer ]; then
     echo "📦 Использование composer из /usr/local/bin/composer"
     $PHP_CMD /usr/local/bin/composer install --no-dev --optimize-autoloader
+elif [ -f ~/composer.phar ]; then
+    echo "📦 Использование composer из ~/composer.phar"
+    $PHP_CMD ~/composer.phar install --no-dev --optimize-autoloader
 elif command -v composer &> /dev/null; then
     echo "📦 Использование composer из PATH (проверьте версию PHP!)"
     $PHP_CMD composer install --no-dev --optimize-autoloader
