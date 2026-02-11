@@ -1,28 +1,79 @@
 # Bella Hasias — Стилист и контент-креатор
 
-Сайт-визитка с Headless CMS админкой на стеке React + Vite + TypeScript + TailwindCSS + ShadCN UI.
+Сайт-визитка с Headless CMS админкой на стеке **Laravel 12 API + React SPA**.
 
-## Технологии
+## Архитектура
 
-- **Frontend:** React 18, Vite 6, TypeScript
+- **Backend:** Laravel 12 (API)
+- **Frontend:** React 18 + Vite 6 + TypeScript
 - **UI:** TailwindCSS, ShadCN UI, Framer Motion
-- **Роутинг:** React Router v6
-- **CMS:** Локальная админка с хранением в localStorage + JSON-файлы в `src/data/`
+- **Роутинг:** React Router v6 (SPA) + Laravel routes (API)
+- **CMS:** Локальная админка с хранением в localStorage + JSON-файлы в `frontend/src/data/`
 
-## Установка и запуск
+## Структура проекта
+
+```
+/ (корень репозитория = public_html на сервере)
+├── index.php              # Точка входа Laravel
+├── .htaccess              # Apache конфигурация
+├── build/                 # Собранный React (коммитится в git)
+│   ├── .vite/
+│   │   └── manifest.json  # Vite manifest
+│   ├── assets/            # JS, CSS, изображения
+│   └── index.html
+├── laravel/               # Laravel проект (не публичный)
+│   ├── app/
+│   ├── routes/
+│   │   ├── web.php        # SPA fallback
+│   │   └── api.php        # API роуты
+│   ├── resources/
+│   │   └── views/
+│   │       └── app.blade.php  # Blade шаблон для React
+│   └── ...
+└── frontend/              # Исходники React (не публичный)
+    ├── src/
+    │   ├── admin/         # Админ-панель
+    │   ├── components/    # Публичные компоненты
+    │   ├── pages/         # Публичные страницы
+    │   └── data/          # JSON-данные
+    ├── public/
+    └── vite.config.ts     # Сборка в ../build
+```
+
+## Локальная разработка
+
+### Установка зависимостей
 
 ```bash
-# Установка зависимостей
+# Frontend (React)
+cd frontend
 npm install
 
-# Режим разработки
+# Backend (Laravel)
+cd ../laravel
+composer install
+```
+
+### Запуск в режиме разработки
+
+```bash
+# Frontend (в отдельном терминале)
+cd frontend
 npm run dev
+# Откроется на http://localhost:8080
 
-# Сборка для продакшена
+# Backend (в отдельном терминале)
+cd laravel
+php artisan serve
+# Откроется на http://localhost:8000
+```
+
+### Сборка для продакшена
+
+```bash
+cd frontend
 npm run build
-
-# Предпросмотр собранного проекта
-npm run preview
+# Сборка будет в /build (корень репозитория)
 ```
 
 ## Админ-панель
@@ -44,93 +95,93 @@ npm run preview
 | Статистика| /admin/stats        | Заглушка                          |
 | Настройки | /admin/settings     | Заглушка                          |
 
-## Деплой на Бегет (Beget)
+## API
 
-### 1. Сборка проекта
+Laravel API доступен по маршруту `/api/*`:
 
 ```bash
+# Тестовый endpoint
+GET /api/ping
+# Возвращает: {"ok": true, "message": "API is working"}
+```
+
+## Деплой на Beget
+
+### Подготовка (локально)
+
+```bash
+# 1. Собрать React
+cd frontend
+npm install
 npm run build
+
+# 2. Закоммитить сборку
+git add build/
+git commit -m "Build: обновлена сборка React"
+git push origin main
 ```
 
-Папка `dist/` будет содержать готовый статический сайт.
+### На сервере (SSH)
 
-### 2. Загрузка на хостинг
+```bash
+cd ~/bellahasias.ru/public_html
 
-- Подключитесь к хостингу по FTP/SFTP
-- Загрузите **содержимое** папки `dist/` в `public_html`
-- Структура на сервере должна быть примерно такой:
+# Обновить код
+git pull origin main
 
-```
-public_html/
-├── index.html
-├── assets/
-│   ├── index-*.js
-│   ├── index-*.css
-│   └── [изображения и шрифты]
-├── favicon.png
-├── icons/
-├── manifest.json
-├── og-image.jpg
-├── robots.txt
-├── sitemap.xml
-├── videos/
-└── uploads/
-```
+# Установить зависимости Laravel
+cd laravel
+php8.2 composer.phar install --no-dev --optimize-autoloader
 
-### 3. Обновление sitemap.xml и robots.txt
+# Применить миграции
+php8.2 artisan migrate --force
 
-- Сгенерируйте файлы в админке: `/admin/seo` → «Скачать sitemap.xml» и «Скачать robots.txt»
-- Замените соответствующие файлы в `public_html` на скачанные
-- В `src/data/seo.json` (или через админку) укажите актуальный **Site URL** (например, `https://yourdomain.ru`)
+# Очистить и пересобрать кеши
+php8.2 artisan config:clear
+php8.2 artisan route:clear
+php8.2 artisan view:clear
+php8.2 artisan cache:clear
+php8.2 artisan config:cache
+php8.2 artisan route:cache
+php8.2 artisan view:cache
 
-### 4. Настройка .htaccess (SPA)
-
-Для корректной работы React Router на хостинге убедитесь, что в `public_html` есть `.htaccess`:
-
-```apache
-Options -Indexes
-
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
-
-  RewriteRule ^ index.html [L]
-</IfModule>
+# Права доступа
+chmod -R 755 storage bootstrap/cache
 ```
 
-### 5. Проверка после деплоя
-
-- [ ] Главная страница открывается
-- [ ] Маршруты `/contacts`, `/portfolio`, `/services` работают
-- [ ] Страницы кейсов `/portfolio/:slug` открываются
-- [ ] Админка `/admin/login` доступна
-- [ ] Файлы `sitemap.xml` и `robots.txt` доступны по URL
+**Подробные инструкции:**
+- `SERVER_STEPS.md` — пошаговая настройка
+- `README_DEPLOY.md` — полная документация деплоя
+- `FIX_COMPOSER_PHP82.md` — решение проблем с Composer
 
 ## Конфигурация
 
-- **Vite:** `base: "./"` — относительные пути для корректной работы на хостинге
-- **Данные CMS:** `src/data/*.json` — начальные данные; изменения сохраняются в localStorage браузера
+- **Vite:** `base: "/build/"` — сборка в `/build` с manifest
+- **Laravel:** SPA fallback через `Route::fallback()` для всех маршрутов кроме `/api/*`
+- **Данные CMS:** `frontend/src/data/*.json` — начальные данные; изменения сохраняются в localStorage браузера
 
-## Структура проекта
+## Важные замечания
 
-```
-src/
-├── admin/           # Админ-панель
-│   ├── components/  # UI-компоненты CMS
-│   ├── hooks/       # useAuth
-│   ├── layout/      # Layout админки
-│   ├── lib/         # Хранилища (media, services, cases, pages, seo)
-│   ├── pages/       # Страницы админки
-│   └── types/       # Типы
-├── components/      # Публичные компоненты
-├── data/            # JSON-данные (users, media, services, cases, pages, seo)
-├── pages/           # Публичные страницы
-└── ...
-```
+- **DocumentRoot** на Beget строго указывает на `~/DOMAIN/public_html` — менять нельзя
+- **PHP версия:** требуется PHP >= 8.2.0 для Laravel 12
+- **Build коммитится:** `/build` коммитится в репозиторий, так как на сервере может не быть Node.js
+- **Пути:** Все пути в React должны начинаться с `/build/`
+
+## Troubleshooting
+
+### Ошибка "Build not found"
+- Убедитесь, что `/build` существует и содержит `.vite/manifest.json`
+- Проверьте, что сборка выполнена: `cd frontend && npm run build`
+
+### Ошибка 500 Internal Server Error
+- Проверьте логи: `laravel/storage/logs/laravel.log`
+- Убедитесь, что PHP версия >= 8.2.0
+- Проверьте права доступа: `chmod -R 755 storage bootstrap/cache`
+
+### API не работает
+- Проверьте, что `laravel/routes/api.php` существует
+- Убедитесь, что в `laravel/bootstrap/app.php` включен API роутинг
+- Проверьте `.htaccess` — он должен пропускать `/api/*` через `index.php`
 
 ## Лицензия
 
