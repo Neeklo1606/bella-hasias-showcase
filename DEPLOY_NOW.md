@@ -14,7 +14,7 @@
 ### Вариант 1: Быстрый деплой (одна команда)
 
 ```bash
-cd ~/DOMAIN/public_html && \
+cd ~/bellahasias.ru/public_html && \
 git pull origin main && \
 cd laravel && \
 composer install --no-dev --optimize-autoloader && \
@@ -28,7 +28,7 @@ php artisan view:cache
 
 #### 1. Обновление кода
 ```bash
-cd ~/DOMAIN/public_html
+cd ~/bellahasias.ru/public_html
 git pull origin main
 ```
 
@@ -41,6 +41,11 @@ composer install --no-dev --optimize-autoloader
 **Если нужно указать версию PHP:**
 ```bash
 php8.2 ~/composer.phar install --no-dev --optimize-autoloader
+```
+
+**Или если composer установлен глобально:**
+```bash
+php8.2 /usr/local/bin/composer install --no-dev --optimize-autoloader
 ```
 
 #### 3. Миграции (новая таблица audit_logs)
