@@ -9,6 +9,8 @@ class SeoMeta extends Model
 {
     use HasFactory;
 
+    protected $table = 'seo_meta';
+
     public $timestamps = false;
 
     protected $fillable = [
