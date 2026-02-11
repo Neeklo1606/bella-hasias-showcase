@@ -1,0 +1,173 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Plus, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { AnimatePresence } from "framer-motion";
+import ServiceCard from "@/admin/components/ServiceCard";
+import ServiceForm, { type ServiceFormData } from "@/admin/components/ServiceForm";
+import ConfirmDialog from "@/admin/components/ConfirmDialog";
+import { loadServices, saveServices } from "@/admin/lib/servicesStorage";
+import { loadMedia } from "@/admin/lib/mediaStorage";
+import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
+import type { Service } from "@/admin/types/service";
+import type { MediaItem } from "@/admin/types/media";
+
+const generateId = () =>
+  `svc-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+const Services = () => {
+  const [items, setItems] = useState<Service[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [search, setSearch] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Service | null>(null);
+
+  useEffect(() => {
+    setItems(loadServices());
+    setMediaItems(loadMedia());
+  }, []);
+
+  const persist = useCallback((next: Service[]) => {
+    setItems(next);
+    saveServices(next);
+  }, []);
+
+  const resolvedMediaItems = useResolvedMediaItems(mediaItems);
+
+  const mediaMap = useMemo(
+    () => new Map(resolvedMediaItems.map((m) => [m.id, m])),
+    [resolvedMediaItems]
+  );
+
+  const handleCreate = () => {
+    setEditingService(null);
+    setFormOpen(true);
+  };
+
+  const handleEdit = (service: Service) => {
+    setEditingService(service);
+    setFormOpen(true);
+  };
+
+  const handleSubmit = (data: ServiceFormData) => {
+    const now = new Date().toISOString();
+    if (editingService) {
+      persist(
+        items.map((it) =>
+          it.id === editingService.id
+            ? { ...data, id: it.id, updatedAt: now }
+            : it
+        )
+      );
+    } else {
+      persist([
+        { ...data, id: generateId(), updatedAt: now },
+        ...items,
+      ]);
+    }
+    setFormOpen(false);
+    setEditingService(null);
+  };
+
+  const handleDeleteClick = (service: Service) => {
+    setDeleteTarget(service);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteTarget) {
+      persist(items.filter((it) => it.id !== deleteTarget.id));
+      setDeleteTarget(null);
+    }
+  };
+
+  const filtered = useMemo(() => {
+    let list = items;
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      list = list.filter(
+        (it) =>
+          it.title.toLowerCase().includes(q) ||
+          it.tags?.some((t) => t.toLowerCase().includes(q))
+      );
+    }
+    return [...list].sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }, [items, search]);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Услуги</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Управление услугами и связь с медиа
+          </p>
+        </div>
+        <Button onClick={handleCreate} className="w-fit">
+          <Plus className="mr-2 h-4 w-4" />
+          Добавить услугу
+        </Button>
+      </div>
+
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          placeholder="Поиск по заголовку или тегам..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-9 max-w-md"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <AnimatePresence mode="popLayout">
+          {filtered.map((service) => (
+            <ServiceCard
+              key={service.id}
+              service={service}
+              mediaMap={mediaMap}
+              onEdit={handleEdit}
+              onDelete={handleDeleteClick}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {filtered.length === 0 && (
+        <p className="py-12 text-center text-sm text-muted-foreground">
+          {items.length === 0
+            ? "Нет услуг. Добавьте первую."
+            : "Нет результатов по поиску."}
+        </p>
+      )}
+
+      <ServiceForm
+        open={formOpen}
+        onOpenChange={setFormOpen}
+        service={editingService}
+        mediaItems={resolvedMediaItems}
+        onSubmit={handleSubmit}
+      />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Удалить услугу?"
+        description={
+          deleteTarget
+            ? `Услуга «${deleteTarget.title}» будет удалена. Продолжить?`
+            : ""
+        }
+        confirmLabel="Удалить"
+        cancelLabel="Отмена"
+        variant="destructive"
+        onConfirm={handleDeleteConfirm}
+      />
+    </div>
+  );
+};
+
+export default Services;

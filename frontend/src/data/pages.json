@@ -1,0 +1,39 @@
+[
+  {
+    "id": "page-home",
+    "slug": "home",
+    "title": "Главная",
+    "blocks": [{"id":"b1","type":"hero","visible":true,"data":{"title":"Bella Hasias","subtitle":"Стилист и контент-креатор в Москве"}},{"id":"b2","type":"services","visible":true,"data":{"title":"Услуги","subtitle":"Создаю визуальный стиль и контент"}},{"id":"b3","type":"portfolio","visible":true,"data":{"title":"Портфолио","subtitle":"Избранные работы"}},{"id":"b4","type":"cta","visible":true,"data":{"title":"Напишите в Telegram","markdown":"Связаться для обсуждения проекта","ctaLabel":"Открыть Telegram","ctaLink":"https://t.me/Bella_hasias"}},{"id":"b5","type":"contacts","visible":true,"data":{"title":"Контакты","subtitle":"Оставьте заявку"}}],
+    "seo": {
+      "metaTitle": "Стилист и контент-креатор в Москве | Bella Hasias",
+      "metaDescription": "Профессиональный стилист и контент-креатор в Москве. Создаю визуальный стиль и контент, который раскрывает индивидуальность брендов и людей.",
+      "ogImageId": "m1",
+      "index": true
+    },
+    "updatedAt": "2025-02-08T12:00:00.000Z"
+  },
+  {
+    "id": "page-contacts",
+    "slug": "contacts",
+    "title": "Контакты",
+    "blocks": [{"id":"c1","type":"text","visible":true,"data":{"markdown":"## Свяжитесь со мной\n\nНапишите в Telegram или заполните форму ниже."}},{"id":"c2","type":"contacts","visible":true,"data":{"title":"Оставьте заявку","subtitle":""}}],
+    "seo": {
+      "metaTitle": "Контакты | Bella Hasias",
+      "metaDescription": "Свяжитесь со мной для обсуждения проекта. Telegram, форма обратной связи.",
+      "index": true
+    },
+    "updatedAt": "2025-02-08T12:00:00.000Z"
+  },
+  {
+    "id": "page-custom",
+    "slug": "custom",
+    "title": "Кастомная страница",
+    "blocks": [{"id":"x1","type":"text","visible":true,"data":{"markdown":"## Заголовок\n\nТекст блока с поддержкой **Markdown**."}}],
+    "seo": {
+      "metaTitle": "Кастомная страница | Bella Hasias",
+      "metaDescription": "",
+      "index": false
+    },
+    "updatedAt": "2025-02-08T12:00:00.000Z"
+  }
+]

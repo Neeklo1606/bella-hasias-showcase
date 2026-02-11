@@ -1,0 +1,50 @@
+[
+  {
+    "id": "m1",
+    "filename": "og-image.jpg",
+    "src": "/og-image.jpg",
+    "category": "Баннеры",
+    "alt": "Hero Banner",
+    "createdAt": "2025-02-08T15:20:00.000Z"
+  },
+  {
+    "id": "m2",
+    "filename": "placeholder.svg",
+    "src": "/placeholder.svg",
+    "category": "Прочее",
+    "alt": "Placeholder",
+    "createdAt": "2025-02-08T14:10:00.000Z"
+  },
+  {
+    "id": "m3",
+    "filename": "icon-192x192.png",
+    "src": "/icons/icon-192x192.png",
+    "category": "Прочее",
+    "alt": "Icon 192",
+    "createdAt": "2025-02-07T16:45:00.000Z"
+  },
+  {
+    "id": "m4",
+    "filename": "hero-video.mp4",
+    "src": "/videos/hero-video.mp4",
+    "category": "Главная страница",
+    "alt": "Hero video",
+    "createdAt": "2025-02-07T11:30:00.000Z"
+  },
+  {
+    "id": "m5",
+    "filename": "icon-512x512.png",
+    "src": "/icons/icon-512x512.png",
+    "category": "Прочее",
+    "alt": "Icon 512",
+    "createdAt": "2025-02-06T09:00:00.000Z"
+  },
+  {
+    "id": "m6",
+    "filename": "favicon.png",
+    "src": "/favicon.png",
+    "category": "Прочее",
+    "alt": "Favicon",
+    "createdAt": "2025-02-05T17:00:00.000Z"
+  }
+]

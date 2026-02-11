@@ -1,0 +1,436 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Elegant Blush & Gray Palette - Pantone PQ-9301C */
+    --background: 0 0% 99%; /* Pure white #FCFCFC */
+    --foreground: 220 10% 15%; /* Deep Charcoal */
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 15%;
+
+    /* Pantone PQ-9301C - Soft Blush Pink as Primary */
+    --primary: 345 30% 87%; /* #E8D4D8 - Blush Pink */
+    --primary-foreground: 345 25% 25%; /* Dark rose text */
+
+    /* Warm Gray as Secondary */
+    --secondary: 345 8% 70%; /* Warm gray with pink undertone */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 345 15% 95%; /* Light blush tint */
+    --muted-foreground: 220 5% 40%;
+
+    --accent: 345 35% 82%; /* Slightly deeper blush */
+    --accent-foreground: 345 25% 20%;
+    
+    /* Extended Palette */
+    --accent-blush: 345 30% 87%; /* Primary blush */
+    --accent-blush-foreground: 345 25% 25%;
+    --accent-rose: 345 40% 75%; /* Deeper rose for hover */
+    
+    --slate-gray: 345 5% 55%; /* Warm gray */
+    --slate-gray-dark: 345 8% 35%; /* Darker warm gray */
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 345 15% 90%;
+    --input: 345 10% 95%;
+    --ring: 345 35% 80%; /* Blush ring */
+
+    --radius: 1.5rem;
+  }
+
+  .dark {
+    --background: 345 5% 8%;
+    --foreground: 345 10% 95%;
+
+    --card: 345 5% 12%;
+    --card-foreground: 345 10% 95%;
+
+    --popover: 345 5% 12%;
+    --popover-foreground: 345 10% 95%;
+
+    /* Blush Pink as Primary in Dark */
+    --primary: 345 35% 75%;
+    --primary-foreground: 345 20% 15%;
+
+    /* Warm Gray as Secondary */
+    --secondary: 345 8% 35%;
+    --secondary-foreground: 345 10% 95%;
+
+    --muted: 345 5% 18%;
+    --muted-foreground: 345 10% 60%;
+
+    --accent: 345 35% 70%;
+    --accent-foreground: 345 20% 15%;
+    
+    --accent-blush: 345 35% 75%;
+    --accent-blush-foreground: 345 20% 15%;
+    --accent-rose: 345 40% 65%;
+    
+    --slate-gray: 345 8% 55%;
+    --slate-gray-dark: 345 10% 70%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 345 5% 20%;
+    --input: 345 5% 20%;
+    --ring: 345 35% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* All headings use Plus Jakarta Sans - NO SERIFS */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+    line-height: 1.1;
+    color: hsl(var(--foreground));
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 10vw, 5.5rem);
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+  }
+
+  p {
+    @apply text-sm md:text-base leading-relaxed;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.7;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.04em;
+  }
+
+  .font-sans {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Premium Card - No borders, subtle shadow */
+  .card-luxury {
+    @apply bg-card rounded-3xl;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .card-luxury:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .glass-dark {
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Premium Button - Blush Accent */
+  .btn-luxury {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-semibold cursor-pointer transition-all duration-300;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    letter-spacing: 0.02em;
+    border: 1px solid hsl(345 25% 80%);
+  }
+
+  .btn-luxury:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -6px hsl(345 30% 87% / 0.5);
+    background: hsl(345 40% 82%);
+  }
+
+  .btn-luxury:active {
+    transform: translateY(0);
+  }
+
+  /* Ghost Button - Elegant outline */
+  .btn-ghost-luxury {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-medium cursor-pointer transition-all duration-300;
+    background: transparent;
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(345 20% 85%);
+  }
+
+  .btn-ghost-luxury:hover {
+    background: hsl(var(--primary) / 0.15);
+    border-color: hsl(var(--primary));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px hsl(345 30% 87% / 0.3);
+  }
+
+  /* Premium Input - Soft blush tint */
+  .input-luxury {
+    @apply w-full px-6 py-4 rounded-xl text-base transition-all duration-300;
+    background: hsl(var(--muted));
+    border: 1px solid hsl(345 15% 88%);
+    color: hsl(var(--foreground));
+  }
+
+  .input-luxury:focus {
+    @apply outline-none;
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
+  }
+
+  .input-luxury::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Section spacing */
+  .section-luxury {
+    @apply py-20 md:py-28 lg:py-32 px-6 md:px-10 lg:px-16;
+  }
+
+  /* Container */
+  .container-luxury {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* ===== LUMINA SLIDER STYLES ===== */
+  .lumina-section {
+    @apply w-full py-20 md:py-28 lg:py-32 px-6 md:px-10 lg:px-16;
+    background: hsl(var(--foreground));
+  }
+
+  .lumina-slider-wrapper {
+    @apply relative w-full max-w-7xl mx-auto overflow-hidden;
+    height: 70vh;
+    min-height: 500px;
+    max-height: 800px;
+    border-radius: 2rem;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .lumina-slider-wrapper.loaded {
+    opacity: 1;
+  }
+
+  .lumina-canvas-container {
+    @apply absolute inset-0;
+  }
+
+  .lumina-webgl-canvas {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Counter - Top Left */
+  .lumina-counter {
+    @apply absolute top-6 left-6 z-20 flex items-baseline gap-1;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .lumina-counter-current {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: hsl(var(--accent-blush));
+    line-height: 1;
+  }
+
+  .lumina-counter-separator {
+    font-size: 1.25rem;
+    color: hsl(var(--slate-gray));
+    margin: 0 0.25rem;
+  }
+
+  .lumina-counter-total {
+    font-size: 1rem;
+    color: hsl(var(--slate-gray));
+    font-weight: 500;
+  }
+
+  /* Content Overlay */
+  .lumina-content-overlay {
+    @apply absolute inset-0 z-10 flex items-end justify-start p-8 md:p-12;
+    background: linear-gradient(to top, hsla(220, 15%, 10%, 0.7) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .lumina-text-content {
+    max-width: 600px;
+  }
+
+  .lumina-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .lumina-title span {
+    display: inline-block;
+  }
+
+  .lumina-description {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+  }
+
+  /* Navigation - Bottom Right */
+  .lumina-slides-nav {
+    @apply absolute bottom-6 right-6 z-20 flex flex-col gap-3;
+  }
+
+  .lumina-slide-nav-item {
+    @apply flex items-center gap-3 cursor-pointer;
+    transition: all 0.3s ease;
+  }
+
+  .lumina-slide-progress {
+    @apply relative overflow-hidden;
+    width: 60px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+
+  .lumina-slide-progress-fill {
+    @apply absolute top-0 left-0 h-full;
+    width: 0%;
+    background: hsl(var(--accent-blush));
+    border-radius: 2px;
+    transition: width 0.1s ease, opacity 0.3s ease;
+  }
+
+  .lumina-slide-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .lumina-slide-title {
+      display: block;
+    }
+    .lumina-slide-progress {
+      width: 80px;
+    }
+  }
+
+  .lumina-slide-nav-item:hover .lumina-slide-title,
+  .lumina-slide-nav-item.active .lumina-slide-title {
+    color: hsl(var(--accent-blush));
+  }
+
+  .lumina-slide-nav-item.active .lumina-slide-progress {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+@layer utilities {
+  /* Animations */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out forwards;
+  }
+
+  /* Stagger delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Focus styles */
+  button:focus-visible, 
+  a:focus-visible {
+    @apply outline-2 outline-primary outline-offset-2;
+  }
+}

@@ -2,18 +2,18 @@
     RewriteEngine On
     RewriteBase /
 
-    # Если запрос к статическому файлу (assets, icons, images, manifest, etc), отдать его
-    RewriteCond %{REQUEST_URI} \.(js|mjs|css|json|png|jpg|jpeg|svg|webp|ico|woff|woff2|ttf|eot)$ [NC]
+    # Статические файлы из /build отдавать напрямую
+    RewriteCond %{REQUEST_URI} ^/build/
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # Если файл существует, отдать его
+    # Если файл или директория существует - отдать напрямую
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # SPA fallback - все запросы на index.html
-    RewriteRule ^ index.html [L]
+    # Все остальные запросы направлять в index.php (Laravel)
+    RewriteRule ^ index.php [L]
 </IfModule>
 
 # Настройка MIME типов для правильной загрузки модулей
