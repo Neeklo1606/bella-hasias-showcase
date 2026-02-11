@@ -25,18 +25,18 @@ cd laravel
 composer install --no-dev --optimize-autoloader
 
 # 4. Применить миграции (если есть новые)
-php artisan migrate --force
+php8.2 artisan migrate --force
 
 # 5. Очистить и пересобрать кеш
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-php artisan cache:clear
+php8.2 artisan config:clear
+php8.2 artisan route:clear
+php8.2 artisan view:clear
+php8.2 artisan cache:clear
 
 # 6. Создать оптимизированные кеши
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+php8.2 artisan config:cache
+php8.2 artisan route:cache
+php8.2 artisan view:cache
 
 # 7. Установить права доступа (если нужно)
 chmod -R 755 storage bootstrap/cache
