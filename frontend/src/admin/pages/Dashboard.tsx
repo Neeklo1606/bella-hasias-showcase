@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Briefcase,
@@ -14,10 +15,10 @@ import RecentMedia from "@/admin/components/RecentMedia";
 import type { MediaItem } from "@/admin/types/media";
 import ActivityFeed, { ActivityItem } from "@/admin/components/ActivityFeed";
 import { useAuth } from "@/admin/hooks/useAuth";
-import { loadServices } from "@/admin/lib/servicesStorage";
-import { loadCases } from "@/admin/lib/casesStorage";
+import { servicesApi } from "@/lib/api/services.api";
+import { casesApi } from "@/lib/api/cases.api";
+import { mediaApi } from "@/lib/api/media.api";
 import bannersData from "@/data/banners.json";
-import { loadMedia } from "@/admin/lib/mediaStorage";
 
 type BannerJson = { id: string; title: string; updatedAt: string };
 
@@ -33,13 +34,13 @@ const buildActivityItems = (
   casesData: { id: string; title: string; updatedAt: string }[]
 ): ActivityItem[] => {
   const services: ActivityItem[] = servicesData.map((s) => ({
-    id: s.id,
+    id: String(s.id),
     type: "service" as const,
     title: s.title,
     updatedAt: s.updatedAt,
   }));
   const cases: ActivityItem[] = casesData.map((c) => ({
-    id: c.id,
+    id: String(c.id),
     type: "case" as const,
     title: c.title,
     updatedAt: c.updatedAt,
@@ -59,10 +60,54 @@ const buildActivityItems = (
 const Dashboard = () => {
   const { user } = useAuth();
   const greeting = getGreeting();
-  const services = loadServices();
-  const cases = loadCases();
-  const media = loadMedia();
+  const [services, setServices] = useState<{ id: number; title: string; updatedAt: string }[]>([]);
+  const [cases, setCases] = useState<{ id: number; title: string; updatedAt: string }[]>([]);
+  const [media, setMedia] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [servicesRes, casesRes, mediaRes] = await Promise.all([
+          servicesApi.adminList({ per_page: 100 }),
+          casesApi.adminList({ per_page: 100 }),
+          mediaApi.adminList({ per_page: 100 }),
+        ]);
+
+        setServices(
+          servicesRes.data.map((s) => ({
+            id: Number(s.id),
+            title: s.title,
+            updatedAt: s.updatedAt,
+          }))
+        );
+        setCases(
+          casesRes.data.map((c) => ({
+            id: Number(c.id),
+            title: c.title,
+            updatedAt: c.updatedAt,
+          }))
+        );
+        setMedia(mediaRes.data);
+      } catch (error) {
+        console.error("Failed to load dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
   const activityItems = buildActivityItems(services, cases);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

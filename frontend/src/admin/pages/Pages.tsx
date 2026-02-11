@@ -13,13 +13,11 @@ import { Label } from "@/components/ui/label";
 import { AnimatePresence } from "framer-motion";
 import PageCard from "@/admin/components/PageCard";
 import BlockEditor from "@/admin/components/BlockEditor";
-import { loadPages, savePages } from "@/admin/lib/pagesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { pagesApi } from "@/lib/api/pages.api";
+import { mediaApi } from "@/lib/api/media.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
+import { toast } from "@/components/ui/use-toast";
 import type { PageItem, BlockItem } from "@/admin/types/page";
-
-const generateId = () =>
-  `page-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 const slugify = (s: string) =>
   s
@@ -37,52 +35,109 @@ const Pages = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newSlug, setNewSlug] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [pagesRes, mediaRes] = await Promise.all([
+        pagesApi.adminList({ per_page: 100 }),
+        mediaApi.adminList({ per_page: 100 }),
+      ]);
+
+      setItems(pagesRes.data);
+      setMediaItems(mediaRes.data);
+    } catch (error) {
+      console.error("Failed to load pages:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось загрузить страницы.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setItems(loadPages());
-    setMediaItems(loadMedia());
-  }, []);
+    loadData();
+  }, [loadData]);
 
-  const persist = useCallback((next: PageItem[]) => {
-    setItems(next);
-    savePages(next);
-  }, []);
-
-  const handleEdit = (page: PageItem) => {
-    setEditingPage(page);
-    setEditorOpen(true);
+  const handleEdit = async (page: PageItem) => {
+    try {
+      // Load full page data from API
+      const fullPage = await pagesApi.adminGet(Number(page.id));
+      setEditingPage(fullPage);
+      setEditorOpen(true);
+    } catch (error) {
+      console.error("Failed to load page:", error);
+      // Fallback to local data
+      setEditingPage(page);
+      setEditorOpen(true);
+    }
   };
 
-  const handleBlocksChange = (blocks: BlockItem[]) => {
+  const handleBlocksChange = async (blocks: BlockItem[]) => {
     if (!editingPage) return;
-    const now = new Date().toISOString();
-    persist(
-      items.map((p) =>
-        p.id === editingPage.id ? { ...p, blocks, updatedAt: now } : p
-      )
-    );
-    setEditingPage((prev) => (prev ? { ...prev, blocks, updatedAt: now } : null));
+    try {
+      await pagesApi.adminUpdate(Number(editingPage.id), {
+        blocks,
+      });
+      // Update local state
+      const updatedPage = { ...editingPage, blocks };
+      setEditingPage(updatedPage);
+      setItems(items.map((p) => (p.id === editingPage.id ? updatedPage : p)));
+      toast({
+        title: "Сохранено",
+        description: "Блоки страницы обновлены.",
+      });
+    } catch (error) {
+      console.error("Failed to update blocks:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить блоки.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     const slug = newSlug.trim() || slugify(newTitle) || "page";
-    const now = new Date().toISOString();
-    const newPage: PageItem = {
-      id: generateId(),
-      slug,
-      title: newTitle.trim() || "Новая страница",
-      blocks: [],
-      updatedAt: now,
-    };
-    persist([...items, newPage]);
-    setCreateOpen(false);
-    setNewTitle("");
-    setNewSlug("");
-    setEditingPage(newPage);
-    setEditorOpen(true);
+    const title = newTitle.trim() || "Новая страница";
+    
+    try {
+      const newPage = await pagesApi.adminCreate({
+        title,
+        slug,
+        blocks: [],
+        status: "published",
+      });
+      
+      setCreateOpen(false);
+      setNewTitle("");
+      setNewSlug("");
+      setEditingPage(newPage);
+      setEditorOpen(true);
+      await loadData(); // Reload data
+    } catch (error) {
+      console.error("Failed to create page:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось создать страницу.",
+        variant: "destructive",
+      });
+    }
   };
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

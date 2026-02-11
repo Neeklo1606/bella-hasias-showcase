@@ -1,22 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Search, Download, FileCode, ExternalLink } from "lucide-react";
+import { Search, Download, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import SEOForm from "@/admin/components/SEOForm";
-import {
-  loadPages,
-  savePages,
-} from "@/admin/lib/pagesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
-import { loadCases } from "@/admin/lib/casesStorage";
+import { pagesApi } from "@/lib/api/pages.api";
+import { casesApi } from "@/lib/api/cases.api";
+import { mediaApi } from "@/lib/api/media.api";
+import { seoApi } from "@/lib/api/seo.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
-import {
-  loadSEOConfig,
-  saveSEOConfig,
-  type SEOConfig,
-} from "@/admin/lib/seoStorage";
+import { toast } from "@/components/ui/use-toast";
 import { downloadSitemap } from "@/admin/lib/sitemapGenerator";
 import { downloadRobots } from "@/admin/lib/robotsGenerator";
 import type { PageItem, PageSEO } from "@/admin/types/page";
@@ -29,33 +23,95 @@ const SEO = () => {
   const [mediaItems, setMediaItems] = useState<import("@/admin/types/media").MediaItem[]>([]);
   const [search, setSearch] = useState("");
   const [siteUrl, setSiteUrl] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [pagesRes, mediaRes, seoRes] = await Promise.all([
+        pagesApi.adminList({ per_page: 100 }),
+        mediaApi.adminList({ per_page: 100 }),
+        seoApi.adminGet(),
+      ]);
+
+      setPages(pagesRes.data);
+      setMediaItems(mediaRes.data);
+      setSiteUrl(seoRes.siteUrl);
+    } catch (error) {
+      console.error("Failed to load SEO data:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось загрузить данные.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setPages(loadPages());
-    setMediaItems(loadMedia());
-    setSiteUrl(loadSEOConfig().siteUrl);
-  }, []);
-
-  const persist = useCallback((next: PageItem[]) => {
-    setPages(next);
-    savePages(next);
-  }, []);
+    loadData();
+  }, [loadData]);
 
   const handleSaveSEO = useCallback(
-    (pageId: string, seo: PageSEO) => {
-      persist(
-        pages.map((p) => (p.id === pageId ? { ...p, seo } : p))
-      );
+    async (pageId: string, seo: PageSEO) => {
+      try {
+        const page = pages.find((p) => p.id === pageId);
+        if (!page) return;
+
+        await pagesApi.adminUpdate(Number(pageId), {
+          seo,
+        });
+
+        // Update local state
+        setPages(pages.map((p) => (p.id === pageId ? { ...p, seo } : p)));
+        toast({
+          title: "Сохранено",
+          description: "SEO настройки страницы обновлены.",
+        });
+      } catch (error) {
+        console.error("Failed to save SEO:", error);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось сохранить SEO настройки.",
+          variant: "destructive",
+        });
+      }
     },
-    [pages, persist]
+    [pages]
   );
 
-  const handleSaveSiteUrl = () => {
-    saveSEOConfig({ siteUrl: siteUrl.trim() || "https://example.com" });
+  const handleSaveSiteUrl = async () => {
+    try {
+      await seoApi.adminUpdate({
+        siteUrl: siteUrl.trim() || "https://bellahasias.ru",
+      });
+      toast({
+        title: "Сохранено",
+        description: "URL сайта обновлён.",
+      });
+    } catch (error) {
+      console.error("Failed to save site URL:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сохранить URL сайта.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDownloadSitemap = () => {
-    downloadSitemap(pages, loadCases());
+  const handleDownloadSitemap = async () => {
+    try {
+      const casesRes = await casesApi.adminList({ per_page: 100 });
+      downloadSitemap(pages, casesRes.data);
+    } catch (error) {
+      console.error("Failed to load cases for sitemap:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось загрузить кейсы для sitemap.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDownloadRobots = () => {
@@ -76,6 +132,14 @@ const SEO = () => {
 
   const getPublicPath = (page: PageItem) =>
     page.slug === "home" ? "/" : `/${page.slug}`;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

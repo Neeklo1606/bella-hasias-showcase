@@ -1,29 +1,22 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import users from "@/data/users.json";
-
-type StoredUser = {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-};
+import { authApi } from "@/lib/api/auth.api";
+import type { LoginResponse } from "@/lib/api/auth.api";
 
 export type AuthUser = {
   id: string;
   name: string;
   email: string;
+  role: string;
 };
 
 type AuthContextValue = {
   user: AuthUser | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   isReady: boolean;
-  login: (email: string, password: string) => { ok: boolean; error?: string };
-  logout: () => void;
+  login: (email: string, password: string, remember?: boolean) => Promise<{ ok: boolean; error?: string }>;
+  logout: () => Promise<void>;
 };
-
-const AUTH_TOKEN_KEY = "cms_auth_token";
-const AUTH_USER_KEY = "cms_auth_user";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -31,53 +24,59 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isReady, setIsReady] = useState(false);
 
+  // Check authentication on mount
   useEffect(() => {
-    const token = localStorage.getItem(AUTH_TOKEN_KEY);
-    const storedUser = localStorage.getItem(AUTH_USER_KEY);
-    if (token && storedUser) {
+    const checkAuth = async () => {
       try {
-        const parsed = JSON.parse(storedUser) as AuthUser;
-        setUser(parsed);
-      } catch {
-        localStorage.removeItem(AUTH_TOKEN_KEY);
-        localStorage.removeItem(AUTH_USER_KEY);
+        const userData = await authApi.me();
+        setUser({
+          id: String(userData.id),
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+        });
+      } catch (error) {
+        // Not authenticated
+        setUser(null);
+      } finally {
+        setIsReady(true);
       }
-    }
-    setIsReady(true);
-  }, []);
-
-  const login = (email: string, password: string) => {
-    const match = (users as StoredUser[]).find(
-      (item) => item.email === email && item.password === password
-    );
-
-    if (!match) {
-      return { ok: false, error: "Неверный email или пароль." };
-    }
-
-    const safeUser: AuthUser = {
-      id: match.id,
-      name: match.name,
-      email: match.email,
     };
 
-    setUser(safeUser);
-    localStorage.setItem(AUTH_TOKEN_KEY, "true");
-    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(safeUser));
+    checkAuth();
+  }, []);
 
-    return { ok: true };
+  const login = async (email: string, password: string, remember = false): Promise<{ ok: boolean; error?: string }> => {
+    try {
+      const userData = await authApi.login({ email, password, remember });
+      setUser({
+        id: String(userData.id),
+        name: userData.name,
+        email: userData.email,
+        role: userData.role,
+      });
+      return { ok: true };
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || "Неверный email или пароль.";
+      return { ok: false, error: errorMessage };
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-    localStorage.removeItem(AUTH_USER_KEY);
-    setUser(null);
+  const logout = async (): Promise<void> => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      // Ignore errors on logout
+    } finally {
+      setUser(null);
+    }
   };
 
   const value = useMemo(
     () => ({
       user,
       isAuthenticated: Boolean(user),
+      isAdmin: user?.role === "admin",
       isReady,
       login,
       logout,

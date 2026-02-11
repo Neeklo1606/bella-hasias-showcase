@@ -3,63 +3,81 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePageRequest;
+use App\Http\Requests\UpdatePageRequest;
+use App\Http\Resources\PageResource;
+use App\Models\Page;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $query = Page::query();
+
+        // Filter by status
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Search
+        if ($request->has('q')) {
+            $q = $request->q;
+            $query->where(function ($qry) use ($q) {
+                $qry->where('title', 'like', "%{$q}%")
+                    ->orWhere('slug', 'like', "%{$q}%");
+            });
+        }
+
+        // Sort
+        $sort = $request->get('sort', '-updated_at');
+        if (str_starts_with($sort, '-')) {
+            $query->orderBy(substr($sort, 1), 'desc');
+        } else {
+            $query->orderBy($sort, 'asc');
+        }
+
+        $perPage = $request->get('per_page', 15);
+        $pages = $query->paginate($perPage);
+
+        return PageResource::collection($pages)->response();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StorePageRequest $request): JsonResponse
     {
-        //
+        $data = $request->validated();
+        $data['blocks'] = $data['blocks'] ?? [];
+        $data['seo'] = $data['seo'] ?? null;
+        
+        $page = Page::create($data);
+
+        return (new PageResource($page))
+            ->response()
+            ->setStatusCode(201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(Page $page): JsonResponse
     {
-        //
+        return (new PageResource($page))->response();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(UpdatePageRequest $request, Page $page): JsonResponse
     {
-        //
+        $data = $request->validated();
+        if (isset($data['blocks'])) {
+            $data['blocks'] = $data['blocks'] ?? [];
+        }
+        
+        $page->update($data);
+
+        return (new PageResource($page))->response();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(Page $page): JsonResponse
     {
-        //
-    }
+        $page->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(['message' => 'Page deleted successfully']);
     }
 }

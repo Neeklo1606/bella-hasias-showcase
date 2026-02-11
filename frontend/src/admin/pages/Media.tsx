@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import MediaUploader from "@/admin/components/MediaUploader";
 import MediaFilter from "@/admin/components/MediaFilter";
 import MediaGrid from "@/admin/components/MediaGrid";
@@ -10,28 +10,8 @@ import {
   type MediaItem,
   type MediaCategory,
 } from "@/admin/types/media";
-import { loadMedia, saveMedia } from "@/admin/lib/mediaStorage";
-import {
-  deleteMediaFile,
-  getIdbMediaId,
-  isIdbMedia,
-  saveMediaFile,
-} from "@/lib/mediaFilesStorage";
+import { mediaApi } from "@/lib/api/media.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
-
-const generateId = () =>
-  `m-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
-const isVideo = (filename: string) =>
-  /\.(mp4|webm)$/i.test(filename);
-
-const readFileAsDataUrl = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 
 const Media = () => {
   const [items, setItems] = useState<MediaItem[]>([]);
@@ -39,92 +19,57 @@ const Media = () => {
   const [category, setCategory] = useState("all");
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const mediaRes = await mediaApi.adminList({ per_page: 100 });
+      setItems(mediaRes.data);
+    } catch (error) {
+      console.error("Failed to load media:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось загрузить медиа-файлы.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setItems(loadMedia());
-  }, []);
-
-  const persist = useCallback((next: MediaItem[]) => {
-    setItems(next);
-    saveMedia(next);
-  }, []);
-
-  const handleSaveAll = useCallback(() => {
-    saveMedia(items);
-    toast({
-      title: "Сохранено",
-      description: "Медиа обновлено в админке.",
-    });
-  }, [items]);
-
-  const [videoObjectUrls, setVideoObjectUrls] = useState<Record<string, string>>({});
-  const videoUrlsRef = useRef(videoObjectUrls);
-  videoUrlsRef.current = videoObjectUrls;
+    loadData();
+  }, [loadData]);
 
   const handleFilesSelected = useCallback(
     async (files: File[]) => {
-      const created: MediaItem[] = [];
-      const newVideoUrls: Record<string, string> = {};
-
-      for (const file of files) {
-        const id = generateId();
-        const filename = file.name;
-        const createdAt = new Date().toISOString();
-
-        if (isVideo(filename)) {
-          const src = `/uploads/${filename}`;
-          const objectUrl = URL.createObjectURL(file);
-          newVideoUrls[id] = objectUrl;
-          created.push({
-            id,
-            filename,
-            src,
+      try {
+        const uploadPromises = files.map((file) =>
+          mediaApi.adminUpload({
+            file,
             category: "Прочее",
-            alt: filename.replace(/\.[^.]+$/, ""),
-            createdAt,
-          });
-        } else {
-          try {
-            const src = `idb://${id}`;
-            await saveMediaFile(id, file);
-            created.push({
-              id,
-              filename,
-              src,
-              category: "Прочее",
-              alt: filename.replace(/\.[^.]+$/, ""),
-              createdAt,
-            });
-          } catch {
-            try {
-              const src = await readFileAsDataUrl(file);
-              created.push({
-                id,
-                filename,
-                src,
-                category: "Прочее",
-                alt: filename.replace(/\.[^.]+$/, ""),
-                createdAt,
-              });
-            } catch {
-              continue;
-            }
-          }
-        }
-      }
-      if (created.length) {
-        setVideoObjectUrls((prev) => ({ ...prev, ...newVideoUrls }));
-        persist([...created, ...items]);
+            alt: file.name.replace(/\.[^.]+$/, ""),
+          })
+        );
+
+        await Promise.all(uploadPromises);
+        toast({
+          title: "Успешно",
+          description: `Загружено ${files.length} файл(ов).`,
+        });
+        await loadData(); // Reload data
+      } catch (error) {
+        console.error("Failed to upload files:", error);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось загрузить файлы.",
+          variant: "destructive",
+        });
       }
     },
-    [items, persist]
+    [loadData]
   );
-
-  useEffect(() => {
-    return () => {
-      Object.values(videoUrlsRef.current).forEach(URL.revokeObjectURL);
-    };
-  }, []);
 
   const handleEdit = useCallback((item: MediaItem) => {
     setEditingItem(item);
@@ -132,44 +77,67 @@ const Media = () => {
   }, []);
 
   const handleSaveEdit = useCallback(
-    (id: string, data: { alt: string; category: MediaCategory }) => {
-      persist(
-        items.map((it) =>
-          it.id === id ? { ...it, alt: data.alt, category: data.category } : it
-        )
-      );
-      setEditOpen(false);
-      setEditingItem(null);
+    async (id: string, data: { alt: string; category: MediaCategory }) => {
+      try {
+        await mediaApi.adminUpdate(Number(id), {
+          alt: data.alt,
+          category: data.category,
+        });
+        setEditOpen(false);
+        setEditingItem(null);
+        await loadData(); // Reload data
+        toast({
+          title: "Сохранено",
+          description: "Медиа-файл обновлён.",
+        });
+      } catch (error) {
+        console.error("Failed to update media:", error);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось обновить медиа-файл.",
+          variant: "destructive",
+        });
+      }
     },
-    [items, persist]
+    [loadData]
   );
 
   const handleDelete = useCallback(
-    (id: string) => {
-      const target = items.find((it) => it.id === id);
-      if (target?.src && isIdbMedia(target.src)) {
-        deleteMediaFile(getIdbMediaId(target.src)).catch(() => undefined);
-      }
-      if (videoObjectUrls[id]) {
-        URL.revokeObjectURL(videoObjectUrls[id]);
-        setVideoObjectUrls((prev) => {
-          const next = { ...prev };
-          delete next[id];
-          return next;
+    async (id: string) => {
+      try {
+        await mediaApi.adminDelete(Number(id));
+        await loadData(); // Reload data
+        toast({
+          title: "Удалено",
+          description: "Медиа-файл удалён.",
+        });
+      } catch (error) {
+        console.error("Failed to delete media:", error);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось удалить медиа-файл.",
+          variant: "destructive",
         });
       }
-      persist(items.filter((it) => it.id !== id));
     },
-    [items, persist, videoObjectUrls]
+    [loadData]
   );
 
   const handleCategoryChange = useCallback(
-    (id: string, category: MediaCategory) => {
-      persist(
-        items.map((it) => (it.id === id ? { ...it, category } : it))
-      );
+    async (id: string, category: MediaCategory) => {
+      try {
+        await mediaApi.adminUpdate(Number(id), { category });
+        await loadData(); // Reload data
+      } catch (error) {
+        console.error("Failed to update category:", error);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось обновить категорию.",
+          variant: "destructive",
+        });
+      }
     },
-    [items, persist]
+    [loadData]
   );
 
   const resolvedItems = useResolvedMediaItems(items);
@@ -196,13 +164,13 @@ const Media = () => {
       );
   }, [items, resolvedItems, search, category]);
 
-  const displayItems = useMemo(
-    () =>
-      filtered.map((it) =>
-        videoObjectUrls[it.id] ? { ...it, src: videoObjectUrls[it.id] } : it
-      ),
-    [filtered, videoObjectUrls]
-  );
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -213,13 +181,12 @@ const Media = () => {
             Загрузка и управление изображениями и видео
           </p>
         </div>
-        <Button onClick={handleSaveAll}>Сохранить</Button>
       </div>
 
       <MediaUploader onFilesSelected={handleFilesSelected} />
 
       <p className="text-xs text-muted-foreground">
-        Изображения сохраняются в браузере. Видео (MP4, WebM) храните как файлы в <code className="rounded bg-muted px-1">public/uploads/</code> — в админке указывайте имя файла, а предпросмотр появится в текущей сессии.
+        Файлы загружаются на сервер и сохраняются в базе данных.
       </p>
 
       <MediaFilter
@@ -230,7 +197,7 @@ const Media = () => {
       />
 
       <MediaGrid
-        items={displayItems}
+        items={filtered}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onCategoryChange={handleCategoryChange}

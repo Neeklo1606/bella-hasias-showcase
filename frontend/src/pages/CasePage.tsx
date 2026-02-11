@@ -1,32 +1,87 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft, ImageIcon } from "lucide-react";
 import Footer from "@/components/Footer";
-import { loadCases } from "@/admin/lib/casesStorage";
-import { loadServices } from "@/admin/lib/servicesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { casesApi } from "@/lib/api/cases.api";
+import { servicesApi } from "@/lib/api/services.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
+import type { CaseItem } from "@/admin/types/case";
+import type { Service } from "@/admin/types/service";
+import type { MediaItem } from "@/admin/types/media";
 
 const isVideo = (src: string) =>
-  /\.(mp4|webm)$/i.test(src) || src.startsWith("data:video/");
+  /\.(mp4|webm)$/i.test(src) || src.startsWith("data:video/") || src.startsWith("http") && /\.(mp4|webm)/i.test(src);
 
 const CasePage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const cases = loadCases();
-  const services = loadServices();
-  const media = loadMedia();
-  const resolvedMedia = useResolvedMediaItems(media);
+  const [caseItem, setCaseItem] = useState<CaseItem | null>(null);
+  const [service, setService] = useState<Service | null>(null);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const caseItem = cases.find((c) => c.slug === slug);
-  const service = caseItem
-    ? services.find((s) => s.id === caseItem.serviceId)
-    : null;
+  useEffect(() => {
+    const loadData = async () => {
+      if (!slug) {
+        setError("Slug не указан");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const [caseData, servicesRes] = await Promise.all([
+          casesApi.getBySlug(slug),
+          servicesApi.list({ per_page: 100 }),
+        ]);
+
+        setCaseItem(caseData);
+        
+        // Find service
+        if (caseData.serviceId) {
+          const foundService = servicesRes.data.find(
+            (s) => s.id === caseData.serviceId
+          );
+          setService(foundService || null);
+        }
+
+        // Extract media from caseData (API returns media array)
+        const media = (caseData as any).media || [];
+        setMediaItems(media.map((m: any) => ({
+          id: String(m.id),
+          filename: m.filename,
+          src: m.url || m.src,
+          category: m.category || "Прочее",
+          alt: m.alt || "",
+          createdAt: m.createdAt || new Date().toISOString(),
+        })));
+      } catch (err: any) {
+        console.error("Failed to load case:", err);
+        setError(err.response?.status === 404 ? "Кейс не найден" : "Ошибка загрузки");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [slug]);
+
+  const resolvedMedia = useResolvedMediaItems(mediaItems);
   const mediaMap = new Map(resolvedMedia.map((m) => [m.id, m]));
 
-  if (!caseItem) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
+
+  if (error || !caseItem) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-        <h1 className="text-2xl font-bold">Кейс не найден</h1>
+        <h1 className="text-2xl font-bold">{error || "Кейс не найден"}</h1>
         <Link
           to="/portfolio"
           className="mt-4 text-primary hover:underline flex items-center gap-2"
@@ -40,7 +95,7 @@ const CasePage = () => {
 
   const caseMedia = caseItem.mediaIds
     .map((id) => mediaMap.get(id))
-    .filter(Boolean);
+    .filter(Boolean) as MediaItem[];
 
   return (
     <>
@@ -68,7 +123,7 @@ const CasePage = () => {
             <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
               {caseItem.title}
             </h1>
-            {caseItem.tags.length > 0 && (
+            {caseItem.tags && caseItem.tags.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {caseItem.tags.map((tag) => (
                   <span
@@ -93,28 +148,26 @@ const CasePage = () => {
           <section className="space-y-6">
             <h2 className="text-xl font-semibold">Галерея</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {caseMedia.map((item) =>
-                item ? (
-                  <div
-                    key={item.id}
-                    className="overflow-hidden rounded-2xl bg-muted aspect-[4/3]"
-                  >
-                    {isVideo(item.src) ? (
-                      <video
-                        src={item.src}
-                        controls
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <img
-                        src={item.src}
-                        alt={item.alt || caseItem.title}
-                        className="h-full w-full object-cover"
-                      />
-                    )}
-                  </div>
-                ) : null
-              )}
+              {caseMedia.map((item) => (
+                <div
+                  key={item.id}
+                  className="overflow-hidden rounded-2xl bg-muted aspect-[4/3]"
+                >
+                  {isVideo(item.src) ? (
+                    <video
+                      src={item.src}
+                      controls
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      alt={item.alt || caseItem.title}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
 
             {caseMedia.length === 0 && (

@@ -25,7 +25,7 @@ class CaseResource extends JsonResource
             ]),
             'serviceId' => $this->service_id,
             'media' => $this->whenLoaded('media', fn() => MediaFileResource::collection($this->media)),
-            'mediaIds' => $this->when(!$this->relationLoaded('media'), fn() => $this->media->pluck('id')->toArray()),
+            'mediaIds' => $this->when($this->relationLoaded('media'), fn() => $this->media->pluck('id')->toArray()),
             'tags' => $this->tags ?? [],
             'sortOrder' => $this->sort_order,
             'status' => $this->status,

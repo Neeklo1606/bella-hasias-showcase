@@ -6,16 +6,13 @@ import { AnimatePresence } from "framer-motion";
 import CaseCard from "@/admin/components/CaseCard";
 import CaseForm, { type CaseFormData } from "@/admin/components/CaseForm";
 import ConfirmDialog from "@/admin/components/ConfirmDialog";
-import { loadCases, saveCases } from "@/admin/lib/casesStorage";
-import { loadServices } from "@/admin/lib/servicesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { casesApi } from "@/lib/api/cases.api";
+import { servicesApi } from "@/lib/api/services.api";
+import { mediaApi } from "@/lib/api/media.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 import type { CaseItem } from "@/admin/types/case";
 import type { MediaItem } from "@/admin/types/media";
 import type { Service } from "@/admin/types/service";
-
-const generateId = () =>
-  `case-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
 const Cases = () => {
   const [items, setItems] = useState<CaseItem[]>([]);
@@ -25,17 +22,30 @@ const Cases = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [editingCase, setEditingCase] = useState<CaseItem | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<CaseItem | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [casesRes, servicesRes, mediaRes] = await Promise.all([
+        casesApi.adminList({ per_page: 100 }),
+        servicesApi.adminList({ per_page: 100 }),
+        mediaApi.adminList({ per_page: 100 }),
+      ]);
+
+      setItems(casesRes.data);
+      setServices(servicesRes.data);
+      setMediaItems(mediaRes.data);
+    } catch (error) {
+      console.error("Failed to load cases:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setItems(loadCases());
-    setServices(loadServices());
-    setMediaItems(loadMedia());
-  }, []);
-
-  const persist = useCallback((next: CaseItem[]) => {
-    setItems(next);
-    saveCases(next);
-  }, []);
+    loadData();
+  }, [loadData]);
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
 
@@ -54,39 +64,66 @@ const Cases = () => {
     setFormOpen(true);
   };
 
-  const handleEdit = (caseItem: CaseItem) => {
-    setEditingCase(caseItem);
-    setFormOpen(true);
+  const handleEdit = async (caseItem: CaseItem) => {
+    try {
+      // Load full case data from API
+      const fullCase = await casesApi.adminGet(Number(caseItem.id));
+      setEditingCase(fullCase);
+      setFormOpen(true);
+    } catch (error) {
+      console.error("Failed to load case:", error);
+      // Fallback to local data
+      setEditingCase(caseItem);
+      setFormOpen(true);
+    }
   };
 
-  const handleSubmit = (data: CaseFormData) => {
-    const now = new Date().toISOString();
-    if (editingCase) {
-      persist(
-        items.map((it) =>
-          it.id === editingCase.id
-            ? { ...data, id: it.id, createdAt: it.createdAt, updatedAt: now }
-            : it
-        )
-      );
-    } else {
-      persist([
-        { ...data, id: generateId(), createdAt: now, updatedAt: now },
-        ...items,
-      ]);
+  const handleSubmit = async (data: CaseFormData) => {
+    try {
+      if (editingCase) {
+        await casesApi.adminUpdate(Number(editingCase.id), {
+          title: data.title,
+          slug: data.slug,
+          description: data.description,
+          serviceId: data.serviceId ? Number(data.serviceId) : undefined,
+          mediaIds: data.mediaIds ? data.mediaIds.map((id) => Number(id)) : [],
+          tags: data.tags || [],
+          status: data.status || "published",
+        });
+      } else {
+        await casesApi.adminCreate({
+          title: data.title,
+          slug: data.slug,
+          description: data.description,
+          serviceId: data.serviceId ? Number(data.serviceId) : undefined,
+          mediaIds: data.mediaIds ? data.mediaIds.map((id) => Number(id)) : [],
+          tags: data.tags || [],
+          status: data.status || "published",
+        });
+      }
+      setFormOpen(false);
+      setEditingCase(null);
+      await loadData(); // Reload data
+    } catch (error) {
+      console.error("Failed to save case:", error);
+      // TODO: Show error toast
     }
-    setFormOpen(false);
-    setEditingCase(null);
   };
 
   const handleDeleteClick = (caseItem: CaseItem) => {
     setDeleteTarget(caseItem);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (deleteTarget) {
-      persist(items.filter((it) => it.id !== deleteTarget.id));
-      setDeleteTarget(null);
+      try {
+        await casesApi.adminDelete(Number(deleteTarget.id));
+        setDeleteTarget(null);
+        await loadData(); // Reload data
+      } catch (error) {
+        console.error("Failed to delete case:", error);
+        // TODO: Show error toast
+      }
     }
   };
 
@@ -106,6 +143,14 @@ const Cases = () => {
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
   }, [items, search]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

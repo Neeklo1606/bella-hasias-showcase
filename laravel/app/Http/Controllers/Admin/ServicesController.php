@@ -47,6 +47,15 @@ class ServicesController extends Controller
     public function store(StoreServiceRequest $request): JsonResponse
     {
         $data = $request->validated();
+        // Transform camelCase to snake_case if needed
+        if (isset($data['imageId'])) {
+            $data['image_id'] = $data['imageId'];
+            unset($data['imageId']);
+        }
+        if (isset($data['coverId'])) {
+            $data['cover_id'] = $data['coverId'];
+            unset($data['coverId']);
+        }
         $data['tags'] = $data['tags'] ?? [];
         
         $service = Service::create($data);
@@ -64,6 +73,15 @@ class ServicesController extends Controller
     public function update(UpdateServiceRequest $request, Service $service): JsonResponse
     {
         $data = $request->validated();
+        // Transform camelCase to snake_case if needed
+        if (isset($data['imageId'])) {
+            $data['image_id'] = $data['imageId'];
+            unset($data['imageId']);
+        }
+        if (isset($data['coverId'])) {
+            $data['cover_id'] = $data['coverId'];
+            unset($data['coverId']);
+        }
         if (isset($data['tags'])) {
             $data['tags'] = $data['tags'] ?? [];
         }

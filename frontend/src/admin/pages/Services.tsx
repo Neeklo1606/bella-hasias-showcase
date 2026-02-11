@@ -6,14 +6,11 @@ import { AnimatePresence } from "framer-motion";
 import ServiceCard from "@/admin/components/ServiceCard";
 import ServiceForm, { type ServiceFormData } from "@/admin/components/ServiceForm";
 import ConfirmDialog from "@/admin/components/ConfirmDialog";
-import { loadServices, saveServices } from "@/admin/lib/servicesStorage";
-import { loadMedia } from "@/admin/lib/mediaStorage";
+import { servicesApi } from "@/lib/api/services.api";
+import { mediaApi } from "@/lib/api/media.api";
 import { useResolvedMediaItems } from "@/hooks/use-resolved-media";
 import type { Service } from "@/admin/types/service";
 import type { MediaItem } from "@/admin/types/media";
-
-const generateId = () =>
-  `svc-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
 const Services = () => {
   const [items, setItems] = useState<Service[]>([]);
@@ -22,16 +19,28 @@ const Services = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Service | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [servicesRes, mediaRes] = await Promise.all([
+        servicesApi.adminList({ per_page: 100 }),
+        mediaApi.adminList({ per_page: 100 }),
+      ]);
+
+      setItems(servicesRes.data);
+      setMediaItems(mediaRes.data);
+    } catch (error) {
+      console.error("Failed to load services:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setItems(loadServices());
-    setMediaItems(loadMedia());
-  }, []);
-
-  const persist = useCallback((next: Service[]) => {
-    setItems(next);
-    saveServices(next);
-  }, []);
+    loadData();
+  }, [loadData]);
 
   const resolvedMediaItems = useResolvedMediaItems(mediaItems);
 
@@ -50,34 +59,56 @@ const Services = () => {
     setFormOpen(true);
   };
 
-  const handleSubmit = (data: ServiceFormData) => {
-    const now = new Date().toISOString();
-    if (editingService) {
-      persist(
-        items.map((it) =>
-          it.id === editingService.id
-            ? { ...data, id: it.id, updatedAt: now }
-            : it
-        )
-      );
-    } else {
-      persist([
-        { ...data, id: generateId(), updatedAt: now },
-        ...items,
-      ]);
+  const handleSubmit = async (data: ServiceFormData) => {
+    try {
+      if (editingService) {
+        await servicesApi.adminUpdate(Number(editingService.id), {
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          imageId: data.imageId ? Number(data.imageId) : undefined,
+          coverId: data.coverId ? Number(data.coverId) : undefined,
+          tags: data.tags || [],
+          ctaLabel: data.ctaLabel,
+          ctaLink: data.ctaLink,
+          status: data.status || "published",
+        });
+      } else {
+        await servicesApi.adminCreate({
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          imageId: data.imageId ? Number(data.imageId) : undefined,
+          coverId: data.coverId ? Number(data.coverId) : undefined,
+          tags: data.tags || [],
+          ctaLabel: data.ctaLabel,
+          ctaLink: data.ctaLink,
+          status: data.status || "published",
+        });
+      }
+      setFormOpen(false);
+      setEditingService(null);
+      await loadData(); // Reload data
+    } catch (error) {
+      console.error("Failed to save service:", error);
+      // TODO: Show error toast
     }
-    setFormOpen(false);
-    setEditingService(null);
   };
 
   const handleDeleteClick = (service: Service) => {
     setDeleteTarget(service);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (deleteTarget) {
-      persist(items.filter((it) => it.id !== deleteTarget.id));
-      setDeleteTarget(null);
+      try {
+        await servicesApi.adminDelete(Number(deleteTarget.id));
+        setDeleteTarget(null);
+        await loadData(); // Reload data
+      } catch (error) {
+        console.error("Failed to delete service:", error);
+        // TODO: Show error toast
+      }
     }
   };
 
@@ -96,6 +127,14 @@ const Services = () => {
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
   }, [items, search]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-sm text-muted-foreground">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
