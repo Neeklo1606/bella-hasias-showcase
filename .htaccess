@@ -2,6 +2,11 @@
     RewriteEngine On
     RewriteBase /
 
+    # Если запрос к статическому файлу (assets, icons, images, manifest, etc), отдать его
+    RewriteCond %{REQUEST_URI} \.(js|mjs|css|json|png|jpg|jpeg|svg|webp|ico|woff|woff2|ttf|eot)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
     # Если файл существует, отдать его
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
