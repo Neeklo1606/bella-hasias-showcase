@@ -71,6 +71,16 @@ export const ensureCsrf = async (): Promise<void> => {
   }
 };
 
+// Create axios instance
+const apiClient: AxiosInstance = axios.create({
+  baseURL: "/",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
+
 // Request interceptor: ensure CSRF for authenticated requests
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
