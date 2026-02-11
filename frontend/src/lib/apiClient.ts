@@ -121,16 +121,18 @@ apiClient.interceptors.response.use(
       const currentPath = window.location.pathname;
       
       // Only redirect if:
-      // a) Current page is in /admin/* OR
+      // a) Current page is in /admin/* (but NOT /admin/login itself) OR
       // b) Request is to /api/admin/* (but NOT /api/auth/me for guests on public pages)
-      const isAdminRoute = currentPath.startsWith("/admin");
+      const isAdminRoute = currentPath.startsWith("/admin") && currentPath !== "/admin/login";
       const isAdminApiRequest = url.includes("/api/admin/");
       const isAuthMeRequest = url.includes("/api/auth/me");
       
       // Redirect only if:
-      // 1. We're on admin route (any /admin/* page), OR
+      // 1. We're on admin route (any /admin/* page except /admin/login), OR
       // 2. Making admin API request (but NOT /api/auth/me which is used by AuthProvider on public pages)
-      // Do NOT redirect for /api/auth/me on public pages (guests checking auth status)
+      // Do NOT redirect:
+      // - For /api/auth/me on public pages (guests checking auth status)
+      // - When already on /admin/login (to prevent redirect loop)
       const shouldRedirect = isAdminRoute || (isAdminApiRequest && !isAuthMeRequest);
       
       if (shouldRedirect) {
@@ -147,7 +149,7 @@ apiClient.interceptors.response.use(
         // Clear auth state by redirecting to login
         window.location.href = "/admin/login";
       }
-      // For public routes (/api/auth/me for guests), just reject without redirect/toast
+      // For public routes (/api/auth/me for guests) and /admin/login, just reject without redirect/toast
       return Promise.reject(error);
     }
 
