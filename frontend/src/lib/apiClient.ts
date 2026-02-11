@@ -131,7 +131,6 @@ apiClient.interceptors.response.use(
       // 1. We're on admin route (any /admin/* page), OR
       // 2. Making admin API request (but NOT /api/auth/me which is used by AuthProvider on public pages)
       // Do NOT redirect for /api/auth/me on public pages (guests checking auth status)
-      // Also do NOT redirect if it's /api/auth/me on public pages
       const shouldRedirect = isAdminRoute || (isAdminApiRequest && !isAuthMeRequest);
       
       if (shouldRedirect) {
