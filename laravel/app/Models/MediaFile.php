@@ -46,7 +46,13 @@ class MediaFile extends Model
             return $this->path;
         }
         
-        // Use Storage::url() which returns /storage/path
+        // If path starts with / (root), it's a static file, return as is
+        // Static files like /og-image.jpg, /videos/hero-video.mp4 should not go through storage
+        if (str_starts_with($this->path, '/')) {
+            return $this->path;
+        }
+        
+        // Use Storage::url() which returns /storage/path for files in storage/app/public
         $url = Storage::url($this->path);
         
         // Ensure no double slashes
