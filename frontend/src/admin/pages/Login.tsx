@@ -22,19 +22,12 @@ const AdminLogin = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Redirect if already authenticated and is admin
+  // Redirect if already authenticated and is admin (on mount or when state changes)
   useEffect(() => {
     if (isReady && isAuthenticated && isAdmin) {
       navigate("/admin/dashboard", { replace: true });
     }
   }, [isAuthenticated, isAdmin, isReady, navigate]);
-
-  // Redirect after successful login
-  useEffect(() => {
-    if (isAuthenticated && isAdmin && !isLoading) {
-      navigate("/admin/dashboard", { replace: true });
-    }
-  }, [isAuthenticated, isAdmin, isLoading, navigate]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
