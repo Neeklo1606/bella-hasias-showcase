@@ -7,6 +7,13 @@ const ProtectedRoute = () => {
   const location = useLocation();
   const hasCheckedOnce = useRef(false);
 
+  // Mark that we've checked at least once (hooks must be called unconditionally)
+  useEffect(() => {
+    if (isReady) {
+      hasCheckedOnce.current = true;
+    }
+  }, [isReady]);
+
   // Show loading while checking auth (only on first mount)
   if (!isReady && !hasCheckedOnce.current) {
     return (
@@ -15,13 +22,6 @@ const ProtectedRoute = () => {
       </div>
     );
   }
-
-  // Mark that we've checked at least once
-  useEffect(() => {
-    if (isReady) {
-      hasCheckedOnce.current = true;
-    }
-  }, [isReady]);
 
   // Only redirect to login if we're sure user is not authenticated
   // Check both isAuthenticated and user to be safe

@@ -64,7 +64,8 @@ Route::prefix('media')->group(function () {
 Route::get('/seo', [PublicPagesController::class, 'seo']);
 
 // Admin API (protected)
-Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+// Note: Need 'web' middleware for session-based auth (cookie-based Sanctum)
+Route::prefix('admin')->middleware(['web', 'auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('services', ServicesController::class);
     Route::apiResource('cases', CasesController::class);
     Route::apiResource('pages', PagesController::class);
