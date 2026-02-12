@@ -74,9 +74,9 @@ return [
     */
 
     'links' => [
-        // Storage link: создает симлинк в корне репозитория (public_html)
-        // так как public_path() указывает на корень репозитория
-        public_path('storage') => storage_path('app/public'),
+        // Storage link: создаем симлинк в корне public_html
+        // Используем base_path() чтобы получить корень проекта, затем ../storage для корня public_html
+        base_path('../storage') => storage_path('app/public'),
     ],
 
 ];
