@@ -120,20 +120,23 @@ apiClient.interceptors.response.use(
       const url = originalRequest.url || "";
       const currentPath = window.location.pathname;
       
+      // NEVER redirect for /api/auth/me requests - these are used to check auth status
+      // and should fail silently if user is not authenticated
+      const isAuthMeRequest = url.includes("/api/auth/me");
+      if (isAuthMeRequest) {
+        // Just reject - AuthProvider will handle setting user to null
+        return Promise.reject(error);
+      }
+      
       // Only redirect if:
       // a) Current page is in /admin/* (but NOT /admin/login itself) OR
-      // b) Request is to /api/admin/* (but NOT /api/auth/me for guests on public pages)
+      // b) Request is to /api/admin/*
       const isAdminRoute = currentPath.startsWith("/admin") && currentPath !== "/admin/login";
       const isAdminApiRequest = url.includes("/api/admin/");
-      const isAuthMeRequest = url.includes("/api/auth/me");
       
-      // Redirect only if:
-      // 1. We're on admin route (any /admin/* page except /admin/login), OR
-      // 2. Making admin API request (but NOT /api/auth/me which is used by AuthProvider on public pages)
-      // Do NOT redirect:
-      // - For /api/auth/me on public pages (guests checking auth status)
-      // - When already on /admin/login (to prevent redirect loop)
-      const shouldRedirect = isAdminRoute || (isAdminApiRequest && !isAuthMeRequest);
+      // Redirect only if we're on admin route or making admin API request
+      // Do NOT redirect when already on /admin/login (to prevent redirect loop)
+      const shouldRedirect = (isAdminRoute || isAdminApiRequest) && currentPath !== "/admin/login";
       
       if (shouldRedirect) {
         if (!sessionExpiredShown) {
@@ -146,10 +149,10 @@ apiClient.interceptors.response.use(
             sessionExpiredShown = false;
           }, 5000);
         }
-        // Clear auth state by redirecting to login
+        // Use window.location.href for hard redirect to clear any state
         window.location.href = "/admin/login";
       }
-      // For public routes (/api/auth/me for guests) and /admin/login, just reject without redirect/toast
+      // For other cases, just reject without redirect
       return Promise.reject(error);
     }
 

@@ -23,9 +23,17 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const hasCheckedAuth = React.useRef(false);
 
-  // Check authentication on mount
+  // Check authentication on mount (only once, never again)
   useEffect(() => {
+    // Skip if we've already checked auth (prevents re-checking on re-renders)
+    if (hasCheckedAuth.current) {
+      return;
+    }
+
+    hasCheckedAuth.current = true;
+
     const checkAuth = async () => {
       try {
         const userData = await authApi.me();
@@ -36,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           role: userData.role,
         });
       } catch (error) {
-        // Not authenticated
+        // Not authenticated - clear user state
         setUser(null);
       } finally {
         setIsReady(true);
@@ -44,17 +52,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     checkAuth();
-  }, []);
+  }, []); // Only run on mount
 
   const login = async (email: string, password: string, remember = false): Promise<{ ok: boolean; error?: string }> => {
     try {
       const userData = await authApi.login({ email, password, remember });
-      setUser({
+      // Set user immediately after successful login
+      // This prevents AuthProvider from making /api/auth/me request
+      const newUser = {
         id: String(userData.id),
         name: userData.name,
         email: userData.email,
         role: userData.role,
-      });
+      };
+      setUser(newUser);
+      setIsReady(true); // Mark as ready since we have user data
       return { ok: true };
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || "Неверный email или пароль.";

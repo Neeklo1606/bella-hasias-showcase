@@ -22,12 +22,15 @@ const AdminLogin = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Redirect if already authenticated and is admin (on mount or when state changes)
+  // Redirect if already authenticated and is admin
+  // Only redirect if we're ready AND authenticated AND admin
+  // Use a ref to prevent multiple redirects
   useEffect(() => {
-    if (isReady && isAuthenticated && isAdmin) {
+    // Only redirect if all conditions are met and we're not currently loading
+    if (isReady && isAuthenticated && isAdmin && !isLoading) {
       navigate("/admin/dashboard", { replace: true });
     }
-  }, [isAuthenticated, isAdmin, isReady, navigate]);
+  }, [isAuthenticated, isAdmin, isReady, isLoading, navigate]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
