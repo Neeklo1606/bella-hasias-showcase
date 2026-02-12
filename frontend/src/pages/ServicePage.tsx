@@ -45,21 +45,22 @@ const ServicePage = () => {
 
   // Split description into intro and caseBlocks
   // First paragraph is intro, rest are caseBlocks
-  const descriptionParts = service.description.split('\n\n').filter(p => p.trim());
-  const intro = descriptionParts[0] || service.description;
+  const description = service.description || '';
+  const descriptionParts = description.split('\n\n').filter(p => p.trim());
+  const intro = descriptionParts[0] || description || 'Описание услуги';
   const caseBlocks = descriptionParts.slice(1);
 
   return (
     <ServicePageLayout
-      title={service.title}
-      metaTitle={service.title}
-      metaDescription={service.description}
+      title={service.title || 'Услуга'}
+      metaTitle={service.title || 'Услуга'}
+      metaDescription={description || 'Описание услуги'}
       metaKeywords={service.tags?.join(', ') || ''}
       ogImage={coverImage}
       heroImage={coverImage}
-      heroImageAlt={service.title}
+      heroImageAlt={service.title || 'Услуга'}
       intro={intro}
-      caseBlocks={caseBlocks.length > 0 ? caseBlocks : [service.description]}
+      caseBlocks={caseBlocks.length > 0 ? caseBlocks : (description ? [description] : ['Описание услуги'])}
     />
   );
 };
