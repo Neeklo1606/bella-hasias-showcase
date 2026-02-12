@@ -36,10 +36,20 @@ class MediaFile extends Model
      */
     public function getUrlAttribute(): string
     {
-        if (str_starts_with($this->path, 'http')) {
+        // If path is already a full URL, return as is
+        if (str_starts_with($this->path, 'http://') || str_starts_with($this->path, 'https://')) {
             return $this->path;
         }
         
-        return Storage::url($this->path);
+        // If path already starts with /storage/, return as is (avoid double /storage/)
+        if (str_starts_with($this->path, '/storage/')) {
+            return $this->path;
+        }
+        
+        // Use Storage::url() which returns /storage/path
+        $url = Storage::url($this->path);
+        
+        // Ensure no double slashes
+        return str_replace('//', '/', $url);
     }
 }

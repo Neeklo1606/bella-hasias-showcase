@@ -50,7 +50,9 @@ const PageSEO = ({ slug, fallback }: PageSEOProps) => {
                 setOgImage(imageUrl);
               } else if (imageUrl) {
                 // If relative, make it absolute
-                const cleanUrl = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
+                // Remove any double slashes
+                let cleanUrl = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
+                cleanUrl = cleanUrl.replace(/\/+/g, '/'); // Replace multiple slashes with single
                 setOgImage(`${base}${cleanUrl}`);
               } else {
                 setOgImage(null);
