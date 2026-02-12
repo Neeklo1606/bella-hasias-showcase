@@ -45,20 +45,21 @@ const ServicePage = () => {
 
   // Split description into intro and caseBlocks
   // First paragraph is intro, rest are caseBlocks
-  const description = service.description || '';
+  const description = String(service.description || '');
+  const title = String(service.title || 'Услуга');
   const descriptionParts = description.split('\n\n').filter(p => p.trim());
   const intro = descriptionParts[0] || description || 'Описание услуги';
   const caseBlocks = descriptionParts.slice(1);
 
   return (
     <ServicePageLayout
-      title={service.title || 'Услуга'}
-      metaTitle={service.title || 'Услуга'}
+      title={title}
+      metaTitle={title}
       metaDescription={description || 'Описание услуги'}
       metaKeywords={service.tags?.join(', ') || ''}
       ogImage={coverImage}
       heroImage={coverImage}
-      heroImageAlt={service.title || 'Услуга'}
+      heroImageAlt={title}
       intro={intro}
       caseBlocks={caseBlocks.length > 0 ? caseBlocks : (description ? [description] : ['Описание услуги'])}
     />
