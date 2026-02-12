@@ -13,7 +13,14 @@
 - ✅ Регенерирует session ID для безопасности
 - ✅ `logout()` использует `Auth::logout()` и инвалидирует сессию
 
-### 2. Frontend: Login.tsx
+### 2. Backend: Routes (api.php)
+- ✅ Добавлен `web` middleware для auth routes (`/api/auth/*`)
+- ✅ Это необходимо для работы сессий и cookie-based auth
+
+### 3. Backend: Bootstrap (app.php)
+- ✅ Исключены CSRF проверки для auth endpoints (Sanctum обрабатывает CSRF через cookie)
+
+### 4. Frontend: Login.tsx
 - ✅ Улучшена обработка ошибок
 - ✅ Редирект происходит через `useEffect` после обновления состояния
 
@@ -45,9 +52,12 @@ SANCTUM_STATEFUL_DOMAINS=bellahasias.ru,www.bellahasias.ru
 cd ~/bellahasias.ru/public_html/laravel
 php8.2 artisan config:clear
 php8.2 artisan config:cache
+php8.2 artisan route:clear
 php8.2 artisan route:cache
 php8.2 artisan view:cache
 ```
+
+**Важно:** После изменения `routes/api.php` или `bootstrap/app.php` нужно очистить route cache!
 
 ### 4. Проверить таблицу sessions
 Убедитесь, что таблица `sessions` существует:
