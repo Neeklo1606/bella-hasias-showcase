@@ -22,7 +22,9 @@ Route::get('/ping', function () {
 Route::get('/health', [HealthController::class, 'health']);
 
 // Auth routes with rate limiting
-Route::prefix('auth')->group(function () {
+// Note: These routes need session middleware for cookie-based auth
+// Using 'web' middleware group to enable sessions, cookies, and CSRF protection
+Route::prefix('auth')->middleware(['web'])->group(function () {
     // Login: 5 attempts per minute per IP+email
     Route::post('/login', [AuthController::class, 'login'])
         ->middleware('throttle:5,1');

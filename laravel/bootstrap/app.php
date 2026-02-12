@@ -20,6 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
+        
+        // Exclude CSRF verification for /api/auth/login (Sanctum handles CSRF via cookie)
+        $middleware->validateCsrfTokens(except: [
+            'api/auth/login',
+            'api/auth/logout',
+            'api/auth/forgot-password',
+            'api/auth/reset-password',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
