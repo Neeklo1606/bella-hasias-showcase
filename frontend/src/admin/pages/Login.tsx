@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -16,18 +16,29 @@ import { useAuth } from "@/admin/hooks/useAuth";
 const AdminLogin = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated, isAdmin, isReady } = useAuth();
+  const hasRedirected = useRef(false);
+  const justLoggedIn = useRef(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Redirect if already authenticated and is admin
-  // Only redirect if we're ready AND authenticated AND admin
-  // Use a ref to prevent multiple redirects
+  // Redirect if already authenticated and is admin (but NOT if we just logged in)
   useEffect(() => {
-    // Only redirect if all conditions are met and we're not currently loading
+    // Don't redirect if we just logged in (let handleSubmit handle it)
+    if (justLoggedIn.current) {
+      return;
+    }
+
+    // Don't redirect multiple times
+    if (hasRedirected.current) {
+      return;
+    }
+
+    // Only redirect if all conditions are met
     if (isReady && isAuthenticated && isAdmin && !isLoading) {
+      hasRedirected.current = true;
       navigate("/admin/dashboard", { replace: true });
     }
   }, [isAuthenticated, isAdmin, isReady, isLoading, navigate]);
@@ -36,6 +47,7 @@ const AdminLogin = () => {
     event.preventDefault();
     setError(null);
     setIsLoading(true);
+    justLoggedIn.current = false;
 
     try {
       const result = await login(email.trim(), password);
@@ -44,8 +56,16 @@ const AdminLogin = () => {
         setIsLoading(false);
         return;
       }
-      // If ok, state will update and useEffect will handle redirect
-      // Don't set isLoading to false here - let useEffect handle navigation
+
+      // Mark that we just logged in
+      justLoggedIn.current = true;
+      setIsLoading(false);
+
+      // Wait a tiny bit for state to propagate, then redirect manually
+      setTimeout(() => {
+        hasRedirected.current = true;
+        navigate("/admin/dashboard", { replace: true });
+      }, 100);
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || err.message || "Ошибка авторизации. Попробуйте еще раз.";
       setError(errorMessage);

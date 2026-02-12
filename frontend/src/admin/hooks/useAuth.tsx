@@ -67,6 +67,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       };
       setUser(newUser);
       setIsReady(true); // Mark as ready since we have user data
+      // Mark that we've checked auth (so useEffect won't run /api/auth/me)
+      hasCheckedAuth.current = true;
       return { ok: true };
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || "Неверный email или пароль.";
