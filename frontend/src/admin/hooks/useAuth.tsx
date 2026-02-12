@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { authApi } from "@/lib/api/auth.api";
 import type { LoginResponse } from "@/lib/api/auth.api";
 
@@ -23,7 +23,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isReady, setIsReady] = useState(false);
-  const hasCheckedAuth = React.useRef(false);
+  const hasCheckedAuth = useRef(false);
 
   // Check authentication on mount (only once, never again)
   useEffect(() => {
