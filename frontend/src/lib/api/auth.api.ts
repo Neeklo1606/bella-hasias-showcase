@@ -32,8 +32,9 @@ export const authApi = {
    * Login user
    */
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    const response = await apiClient.post<LoginResponse>("/api/auth/login", data);
-    return response.data;
+    const response = await apiClient.post<{ user: LoginResponse }>("/api/auth/login", data);
+    // API returns { user: {...} }, extract user object
+    return response.data.user;
   },
 
   /**
@@ -47,8 +48,9 @@ export const authApi = {
    * Get current authenticated user
    */
   me: async (): Promise<LoginResponse> => {
-    const response = await apiClient.get<LoginResponse>("/api/auth/me");
-    return response.data;
+    const response = await apiClient.get<{ user: LoginResponse }>("/api/auth/me");
+    // API returns { user: {...} }, extract user object
+    return response.data.user;
   },
 
   /**

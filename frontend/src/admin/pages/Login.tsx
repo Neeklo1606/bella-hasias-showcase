@@ -15,29 +15,43 @@ import { useAuth } from "@/admin/hooks/useAuth";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, isAdmin, isReady } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Redirect if already authenticated and is admin
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isReady && isAuthenticated && isAdmin) {
       navigate("/admin/dashboard", { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isAdmin, isReady, navigate]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  // Redirect after successful login
+  useEffect(() => {
+    if (isAuthenticated && isAdmin && !isLoading) {
+      navigate("/admin/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, isAdmin, isLoading, navigate]);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+    setIsLoading(true);
 
-    const result = login(email.trim(), password);
-    if (result.ok) {
-      navigate("/admin/dashboard", { replace: true });
-      return;
+    try {
+      const result = await login(email.trim(), password);
+      if (!result.ok) {
+        setError(result.error ?? "Ошибка авторизации.");
+        setIsLoading(false);
+      }
+      // If ok, state will update and useEffect will handle redirect
+    } catch (err) {
+      setError("Ошибка авторизации. Попробуйте еще раз.");
+      setIsLoading(false);
     }
-
-    setError(result.error ?? "Ошибка авторизации.");
   };
 
   return (
@@ -78,8 +92,8 @@ const AdminLogin = () => {
             {error ? (
               <p className="text-sm text-destructive">{error}</p>
             ) : null}
-            <Button type="submit" className="w-full">
-              Войти
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Вход..." : "Войти"}
             </Button>
           </form>
         </DialogContent>
