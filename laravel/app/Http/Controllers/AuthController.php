@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -14,6 +15,10 @@ class AuthController extends Controller
     /**
      * Login user
      * Rate limited: 5 attempts per minute per IP+email
+     * 
+     * For SPA cookie-based authentication, we use Auth::login() to establish
+     * a session instead of creating a token. Sanctum will handle the session
+     * authentication for subsequent requests.
      */
     public function login(Request $request): JsonResponse
     {
@@ -31,7 +36,12 @@ class AuthController extends Controller
             ]);
         }
 
-        $user->createToken('auth-token')->plainTextToken;
+        // For SPA cookie-based auth, use Auth::login() to establish session
+        // This will set the session cookie that Sanctum uses for authentication
+        Auth::login($user, $request->boolean('remember', false));
+        
+        // Regenerate session ID to prevent session fixation attacks
+        $request->session()->regenerate();
 
         return response()->json([
             'user' => new UserResource($user),
@@ -50,10 +60,20 @@ class AuthController extends Controller
 
     /**
      * Logout user
+     * 
+     * For SPA cookie-based authentication, we invalidate the session
+     * instead of deleting tokens.
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()?->delete();
+        // For SPA cookie-based auth, logout using Auth facade
+        Auth::logout();
+        
+        // Invalidate session
+        $request->session()->invalidate();
+        
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
 
         return response()->json(['message' => 'Logged out successfully']);
     }

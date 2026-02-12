@@ -39,10 +39,13 @@ const AdminLogin = () => {
       if (!result.ok) {
         setError(result.error ?? "Ошибка авторизации.");
         setIsLoading(false);
+        return;
       }
       // If ok, state will update and useEffect will handle redirect
-    } catch (err) {
-      setError("Ошибка авторизации. Попробуйте еще раз.");
+      // Don't set isLoading to false here - let useEffect handle navigation
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "Ошибка авторизации. Попробуйте еще раз.";
+      setError(errorMessage);
       setIsLoading(false);
     }
   };
