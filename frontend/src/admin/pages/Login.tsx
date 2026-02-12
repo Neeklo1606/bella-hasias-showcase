@@ -48,6 +48,7 @@ const AdminLogin = () => {
     setError(null);
     setIsLoading(true);
     justLoggedIn.current = false;
+    hasRedirected.current = false; // Reset redirect flag
 
     try {
       const result = await login(email.trim(), password);
@@ -61,11 +62,13 @@ const AdminLogin = () => {
       justLoggedIn.current = true;
       setIsLoading(false);
 
-      // Wait a tiny bit for state to propagate, then redirect manually
+      // Wait for state to propagate, then redirect manually
+      // Use a longer timeout to ensure state is fully updated
       setTimeout(() => {
         hasRedirected.current = true;
+        justLoggedIn.current = false; // Reset after redirect
         navigate("/admin/dashboard", { replace: true });
-      }, 100);
+      }, 200);
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || err.message || "Ошибка авторизации. Попробуйте еще раз.";
       setError(errorMessage);
