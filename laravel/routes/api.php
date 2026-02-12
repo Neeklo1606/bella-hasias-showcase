@@ -46,6 +46,7 @@ Route::prefix('auth')->middleware(['web'])->group(function () {
 // Public API (read-only)
 Route::prefix('services')->group(function () {
     Route::get('/', [PublicServicesController::class, 'index']);
+    Route::get('/{slug}', [PublicServicesController::class, 'show']);
 });
 
 Route::prefix('cases')->group(function () {

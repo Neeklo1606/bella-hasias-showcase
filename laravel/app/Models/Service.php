@@ -14,6 +14,7 @@ class Service extends Model
     protected $fillable = [
         'external_id',
         'title',
+        'slug',
         'description',
         'category',
         'image_id',

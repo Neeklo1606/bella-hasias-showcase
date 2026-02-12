@@ -24,17 +24,12 @@ const mapCategoryToUI = (category?: string): ServiceCategory => {
   return "stylist"; // default
 };
 
-// Map service to href based on slug or id
-const getServiceHref = (service: Service): string => {
-  // Try to match by title or use generic route
-  const titleLower = service.title.toLowerCase();
-  if (titleLower.includes("бренд") || titleLower.includes("стилизация")) return "/services/brand-styling";
-  if (titleLower.includes("клиент") || titleLower.includes("съёмка")) return "/services/client-shoot";
-  if (titleLower.includes("гардероб") || titleLower.includes("разбор")) return "/services/wardrobe-audit";
-  if (titleLower.includes("шоппинг") || titleLower.includes("шопинг")) return "/services/personal-shopping";
-  if (titleLower.includes("ugc")) return "/services/ugc";
-  if (titleLower.includes("ai") || titleLower.includes("искусственный")) return "/services/ai-content";
-  return "/services"; // fallback
+// Map service to href based on slug
+const getServiceHref = (service: Service & { slug?: string }): string => {
+  if (service.slug) {
+    return `/services/${service.slug}`;
+  }
+  return `/services/${service.id}`; // fallback to id
 };
 
 const containerVariants = {

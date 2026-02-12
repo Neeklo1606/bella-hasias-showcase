@@ -1,22 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-
-// User's own photos
-import heroLeft from '@/assets/hero/hero-left.jpg';
-import heroCenter from '@/assets/hero/hero-center.jpg';
-import heroRight from '@/assets/hero/hero-right.jpg';
-import photo3 from '@/assets/hero/photo-3.jpg';
-import user1 from '@/assets/portfolio/user-1.jpg';
-import user2 from '@/assets/portfolio/user-2.jpg';
-import ugcPreview from '@/assets/portfolio/IMG_1082.JPG';
-import aiPreview from '@/assets/portfolio/IMG_1559.JPG';
+import { servicesApi } from '@/lib/api/services.api';
+import type { Service } from '@/admin/types/service';
 
 type ServiceCategory = "stylist" | "creator";
 
@@ -24,72 +17,6 @@ const categoryLabels: Record<ServiceCategory, string> = {
   stylist: "Стилист",
   creator: "Креатор",
 };
-
-// All services with categories
-const allServices: Array<{
-  id: string;
-  title: string;
-  image: string;
-  href: string;
-  category: ServiceCategory;
-}> = [
-  {
-    id: 'brand-styling',
-    title: 'Стилизация съёмки',
-    image: heroLeft,
-    href: '/services/brand-styling',
-    category: "stylist",
-  },
-  {
-    id: 'wardrobe-audit',
-    title: 'Разбор гардероба',
-    image: heroCenter,
-    href: '/services/wardrobe-audit',
-    category: "stylist",
-  },
-  {
-    id: 'personal-shopping',
-    title: 'Персональный шоппинг',
-    image: heroRight,
-    href: '/services/personal-shopping',
-    category: "stylist",
-  },
-  {
-    id: 'capsule-wardrobe',
-    title: 'Капсульный гардероб',
-    image: photo3,
-    href: '/services/capsule-wardrobe',
-    category: "stylist",
-  },
-  {
-    id: 'event-look',
-    title: 'Образ на мероприятие',
-    image: user1,
-    href: '/services/event-look',
-    category: "stylist",
-  },
-  {
-    id: 'client-shoot',
-    title: 'Съёмка для клиента',
-    image: user2,
-    href: '/services/client-shoot',
-    category: "creator",
-  },
-  {
-    id: 'ugc-content',
-    title: 'UGC-контент',
-    image: ugcPreview,
-    href: '/services/ugc',
-    category: "creator",
-  },
-  {
-    id: 'ai-content',
-    title: 'AI-контент',
-    image: aiPreview,
-    href: '/services/ai-content',
-    category: "creator",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -116,10 +43,31 @@ const Services = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>("stylist");
 
-  const filteredServices = useMemo(
-    () => allServices.filter((service) => service.category === activeCategory),
-    [activeCategory]
-  );
+  const { data: servicesResponse, isLoading } = useQuery({
+    queryKey: ['services', 'public', { status: 'published', per_page: 100 }],
+    queryFn: () => servicesApi.list({ status: 'published', per_page: 100 }),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const services = servicesResponse?.data || [];
+
+  const filteredServices = useMemo(() => {
+    return services
+      .filter((service: Service) => {
+        const serviceCategory = service.category === 'stylist' ? 'stylist' : 
+                               service.category === 'creator' ? 'creator' : 
+                               'stylist'; // default
+        return serviceCategory === activeCategory;
+      })
+      .map((service: Service & { image?: any; cover?: any }) => ({
+        id: service.id,
+        title: service.title,
+        image: service.cover?.url || service.image?.url || '',
+        href: `/services/${service.slug || service.id}`,
+        category: (service.category === 'creator' ? 'creator' : 'stylist') as ServiceCategory,
+      }));
+  }, [services, activeCategory]);
 
   return (
     <>
@@ -181,24 +129,30 @@ const Services = () => {
             </div>
 
             {/* Services Grid */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {filteredServices.map((service) => (
-                <motion.div key={service.id} variants={itemVariants}>
-                  <InteractiveTravelCard
-                    title={service.title}
-                    imageUrl={service.image}
-                    actionText="Подробнее"
-                    href={service.href}
-                    onActionClick={() => navigate(service.href)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {filteredServices.map((service) => (
+                  <motion.div key={service.id} variants={itemVariants}>
+                    <InteractiveTravelCard
+                      title={service.title}
+                      imageUrl={service.image}
+                      actionText="Подробнее"
+                      href={service.href}
+                      onActionClick={() => navigate(service.href)}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
 
             {/* CTA Button */}
             <motion.div

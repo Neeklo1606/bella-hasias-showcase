@@ -36,6 +36,22 @@ export interface UpdateServiceRequest extends Partial<CreateServiceRequest> {
 
 export const servicesApi = {
   /**
+   * Get single service by slug (public)
+   */
+  getBySlug: async (slug: string): Promise<Service & { image?: any; cover?: any }> => {
+    const response = await apiClient.get<any>(`/api/services/${slug}`);
+    const s = response.data;
+    return {
+      ...s,
+      id: String(s.id),
+      imageId: s.image?.id ? String(s.image.id) : s.imageId || "",
+      coverId: s.cover?.id ? String(s.cover.id) : s.coverId || "",
+      image: s.image, // Preserve full image object
+      cover: s.cover, // Preserve full cover object
+    };
+  },
+
+  /**
    * Get list of services (public)
    */
   list: async (params?: ServiceListParams): Promise<ServiceListResponse> => {

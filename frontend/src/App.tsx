@@ -28,23 +28,12 @@ const Portfolio = lazy(() => import("./pages/Portfolio"));
 const CasePage = lazy(() => import("./pages/CasePage"));
 const Services = lazy(() => import("./pages/Services"));
 const Contacts = lazy(() => import("./pages/Contacts"));
-const ServiceStylist = lazy(() => import("./pages/ServiceStylist"));
-const ServiceUgc = lazy(() => import("./pages/ServiceUgc"));
-const ServicePhotographer = lazy(() => import("./pages/ServicePhotographer"));
+const ServicePage = lazy(() => import("./pages/ServicePage"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Consent = lazy(() => import("./pages/Consent"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const VKLanding = lazy(() => import("./pages/VKLanding"));
-
-const BrandStyling = lazy(() => import("./pages/services/BrandStyling"));
-const ClientShoot = lazy(() => import("./pages/services/ClientShoot"));
-const WardrobeAudit = lazy(() => import("./pages/services/WardrobeAudit"));
-const PersonalShopping = lazy(() => import("./pages/services/PersonalShopping"));
-const CapsuleWardrobe = lazy(() => import("./pages/services/CapsuleWardrobe"));
-const EventLook = lazy(() => import("./pages/services/EventLook"));
-const PhotoVideo = lazy(() => import("./pages/services/PhotoVideo"));
-const AIContent = lazy(() => import("./pages/services/AIContent"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,19 +59,8 @@ const AppRoutes = () => {
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/portfolio/:slug" element={<CasePage />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/services/:slug" element={<ServicePage />} />
         <Route path="/contacts" element={<Contacts />} />
-        <Route path="/services/stylist" element={<ServiceStylist />} />
-        <Route path="/services/ugc" element={<ServiceUgc />} />
-        <Route path="/services/photographer" element={<ServicePhotographer />} />
-        {/* New service routes */}
-        <Route path="/services/brand-styling" element={<BrandStyling />} />
-        <Route path="/services/client-shoot" element={<ClientShoot />} />
-        <Route path="/services/wardrobe-audit" element={<WardrobeAudit />} />
-        <Route path="/services/personal-shopping" element={<PersonalShopping />} />
-        <Route path="/services/capsule-wardrobe" element={<CapsuleWardrobe />} />
-        <Route path="/services/event-look" element={<EventLook />} />
-        <Route path="/services/photo-video" element={<PhotoVideo />} />
-        <Route path="/services/ai-content" element={<AIContent />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>

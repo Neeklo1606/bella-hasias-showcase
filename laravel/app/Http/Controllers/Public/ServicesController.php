@@ -43,4 +43,18 @@ class ServicesController extends Controller
 
         return ServiceResource::collection($services)->response();
     }
+
+    public function show(string $slug): JsonResponse
+    {
+        $service = Service::where('slug', $slug)
+            ->where('status', 'published')
+            ->with(['image', 'cover'])
+            ->first();
+
+        if (!$service) {
+            return response()->json(['message' => 'Service not found'], 404);
+        }
+
+        return (new ServiceResource($service))->response();
+    }
 }
