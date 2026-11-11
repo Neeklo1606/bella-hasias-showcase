@@ -80,7 +80,7 @@ const PageSEO = ({ slug, fallback }: PageSEOProps) => {
   const title = seo?.metaTitle || fallback?.title || "Bella Hasias";
   const description = seo?.metaDescription || fallback?.description || "";
   const base = siteUrl.replace(/\/$/, "");
-  const finalOgImage = ogImage || fallback?.image || `${base}/og-image.jpg`;
+  const finalOgImage = ogImage || fallback?.image || `${base}/build/og-image.jpg`;
 
   const robots = seo?.index === false ? "noindex, nofollow" : "index, follow";
   const url = slug === "home" ? siteUrl : `${siteUrl}/${slug}`;
