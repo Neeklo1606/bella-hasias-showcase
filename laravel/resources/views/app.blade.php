@@ -62,6 +62,9 @@
 
     {{-- Текст для роботов без JS не показываем пользователям с JS: React отрисует страницу сам --}}
     <script>document.documentElement.classList.add('js')</script>
+    @if(!empty($boot))
+    <script>window.__BOOT__={!! json_encode($boot, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+    @endif
     <style>html{background:#FBF9F7}.js #seo-fallback{display:none}</style>
 
     @if(request()->path() === '/')

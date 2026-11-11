@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { serviceImage } from '@/lib/localImages';
+import { bootServiceBySlug } from '@/lib/boot';
 import { Loader2 } from 'lucide-react';
 import ServicePageLayout from '@/components/ServicePageLayout';
 import { servicesApi } from '@/lib/api/services.api';
@@ -17,6 +18,7 @@ const ServicePage = () => {
       return servicesApi.getBySlug(slug);
     },
     enabled: !!slug,
+    initialData: () => bootServiceBySlug(slug),
     refetchOnWindowFocus: false,
     retry: 1,
   });

@@ -126,6 +126,11 @@ class SeoResolver
             $seo['robots'] = 'noindex, follow';
         }
 
+        // GEO: карточка местного бизнеса (Москва) — для Яндекса, Google и AI-поиска
+        if ($path === '' || $path === 'contacts') {
+            $seo['jsonld'][] = $this->localBusinessSchema($base);
+        }
+
         if ($path === '' || $path === 'services') {
             $services = Service::where('status', 'published')->orderBy('sort_order')->get(['title', 'slug', 'description']);
             foreach ($services as $service) {
@@ -267,6 +272,36 @@ class SeoResolver
             'telephone' => self::PHONE,
             'email' => self::EMAIL,
             'sameAs' => self::SAME_AS,
+        ];
+    }
+
+    public function localBusinessSchema(string $base): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'ProfessionalService',
+            '@id' => $base.'/#business',
+            'name' => self::BRAND.' — стилист в Москве',
+            'url' => $base.'/',
+            'image' => $base.'/build/og-image.jpg',
+            'logo' => $base.'/build/icons/icon-512.png',
+            'description' => self::DEFAULT_DESCRIPTION,
+            'telephone' => self::PHONE,
+            'email' => self::EMAIL,
+            'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Москва', 'addressRegion' => 'Москва', 'addressCountry' => 'RU'],
+            'areaServed' => [
+                ['@type' => 'City', 'name' => 'Москва'],
+                ['@type' => 'Country', 'name' => 'Россия'],
+            ],
+            'founder' => ['@id' => $base.'/#person'],
+            'sameAs' => self::SAME_AS,
+            'contactPoint' => [[
+                '@type' => 'ContactPoint',
+                'telephone' => self::PHONE,
+                'email' => self::EMAIL,
+                'contactType' => 'customer service',
+                'availableLanguage' => ['ru'],
+            ]],
         ];
     }
 

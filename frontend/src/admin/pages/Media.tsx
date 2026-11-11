@@ -43,10 +43,10 @@ const Media = () => {
   const loading = mediaLoading;
   const pagination = mediaResponse
     ? {
-        currentPage: mediaResponse.current_page,
-        lastPage: mediaResponse.last_page,
-        perPage: mediaResponse.per_page,
-        total: mediaResponse.total,
+        currentPage: ((mediaResponse as any).meta ?? mediaResponse).current_page,
+        lastPage: ((mediaResponse as any).meta ?? mediaResponse).last_page,
+        perPage: ((mediaResponse as any).meta ?? mediaResponse).per_page,
+        total: ((mediaResponse as any).meta ?? mediaResponse).total,
       }
     : null;
 

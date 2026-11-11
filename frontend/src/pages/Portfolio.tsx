@@ -1,5 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { casesApi } from '@/lib/api/cases.api';
+import { bootCases } from '@/lib/boot';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
@@ -9,7 +12,25 @@ import type { ComponentType } from 'react';
 const Portfolio = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const allWorks = PORTFOLIO_WORKS;
+  // Работы из админки (все фото опубликованных кейсов) идут первыми, затем архив из репозитория
+  const { data: casesResponse } = useQuery({
+    queryKey: ['cases', 'public', { status: 'published', per_page: 50 }],
+    queryFn: () => casesApi.list({ status: 'published', per_page: 50 }),
+    initialData: bootCases,
+  });
+  const allWorks = useMemo(() => {
+    const fromAdmin = (casesResponse?.data || []).flatMap((c: any) =>
+      (c.media || [])
+        .filter((m: any) => (m.url || m.src) && !String(m.mimeType || m.mime_type || '').startsWith('video'))
+        .map((m: any, i: number) => ({
+          id: `case-${c.id}-${m.id ?? i}`,
+          thumb: m.url || m.src,
+          full: m.url || m.src,
+          alt: c.title || 'Работа стилиста Bella Hasias',
+        })),
+    );
+    return [...fromAdmin, ...PORTFOLIO_WORKS];
+  }, [casesResponse]);
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);

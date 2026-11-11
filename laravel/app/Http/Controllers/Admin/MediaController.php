@@ -52,7 +52,7 @@ class MediaController extends Controller
             'file' => [
                 'required',
                 'file',
-                'max:5120', // 5MB max (5120 KB)
+                'max:20480', // 20MB: фото с телефона; при сохранении сжимаются (optimizeImage)
                 'mimes:jpeg,jpg,png,webp,pdf', // Only allowed MIME types
             ],
             'category' => ['nullable', 'string', 'max:255'],
@@ -100,7 +100,18 @@ class MediaController extends Controller
         // Ensure filename is safe (no path traversal)
         $filename = basename($filename);
         
-        $path = $file->storeAs('media', $filename, 'public');
+        // Фото уменьшаем до 2000px и сохраняем в WebP: сайт не тянет оригиналы по 5–10 МБ
+        $optimized = $this->optimizeImage($file->getRealPath(), $mimeType);
+        if ($optimized !== null) {
+            $filename = preg_replace('/\.[a-z0-9]+$/i', '.webp', $filename);
+            $path = 'media/'.$filename;
+            Storage::disk('public')->put($path, $optimized);
+            $mimeType = 'image/webp';
+            $size = strlen($optimized);
+        } else {
+            $path = $file->storeAs('media', $filename, 'public');
+            $size = $file->getSize();
+        }
         
         // Verify file was stored correctly
         if (!$path) {
@@ -114,7 +125,7 @@ class MediaController extends Controller
             'original_filename' => $originalName,
             'path' => $path,
             'mime_type' => $mimeType,
-            'size' => $file->getSize(),
+            'size' => $size,
             'category' => $request->category ?? 'Прочее',
             'alt' => $request->alt ?? pathinfo($originalName, PATHINFO_FILENAME),
             'user_id' => $request->user()?->id,
@@ -174,5 +185,61 @@ class MediaController extends Controller
         $media->delete();
 
         return response()->json(['message' => 'Media file deleted successfully']);
+    }
+
+    /**
+     * Уменьшить фото до 2000px по длинной стороне, повернуть по EXIF и сжать в WebP (q=82).
+     * Возвращает байты WebP или null (не картинка / нет GD / ошибка) — тогда сохраняется оригинал.
+     */
+    private function optimizeImage(string $sourcePath, string $mimeType): ?string
+    {
+        if (!function_exists('imagewebp') || !in_array($mimeType, ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'], true)) {
+            return null;
+        }
+        try {
+            $img = match ($mimeType) {
+                'image/png' => @imagecreatefrompng($sourcePath),
+                'image/webp' => @imagecreatefromwebp($sourcePath),
+                default => @imagecreatefromjpeg($sourcePath),
+            };
+            if (!$img) {
+                return null;
+            }
+            if (in_array($mimeType, ['image/jpeg', 'image/jpg'], true) && function_exists('exif_read_data')) {
+                $orientation = (int) (@exif_read_data($sourcePath)['Orientation'] ?? 1);
+                $angle = [3 => 180, 6 => -90, 8 => 90][$orientation] ?? 0;
+                if ($angle !== 0) {
+                    $rotated = imagerotate($img, $angle, 0);
+                    if ($rotated) {
+                        imagedestroy($img);
+                        $img = $rotated;
+                    }
+                }
+            }
+            $w = imagesx($img);
+            $h = imagesy($img);
+            $max = 2000;
+            if (max($w, $h) > $max) {
+                $scale = $max / max($w, $h);
+                $resized = imagescale($img, (int) round($w * $scale), (int) round($h * $scale), IMG_BICUBIC);
+                if ($resized) {
+                    imagedestroy($img);
+                    $img = $resized;
+                }
+            }
+            imagepalettetotruecolor($img);
+            imagealphablending($img, true);
+            imagesavealpha($img, true);
+            ob_start();
+            imagewebp($img, null, 82);
+            $data = ob_get_clean();
+            imagedestroy($img);
+
+            return $data !== false && $data !== '' ? $data : null;
+        } catch (\Throwable $e) {
+            report($e);
+
+            return null;
+        }
     }
 }

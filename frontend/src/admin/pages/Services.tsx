@@ -45,10 +45,10 @@ const Services = () => {
   const loading = servicesLoading || mediaLoading;
   const pagination = servicesResponse
     ? {
-        currentPage: servicesResponse.current_page,
-        lastPage: servicesResponse.last_page,
-        perPage: servicesResponse.per_page,
-        total: servicesResponse.total,
+        currentPage: ((servicesResponse as any).meta ?? servicesResponse).current_page,
+        lastPage: ((servicesResponse as any).meta ?? servicesResponse).last_page,
+        perPage: ((servicesResponse as any).meta ?? servicesResponse).per_page,
+        total: ((servicesResponse as any).meta ?? servicesResponse).total,
       }
     : null;
 

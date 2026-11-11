@@ -22,7 +22,32 @@ class SeoController extends Controller
     {
         $seo = $this->seo->resolve($request->path() === '/' ? '' : $request->path());
 
-        return response()->view('app', ['seo' => $seo], $seo['status']);
+        return response()->view('app', ['seo' => $seo, 'boot' => $this->bootData($request)], $seo['status']);
+    }
+
+    /**
+     * Данные для первого рендера (услуги и кейсы) прямо в HTML: React показывает
+     * карточки сразу, без скелетона и без «моргания» после ответа API.
+     * Формат — ровно как у публичных /api/services и /api/cases.
+     */
+    private function bootData(Request $request): array
+    {
+        if (str_starts_with($request->path(), 'admin')) {
+            return [];
+        }
+        $boot = [];
+        try {
+            $boot['services'] = app(\App\Http\Controllers\Public\ServicesController::class)
+                ->index(Request::create('/api/services', 'GET', ['per_page' => 100]))
+                ->getData(true);
+            $boot['cases'] = app(\App\Http\Controllers\Public\CasesController::class)
+                ->index(Request::create('/api/cases', 'GET', ['per_page' => 50]))
+                ->getData(true);
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        return $boot;
     }
 
     public function sitemap(): Response

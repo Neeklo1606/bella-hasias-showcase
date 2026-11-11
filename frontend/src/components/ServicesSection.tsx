@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { serviceImage } from '@/lib/localImages';
+import { bootServices } from '@/lib/boot';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { servicesApi } from '@/lib/api/services.api';
@@ -33,26 +34,7 @@ const getServiceHref = (service: Service & { slug?: string }): string => {
   return `/services/${service.id}`; // fallback to id
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
-  },
-};
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" as const },
-  },
-};
 
 const ServicesSection = () => {
   const navigate = useNavigate();
@@ -64,6 +46,7 @@ const ServicesSection = () => {
       status: 'published',
       per_page: 50 
     }),
+    initialData: bootServices,
     refetchOnWindowFocus: false,
     retry: 1,
   });
@@ -188,29 +171,23 @@ const ServicesSection = () => {
 
         {/* Services Grid */}
         {filteredServices.length > 0 ? (
-          <motion.div
-            key={activeCategory}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-3 gap-5"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {filteredServices.map((service) => {
               // Get image URL from API response
               const imageUrl = (service as any).image?.url || (service as any).cover?.url || serviceImage(service.slug);
               
               return (
-                <motion.div key={service.id} variants={itemVariants}>
+                <div key={service.id}>
                   <InteractiveTravelCard
                     title={service.title}
                     imageUrl={imageUrl}
                     href={getServiceHref(service)}
                     onActionClick={() => navigate(getServiceHref(service))}
                   />
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         ) : (
           <div className="text-center py-12 text-muted-foreground">
             Нет услуг в категории "{categoryLabels[activeCategory]}"

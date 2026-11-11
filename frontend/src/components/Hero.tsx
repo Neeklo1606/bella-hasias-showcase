@@ -12,8 +12,9 @@ const useDeferredVideo = () => {
 
   useEffect(() => {
     const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+    // Не грузим ролик только при явном режиме экономии трафика.
+    // «Уменьшение движения» на iPhone раньше тоже отключало видео — из-за этого оно «не грузилось».
     if (nav.connection?.saveData) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const win = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
     let timer: number | undefined;
@@ -41,8 +42,20 @@ const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // autoplay не всегда срабатывает, если src назначен после монтирования — запускаем явно
+  // В режиме энергосбережения iOS запрещает автозапуск — тогда стартуем по первому касанию/прокрутке.
   useEffect(() => {
-    if (loadVideo) videoRef.current?.play().catch(() => undefined);
+    if (!loadVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const events = ['touchstart', 'pointerdown', 'scroll', 'keydown'] as const;
+    const retry = () => {
+      video.play().then(cleanup).catch(() => undefined);
+    };
+    const cleanup = () => events.forEach((e) => window.removeEventListener(e, retry));
+    video.play().catch(() => {
+      events.forEach((e) => window.addEventListener(e, retry, { passive: true }));
+    });
+    return cleanup;
   }, [loadVideo]);
 
   return (

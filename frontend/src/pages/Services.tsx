@@ -4,6 +4,8 @@ import { Send, Loader2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { bootServices } from '@/lib/boot';
+import { serviceImage } from '@/lib/localImages';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
@@ -46,6 +48,7 @@ const Services = () => {
   const { data: servicesResponse, isLoading } = useQuery({
     queryKey: ['services', 'public', { status: 'published', per_page: 100 }],
     queryFn: () => servicesApi.list({ status: 'published', per_page: 100 }),
+    initialData: bootServices,
     refetchOnWindowFocus: false,
     retry: 1,
   });
@@ -63,7 +66,7 @@ const Services = () => {
       .map((service: Service & { image?: any; cover?: any }) => ({
         id: service.id,
         title: service.title,
-        image: service.cover?.url || service.image?.url || '',
+        image: service.cover?.url || service.image?.url || serviceImage(service.slug),
         href: `/services/${service.slug || service.id}`,
         category: (service.category === 'creator' ? 'creator' : 'stylist') as ServiceCategory,
       }));

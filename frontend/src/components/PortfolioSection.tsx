@@ -3,31 +3,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { bootCases } from '@/lib/boot';
 import { casesApi } from '@/lib/api/cases.api';
 import { PORTFOLIO_WORKS } from '@/lib/localImages';
 import type { CaseItem } from '@/admin/types/case';
 
 const FEATURED_COUNT = 6; // Number of featured cases to show
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
 
 // Get featured cases: first N by sort_order (if available) or updated_at
 const getFeaturedCases = (cases: CaseItem[]): CaseItem[] => {
@@ -53,6 +34,7 @@ const PortfolioSection = () => {
       status: 'published',
       per_page: 50 
     }),
+    initialData: bootCases,
     refetchOnWindowFocus: false,
     retry: 1,
   });
@@ -84,8 +66,12 @@ const PortfolioSection = () => {
   // Пока в админке нет кейсов с фото — показываем последние работы из репозитория.
   // Блок рендерится сразу (без скелетона), поэтому ничего не «прыгает».
   const works = useMemo(() => {
-    if (featuredWorks.length > 0) return featuredWorks as { id: string | number; src: string; full?: string; title: string; slug: string }[];
-    return PORTFOLIO_WORKS.slice(-FEATURED_COUNT).reverse().map((w) => ({ id: w.id, src: w.thumb, full: w.full, title: w.alt, slug: '' }));
+    // Сначала работы из админки, свободные места до 6 добираем фото из репозитория
+    const fromAdmin = featuredWorks as { id: string | number; src: string; full?: string; title: string; slug: string }[];
+    const fill = PORTFOLIO_WORKS.slice().reverse()
+      .slice(0, Math.max(0, FEATURED_COUNT - fromAdmin.length))
+      .map((w) => ({ id: w.id, src: w.thumb, full: w.full, title: w.alt, slug: '' }));
+    return [...fromAdmin, ...fill];
   }, [featuredWorks]);
 
   const openLightbox = (index: number) => {
@@ -135,25 +121,22 @@ const PortfolioSection = () => {
         </motion.div>
 
         {/* Works Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-        >
+        {/* Без анимации появления: раньше карточки выезжали и масштабировались при первой прокрутке */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {works.map((work, index) => (
-            <motion.button
+            <button
               key={work.id}
-              variants={itemVariants}
               onClick={() => openLightbox(index)}
               className="group relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[3/4] bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               <img
                 src={work.src}
                 alt={work.title}
-                className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
+                width={640}
+                height={853}
+                className="w-full h-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
               />
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-all duration-500 flex items-center justify-center">
@@ -161,9 +144,9 @@ const PortfolioSection = () => {
                   {work.title}
                 </span>
               </div>
-            </motion.button>
+            </button>
           ))}
-        </motion.div>
+        </div>
 
         {/* View All Link */}
         <motion.div

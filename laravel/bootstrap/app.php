@@ -30,5 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // API всегда отвечает JSON: без этого неавторизованный запрос к /api/admin/* давал 500
+        // (редирект на несуществующий маршрут login) вместо 401.
+        $exceptions->shouldRenderJsonWhen(fn ($request) => $request->is('api/*') || $request->expectsJson());
     })->create();

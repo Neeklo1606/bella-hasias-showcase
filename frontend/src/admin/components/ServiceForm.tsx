@@ -167,7 +167,7 @@ const ServiceForm = ({
 
           <div className="grid gap-4 sm:grid-cols-2">
             <MediaSelect
-              label="Превью (imageId)"
+              label="Фото услуги (карточка)"
               value={form.imageId}
               onChange={(id) => setForm((f) => ({ ...f, imageId: id }))}
               items={mediaItems}

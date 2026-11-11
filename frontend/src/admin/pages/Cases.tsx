@@ -55,10 +55,10 @@ const Cases = () => {
   const loading = casesLoading || servicesLoading || mediaLoading;
   const pagination = casesResponse
     ? {
-        currentPage: casesResponse.current_page,
-        lastPage: casesResponse.last_page,
-        perPage: casesResponse.per_page,
-        total: casesResponse.total,
+        currentPage: ((casesResponse as any).meta ?? casesResponse).current_page,
+        lastPage: ((casesResponse as any).meta ?? casesResponse).last_page,
+        perPage: ((casesResponse as any).meta ?? casesResponse).per_page,
+        total: ((casesResponse as any).meta ?? casesResponse).total,
       }
     : null;
 
