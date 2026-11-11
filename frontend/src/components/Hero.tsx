@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -38,6 +38,12 @@ const useDeferredVideo = () => {
 
 const Hero = () => {
   const loadVideo = useDeferredVideo();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // autoplay не всегда срабатывает, если src назначен после монтирования — запускаем явно
+  useEffect(() => {
+    if (loadVideo) videoRef.current?.play().catch(() => undefined);
+  }, [loadVideo]);
 
   return (
     <section className="relative bg-background overflow-hidden lg:min-h-[90vh]">
@@ -46,6 +52,7 @@ const Hero = () => {
           {/* Медиа: одно видео для всех экранов. Высота фиксирована заранее — без сдвигов. */}
           <div className="order-1 lg:order-2 relative h-[58svh] sm:h-[70svh] lg:h-[90vh] bg-secondary">
             <video
+              ref={videoRef}
               autoPlay
               loop
               muted

@@ -34,6 +34,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     hasCheckedAuth.current = true;
 
+    // Публичным страницам сессия админки не нужна: не делаем лишний запрос (и 401 в консоли).
+    // Админка всегда открывается по прямой ссылке /admin..., там проверка выполняется.
+    if (!window.location.pathname.startsWith("/admin")) {
+      setIsReady(true);
+      return;
+    }
+
     const checkAuth = async () => {
       try {
         const userData = await authApi.me();
