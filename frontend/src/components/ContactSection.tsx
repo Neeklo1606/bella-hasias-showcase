@@ -1,77 +1,50 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Send, Instagram } from 'lucide-react';
+import { ArrowRight, Send, Instagram, Phone, Mail } from 'lucide-react';
+
+const CONTACTS = [
+  { icon: Send, title: 'Telegram', value: '@Bella_hasias', href: 'https://t.me/Bella_hasias', external: true },
+  { icon: Phone, title: 'Телефон и WhatsApp', value: '+7 977 588-74-70', href: 'tel:+79775887470', external: false },
+  { icon: Mail, title: 'E-mail', value: 'anastasirezepova@yandex.ru', href: 'mailto:anastasirezepova@yandex.ru', external: false },
+  { icon: Instagram, title: 'Instagram', value: '@bellahasias', href: 'https://www.instagram.com/bellahasias/', external: true },
+];
 
 const ContactSection = () => {
   return (
-    <section id="contacts" className="section-luxury bg-secondary/30">
-      <div className="container-luxury">
-        {/* Section Header */}
-        <motion.div
-         
-         
-         
-         
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-h2 text-foreground">
-            Контакты
-          </h2>
-        </motion.div>
+    <section id="contacts" className="section-luxury services-mesh relative overflow-hidden">
+      <div className="container-luxury relative z-10">
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <h2 className="font-display text-h2 text-foreground">Контакты</h2>
+          <p className="mt-4 text-base md:text-lg text-muted-foreground leading-relaxed">
+            Москва и онлайн. Напишите, какая услуга нужна и когда удобно, отвечу в течение дня.
+          </p>
+        </div>
 
-        {/* Contact Cards - Only Telegram and Instagram */}
-        <motion.div
-         
-         
-         
-         
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12"
-        >
-          {/* Telegram */}
-          <a
-            href="https://t.me/Bella_hasias"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-luxury p-8 text-center group hover:shadow-xl transition-all duration-300"
-          >
-            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-              <Send className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
-            </div>
-            <h3 className="font-display text-lg text-foreground mb-2">Telegram</h3>
-            <p className="font-sans text-sm text-muted-foreground">@Bella_hasias</p>
-          </a>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 max-w-3xl mx-auto mb-12">
+          {CONTACTS.map(({ icon: Icon, title, value, href, external }) => (
+            <li key={title} className="min-w-0">
+              <a
+                href={href}
+                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="service-card group flex-row items-center gap-4 p-5"
+              >
+                <span className="contact-icon" aria-hidden>
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-display text-base font-semibold [word-spacing:0.12em] text-foreground">{title}</span>
+                  <span className="block truncate text-sm text-muted-foreground">{value}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
 
-          {/* Instagram */}
-          <a
-            href="https://www.instagram.com/bellahasias/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-luxury p-8 text-center group hover:shadow-xl transition-all duration-300"
-          >
-            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-              <Instagram className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
-            </div>
-            <h3 className="font-display text-lg text-foreground mb-2">Instagram</h3>
-            <p className="font-sans text-sm text-muted-foreground">@bellahasias</p>
-          </a>
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-         
-         
-         
-         
-          className="text-center"
-        >
-          <Link
-            to="/contacts"
-            className="btn-luxury inline-flex items-center"
-          >
+        <div className="text-center">
+          <Link to="/contacts" className="btn-gradient">
             Оставить заявку
             <ArrowRight size={16} className="ml-2" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

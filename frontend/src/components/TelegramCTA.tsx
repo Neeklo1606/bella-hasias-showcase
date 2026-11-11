@@ -1,74 +1,26 @@
-import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
 
 const TelegramCTA = () => {
   return (
-    <section className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-gradient-to-br from-primary/5 via-background to-primary/10 relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-10 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 right-10 w-40 h-40 bg-primary/15 rounded-full blur-3xl" />
-      
-      <div className="container-luxury relative z-10">
-        <motion.div
-         
-         
-         
-         
-          className="max-w-3xl mx-auto text-center"
-        >
-          {/* Icon */}
-          <motion.a
-            href="https://t.me/bellahasias"
-            target="_blank"
-            rel="noopener noreferrer"
-           
-           
-           
-           
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary mb-8"
-            aria-label="Открыть Telegram-канал"
-          >
-            <Send className="w-9 h-9 text-primary-foreground" />
-          </motion.a>
-
-          {/* Header */}
-          <motion.p
-           
-           
-           
-           
-            className="font-sans text-xs font-medium tracking-[0.3em] uppercase text-primary mb-4"
-          >
-            Telegram-канал
-          </motion.p>
-
-          <motion.h2
-           
-           
-           
-           
-            className="font-display text-h2 text-foreground mb-10"
-          >
-            Больше работ и жизни
-          </motion.h2>
-
-          {/* Channel handle */}
-          <motion.a
-            href="https://t.me/bellahasias"
-            target="_blank"
-            rel="noopener noreferrer"
-           
-           
-           
-           
-            whileHover={{ scale: 1.01 }}
-            className="font-sans text-sm text-muted-foreground mt-6 inline-flex"
-          >
-            @bellahasias
-          </motion.a>
-        </motion.div>
+    <section className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
+      <div className="container-luxury">
+        <div className="cta-aurora relative overflow-hidden rounded-[2rem] px-6 py-14 md:px-16 md:py-20 text-center">
+          <div className="relative z-10 mx-auto max-w-2xl">
+            <h2 className="font-display text-h2 text-white">Больше работ и жизни</h2>
+            <p className="mt-4 text-base md:text-lg text-white/85 leading-relaxed">
+              В Telegram-канале — свежие съёмки, образы, находки для гардероба и закулисье проектов.
+            </p>
+            <a
+              href="https://t.me/bellahasias"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-[hsl(345_30%_25%)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              <Send className="h-4 w-4" aria-hidden />
+              Подписаться на @bellahasias
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
