@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import Logo from '@/components/Logo';
 import { Link } from 'react-router-dom';
 import { Instagram } from 'lucide-react';
 import { ComesInGoesOutUnderline } from '@/components/ui/underline-animation';
@@ -12,7 +12,6 @@ const TelegramIcon = ({ size = 18 }: { size?: number }) => (
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [logoError, setLogoError] = useState(false);
 
   const footerNavLinks = [
     { label: 'Услуги', href: '/services' },
@@ -37,18 +36,7 @@ const Footer = () => {
               to="/"
               className="inline-flex items-center transition-opacity duration-300 hover:opacity-70"
             >
-              {logoError ? (
-                <span className="font-display text-lg font-semibold text-foreground">
-                  Bella Hasias
-                </span>
-              ) : (
-                <img
-                  src="/logo3.png"
-                  alt="Bella Hasias"
-                  className="h-6 w-auto"
-                  onError={() => setLogoError(true)}
-                />
-              )}
+              <Logo height={20} />
             </Link>
             <p className="font-sans text-sm mt-1.5 text-muted-foreground">
               © {currentYear}

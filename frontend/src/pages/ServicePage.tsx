@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { serviceImage } from '@/lib/localImages';
 import { Loader2 } from 'lucide-react';
 import ServicePageLayout from '@/components/ServicePageLayout';
 import { servicesApi } from '@/lib/api/services.api';
@@ -22,7 +23,7 @@ const ServicePage = () => {
 
   // Get cover image from API response
   // API returns cover object with url, or we can use image as fallback
-  const coverImage = (service as any)?.cover?.url || (service as any)?.image?.url || '';
+  const coverImage = (service as any)?.cover?.url || (service as any)?.image?.url || serviceImage(slug);
 
   if (isLoading) {
     return (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Logo from '@/components/Logo';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -6,7 +7,6 @@ import { ComesInGoesOutUnderline } from '@/components/ui/underline-animation';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [logoError, setLogoError] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -81,18 +81,7 @@ const Navigation = () => {
             to="/"
             className="flex items-center transition-opacity duration-300 hover:opacity-70"
           >
-            {logoError ? (
-              <span className="font-display text-xl font-semibold text-foreground">
-                Bella Hasias
-              </span>
-            ) : (
-              <img
-                src="/logo3.png"
-                alt="Bella Hasias"
-                className="h-6 sm:h-7 w-auto"
-                onError={() => setLogoError(true)}
-              />
-            )}
+            <Logo height={22} />
           </Link>
 
           {/* Desktop Navigation */}

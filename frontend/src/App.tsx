@@ -35,6 +35,21 @@ const Consent = lazy(() => import("./pages/Consent"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const VKLanding = lazy(() => import("./pages/VKLanding"));
 
+// Публичные страницы подгружаем в фоне после загрузки главной — переходы без заглушки «Загрузка...»
+if (typeof window !== "undefined") {
+  const prefetch = () => {
+    const pages = [
+      () => import("./pages/Services"),
+      () => import("./pages/ServicePage"),
+      () => import("./pages/Portfolio"),
+      () => import("./pages/Contacts"),
+    ];
+    pages.forEach((load, i) => window.setTimeout(() => void load().catch(() => undefined), 1500 + i * 400));
+  };
+  if (document.readyState === "complete") prefetch();
+  else window.addEventListener("load", prefetch, { once: true });
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -53,7 +68,7 @@ const AppRoutes = () => {
     <>
       {!isAdminRoute && <Navigation />}
       <ScrollToTop />
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><span className="text-muted-foreground">Загрузка...</span></div>}>
+      <Suspense fallback={<div className="min-h-screen bg-background" aria-busy="true" />}>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/portfolio" element={<Portfolio />} />

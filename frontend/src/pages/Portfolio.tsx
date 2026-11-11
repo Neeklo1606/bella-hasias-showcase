@@ -1,40 +1,15 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/PageHeader';
+import { PORTFOLIO_WORKS } from '@/lib/localImages';
 import type { ComponentType } from 'react';
-
-const portfolioImages = import.meta.glob(
-  '@/assets/portfolio/IMG_*.{JPG,jpg,PNG,png,WEBP,webp}',
-  { eager: true, import: 'default' }
-) as Record<string, string>;
-
-const isPortfolioCandidate = (filename: string, src: string) => {
-  const lower = `${filename} ${src}`.toLowerCase();
-  if (lower.includes("/icons/") || lower.includes("favicon")) return false;
-  if (lower.includes("placeholder")) return false;
-  if (lower.includes("og-image") || lower.includes("hero")) return false;
-  if (lower.includes("/videos/")) return false;
-  return true;
-};
 
 const Portfolio = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const allWorks = useMemo(() => {
-    const entries = Object.entries(portfolioImages)
-      .map(([path, src]) => {
-        const filename = path.split('/').pop() ?? '';
-        return {
-          id: filename,
-          src,
-          alt: filename.replace(/\.[^.]+$/, ''),
-        };
-      })
-      .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
-    return entries;
-  }, []);
+  const allWorks = PORTFOLIO_WORKS;
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -108,31 +83,29 @@ const Portfolio = () => {
             </motion.div>
 
             {/* Works Grid */}
-            <motion.div
-              layout
+            <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
             >
               {allWorks.map((work, index) => (
-                <motion.button
+                <button
                   key={work.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
+                  type="button"
                   onClick={() => openLightbox(index)}
                   className="group relative overflow-hidden rounded-2xl aspect-[3/4] bg-secondary min-h-[200px]"
                 >
                   <img
-                    src={work.src}
+                    src={work.thumb}
+                    width={640}
+                    height={853}
+                    decoding="async"
                     alt={work.alt}
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-all duration-500" />
-                </motion.button>
+                </button>
               ))}
-            </motion.div>
+            </div>
 
             {allWorks.length === 0 && (
               <div className="py-16 text-center text-sm text-muted-foreground">
@@ -245,7 +218,7 @@ const Portfolio = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  src={allWorks[lightboxIndex].src}
+                  src={allWorks[lightboxIndex].full}
                   alt={allWorks[lightboxIndex].alt}
                   className="max-w-full max-h-[80vh] object-contain"
                   loading="lazy"

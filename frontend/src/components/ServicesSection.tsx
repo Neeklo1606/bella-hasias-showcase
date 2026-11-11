@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { serviceImage } from '@/lib/localImages';
 import { InteractiveTravelCard } from '@/components/ui/3d-card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { servicesApi } from '@/lib/api/services.api';
@@ -196,7 +197,7 @@ const ServicesSection = () => {
           >
             {filteredServices.map((service) => {
               // Get image URL from API response
-              const imageUrl = (service as any).image?.url || (service as any).cover?.url || "";
+              const imageUrl = (service as any).image?.url || (service as any).cover?.url || serviceImage(service.slug);
               
               return (
                 <motion.div key={service.id} variants={itemVariants}>

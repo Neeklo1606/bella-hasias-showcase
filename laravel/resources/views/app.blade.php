@@ -6,7 +6,7 @@
     $manifestPath = base_path('../build/.vite/manifest.json');
     $manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : null;
     $entry = $manifest['index.html'] ?? null;
-    $iconVersion = '2';
+    $iconVersion = '3';
 @endphp
 <!doctype html>
 <html lang="ru" prefix="og: https://ogp.me/ns#">
@@ -49,6 +49,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.ico?v={{ $iconVersion }}" sizes="48x48" />
+    <link rel="icon" href="/build/favicon.svg?v={{ $iconVersion }}" type="image/svg+xml" />
     <link rel="icon" href="/build/favicon-32.png?v={{ $iconVersion }}" type="image/png" sizes="32x32" />
     <link rel="icon" href="/build/icons/icon-192.png?v={{ $iconVersion }}" type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/build/icons/apple-touch-icon.png?v={{ $iconVersion }}" sizes="180x180" />
@@ -59,9 +60,13 @@
     <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) !!}</script>
     @endforeach
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    {{-- Текст для роботов без JS не показываем пользователям с JS: React отрисует страницу сам --}}
+    <script>document.documentElement.classList.add('js')</script>
+    <style>html{background:#FBF9F7}.js #seo-fallback{display:none}</style>
+
+    @if(request()->path() === '/')
+    <link rel="preload" as="image" href="/build/videos/hero-poster.webp" type="image/webp" fetchpriority="high">
+    @endif
 
     @if($entry)
         @foreach(($entry['css'] ?? []) as $css)
@@ -74,7 +79,7 @@
 </head>
 <body>
     {{-- Контент для поисковых роботов и пользователей без JS; React заменяет его при монтировании --}}
-    <div id="root"><main style="max-width:720px;margin:0 auto;padding:48px 20px;font-family:system-ui,sans-serif;color:#1F2121">
+    <div id="root"><main id="seo-fallback" style="max-width:720px;margin:0 auto;padding:48px 20px;font-family:system-ui,sans-serif;color:#1F2121">
         <h1>{{ $seo['h1'] }}</h1>
         @if($seo['text'])<p>{{ $seo['text'] }}</p>@endif
         @if(count($seo['links']))

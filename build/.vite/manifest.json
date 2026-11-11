@@ -1,156 +1,548 @@
 {
-  "_AdminPageShell-8z8TmyDU.js": {
-    "file": "assets/AdminPageShell-8z8TmyDU.js",
+  "_AdminPageShell-DTzAeEMI.js": {
+    "file": "assets/AdminPageShell-DTzAeEMI.js",
     "name": "AdminPageShell",
     "imports": [
       "index.html"
     ]
   },
-  "_ConfirmDialog-Biddy94J.js": {
-    "file": "assets/ConfirmDialog-Biddy94J.js",
+  "_ConfirmDialog-Bt3PjSN_.js": {
+    "file": "assets/ConfirmDialog-Bt3PjSN_.js",
     "name": "ConfirmDialog",
     "imports": [
       "index.html",
-      "_alert-dialog-CexX6M5T.js"
+      "_alert-dialog-BzxLQznp.js"
     ]
   },
-  "_MediaSelect-vIvElwPn.js": {
-    "file": "assets/MediaSelect-vIvElwPn.js",
+  "_IMG_0979-BsfkcTCl.webp": {
+    "file": "assets/IMG_0979-BsfkcTCl.webp",
+    "src": "_IMG_0979-BsfkcTCl.webp"
+  },
+  "_IMG_0979-W359SGNf.webp": {
+    "file": "assets/IMG_0979-W359SGNf.webp",
+    "src": "_IMG_0979-W359SGNf.webp"
+  },
+  "_IMG_0980-CbA9GoCy.webp": {
+    "file": "assets/IMG_0980-CbA9GoCy.webp",
+    "src": "_IMG_0980-CbA9GoCy.webp"
+  },
+  "_IMG_0980-FDLQx_BE.webp": {
+    "file": "assets/IMG_0980-FDLQx_BE.webp",
+    "src": "_IMG_0980-FDLQx_BE.webp"
+  },
+  "_IMG_0983-8Xu_KLz0.webp": {
+    "file": "assets/IMG_0983-8Xu_KLz0.webp",
+    "src": "_IMG_0983-8Xu_KLz0.webp"
+  },
+  "_IMG_0983-BybnfOh8.webp": {
+    "file": "assets/IMG_0983-BybnfOh8.webp",
+    "src": "_IMG_0983-BybnfOh8.webp"
+  },
+  "_IMG_0988-DyWlVFDt.webp": {
+    "file": "assets/IMG_0988-DyWlVFDt.webp",
+    "src": "_IMG_0988-DyWlVFDt.webp"
+  },
+  "_IMG_0988-Gm7tg2-U.webp": {
+    "file": "assets/IMG_0988-Gm7tg2-U.webp",
+    "src": "_IMG_0988-Gm7tg2-U.webp"
+  },
+  "_IMG_1082-B7WYYsZ9.webp": {
+    "file": "assets/IMG_1082-B7WYYsZ9.webp",
+    "src": "_IMG_1082-B7WYYsZ9.webp"
+  },
+  "_IMG_1082-CS20hXPk.webp": {
+    "file": "assets/IMG_1082-CS20hXPk.webp",
+    "src": "_IMG_1082-CS20hXPk.webp"
+  },
+  "_IMG_1559-CDKM7Nnf.webp": {
+    "file": "assets/IMG_1559-CDKM7Nnf.webp",
+    "src": "_IMG_1559-CDKM7Nnf.webp"
+  },
+  "_IMG_1559-Dnj7nuti.webp": {
+    "file": "assets/IMG_1559-Dnj7nuti.webp",
+    "src": "_IMG_1559-Dnj7nuti.webp"
+  },
+  "_IMG_2241-B-6_gqYB.webp": {
+    "file": "assets/IMG_2241-B-6_gqYB.webp",
+    "src": "_IMG_2241-B-6_gqYB.webp"
+  },
+  "_IMG_2241-BWuoSTWM.webp": {
+    "file": "assets/IMG_2241-BWuoSTWM.webp",
+    "src": "_IMG_2241-BWuoSTWM.webp"
+  },
+  "_IMG_2434-BDQoGDUL.webp": {
+    "file": "assets/IMG_2434-BDQoGDUL.webp",
+    "src": "_IMG_2434-BDQoGDUL.webp"
+  },
+  "_IMG_2434-BYfONNyB.webp": {
+    "file": "assets/IMG_2434-BYfONNyB.webp",
+    "src": "_IMG_2434-BYfONNyB.webp"
+  },
+  "_IMG_2443-CzffJRUq.webp": {
+    "file": "assets/IMG_2443-CzffJRUq.webp",
+    "src": "_IMG_2443-CzffJRUq.webp"
+  },
+  "_IMG_2443-D0tlvpjR.webp": {
+    "file": "assets/IMG_2443-D0tlvpjR.webp",
+    "src": "_IMG_2443-D0tlvpjR.webp"
+  },
+  "_IMG_2559-D4CgZRwy.webp": {
+    "file": "assets/IMG_2559-D4CgZRwy.webp",
+    "src": "_IMG_2559-D4CgZRwy.webp"
+  },
+  "_IMG_2559-D9xgi9Du.webp": {
+    "file": "assets/IMG_2559-D9xgi9Du.webp",
+    "src": "_IMG_2559-D9xgi9Du.webp"
+  },
+  "_IMG_6409-BkCUOt8I.webp": {
+    "file": "assets/IMG_6409-BkCUOt8I.webp",
+    "src": "_IMG_6409-BkCUOt8I.webp"
+  },
+  "_IMG_6409-C5Tt0iag.webp": {
+    "file": "assets/IMG_6409-C5Tt0iag.webp",
+    "src": "_IMG_6409-C5Tt0iag.webp"
+  },
+  "_IMG_6412-Dfw6VATy.webp": {
+    "file": "assets/IMG_6412-Dfw6VATy.webp",
+    "src": "_IMG_6412-Dfw6VATy.webp"
+  },
+  "_IMG_6412-Diplm5fO.webp": {
+    "file": "assets/IMG_6412-Diplm5fO.webp",
+    "src": "_IMG_6412-Diplm5fO.webp"
+  },
+  "_IMG_6414-B1nPMdeb.webp": {
+    "file": "assets/IMG_6414-B1nPMdeb.webp",
+    "src": "_IMG_6414-B1nPMdeb.webp"
+  },
+  "_IMG_6414-DvlXJZvQ.webp": {
+    "file": "assets/IMG_6414-DvlXJZvQ.webp",
+    "src": "_IMG_6414-DvlXJZvQ.webp"
+  },
+  "_IMG_6417-CGYceq50.webp": {
+    "file": "assets/IMG_6417-CGYceq50.webp",
+    "src": "_IMG_6417-CGYceq50.webp"
+  },
+  "_IMG_6417-cPNHodom.webp": {
+    "file": "assets/IMG_6417-cPNHodom.webp",
+    "src": "_IMG_6417-cPNHodom.webp"
+  },
+  "_IMG_6419-DQK5b5IJ.webp": {
+    "file": "assets/IMG_6419-DQK5b5IJ.webp",
+    "src": "_IMG_6419-DQK5b5IJ.webp"
+  },
+  "_IMG_6419-vehUzVZ6.webp": {
+    "file": "assets/IMG_6419-vehUzVZ6.webp",
+    "src": "_IMG_6419-vehUzVZ6.webp"
+  },
+  "_IMG_6421-BtMV2A3w.webp": {
+    "file": "assets/IMG_6421-BtMV2A3w.webp",
+    "src": "_IMG_6421-BtMV2A3w.webp"
+  },
+  "_IMG_6421-CL6NC-L0.webp": {
+    "file": "assets/IMG_6421-CL6NC-L0.webp",
+    "src": "_IMG_6421-CL6NC-L0.webp"
+  },
+  "_IMG_6422-C58ussng.webp": {
+    "file": "assets/IMG_6422-C58ussng.webp",
+    "src": "_IMG_6422-C58ussng.webp"
+  },
+  "_IMG_6422-VftG7g23.webp": {
+    "file": "assets/IMG_6422-VftG7g23.webp",
+    "src": "_IMG_6422-VftG7g23.webp"
+  },
+  "_IMG_6424-D5WH48zC.webp": {
+    "file": "assets/IMG_6424-D5WH48zC.webp",
+    "src": "_IMG_6424-D5WH48zC.webp"
+  },
+  "_IMG_6424-D_-4AhK5.webp": {
+    "file": "assets/IMG_6424-D_-4AhK5.webp",
+    "src": "_IMG_6424-D_-4AhK5.webp"
+  },
+  "_IMG_6426-BHEblqkT.webp": {
+    "file": "assets/IMG_6426-BHEblqkT.webp",
+    "src": "_IMG_6426-BHEblqkT.webp"
+  },
+  "_IMG_6426-QXVvj1Tx.webp": {
+    "file": "assets/IMG_6426-QXVvj1Tx.webp",
+    "src": "_IMG_6426-QXVvj1Tx.webp"
+  },
+  "_IMG_6428-D8FILx91.webp": {
+    "file": "assets/IMG_6428-D8FILx91.webp",
+    "src": "_IMG_6428-D8FILx91.webp"
+  },
+  "_IMG_6428-DjfeZY0B.webp": {
+    "file": "assets/IMG_6428-DjfeZY0B.webp",
+    "src": "_IMG_6428-DjfeZY0B.webp"
+  },
+  "_IMG_6430-C1eTIRky.webp": {
+    "file": "assets/IMG_6430-C1eTIRky.webp",
+    "src": "_IMG_6430-C1eTIRky.webp"
+  },
+  "_IMG_6430-DZiZA4gX.webp": {
+    "file": "assets/IMG_6430-DZiZA4gX.webp",
+    "src": "_IMG_6430-DZiZA4gX.webp"
+  },
+  "_IMG_6439-Bohmev6T.webp": {
+    "file": "assets/IMG_6439-Bohmev6T.webp",
+    "src": "_IMG_6439-Bohmev6T.webp"
+  },
+  "_IMG_6439-CevFxtad.webp": {
+    "file": "assets/IMG_6439-CevFxtad.webp",
+    "src": "_IMG_6439-CevFxtad.webp"
+  },
+  "_IMG_9006-BpciUjEg.webp": {
+    "file": "assets/IMG_9006-BpciUjEg.webp",
+    "src": "_IMG_9006-BpciUjEg.webp"
+  },
+  "_IMG_9006-DsFrx0_Y.webp": {
+    "file": "assets/IMG_9006-DsFrx0_Y.webp",
+    "src": "_IMG_9006-DsFrx0_Y.webp"
+  },
+  "_IMG_9008-Bbd8xJLj.webp": {
+    "file": "assets/IMG_9008-Bbd8xJLj.webp",
+    "src": "_IMG_9008-Bbd8xJLj.webp"
+  },
+  "_IMG_9008-CParfsqz.webp": {
+    "file": "assets/IMG_9008-CParfsqz.webp",
+    "src": "_IMG_9008-CParfsqz.webp"
+  },
+  "_IMG_9011-CB2yQ0MK.webp": {
+    "file": "assets/IMG_9011-CB2yQ0MK.webp",
+    "src": "_IMG_9011-CB2yQ0MK.webp"
+  },
+  "_IMG_9011-DTbaNbF7.webp": {
+    "file": "assets/IMG_9011-DTbaNbF7.webp",
+    "src": "_IMG_9011-DTbaNbF7.webp"
+  },
+  "_IMG_9012-5p1IHQfk.webp": {
+    "file": "assets/IMG_9012-5p1IHQfk.webp",
+    "src": "_IMG_9012-5p1IHQfk.webp"
+  },
+  "_IMG_9012-CT8s5-8A.webp": {
+    "file": "assets/IMG_9012-CT8s5-8A.webp",
+    "src": "_IMG_9012-CT8s5-8A.webp"
+  },
+  "_IMG_9013-BRKhFOZ2.webp": {
+    "file": "assets/IMG_9013-BRKhFOZ2.webp",
+    "src": "_IMG_9013-BRKhFOZ2.webp"
+  },
+  "_IMG_9013-mm_Qvz80.webp": {
+    "file": "assets/IMG_9013-mm_Qvz80.webp",
+    "src": "_IMG_9013-mm_Qvz80.webp"
+  },
+  "_IMG_9016-DN8nLylW.webp": {
+    "file": "assets/IMG_9016-DN8nLylW.webp",
+    "src": "_IMG_9016-DN8nLylW.webp"
+  },
+  "_IMG_9016-lMkDR57t.webp": {
+    "file": "assets/IMG_9016-lMkDR57t.webp",
+    "src": "_IMG_9016-lMkDR57t.webp"
+  },
+  "_IMG_9017-CY3Yedjd.webp": {
+    "file": "assets/IMG_9017-CY3Yedjd.webp",
+    "src": "_IMG_9017-CY3Yedjd.webp"
+  },
+  "_IMG_9017-DqbccdE5.webp": {
+    "file": "assets/IMG_9017-DqbccdE5.webp",
+    "src": "_IMG_9017-DqbccdE5.webp"
+  },
+  "_IMG_9018-D1fPJK6o.webp": {
+    "file": "assets/IMG_9018-D1fPJK6o.webp",
+    "src": "_IMG_9018-D1fPJK6o.webp"
+  },
+  "_IMG_9018-DwFrapMX.webp": {
+    "file": "assets/IMG_9018-DwFrapMX.webp",
+    "src": "_IMG_9018-DwFrapMX.webp"
+  },
+  "_IMG_9019-BGjbTZbC.webp": {
+    "file": "assets/IMG_9019-BGjbTZbC.webp",
+    "src": "_IMG_9019-BGjbTZbC.webp"
+  },
+  "_IMG_9019-CBJmsts9.webp": {
+    "file": "assets/IMG_9019-CBJmsts9.webp",
+    "src": "_IMG_9019-CBJmsts9.webp"
+  },
+  "_IMG_9023-Btsr05ck.webp": {
+    "file": "assets/IMG_9023-Btsr05ck.webp",
+    "src": "_IMG_9023-Btsr05ck.webp"
+  },
+  "_IMG_9167-BykMQQ_m.webp": {
+    "file": "assets/IMG_9167-BykMQQ_m.webp",
+    "src": "_IMG_9167-BykMQQ_m.webp"
+  },
+  "_IMG_9167-CFD0irOc.webp": {
+    "file": "assets/IMG_9167-CFD0irOc.webp",
+    "src": "_IMG_9167-CFD0irOc.webp"
+  },
+  "_IMG_9170-BT3A-Adl.webp": {
+    "file": "assets/IMG_9170-BT3A-Adl.webp",
+    "src": "_IMG_9170-BT3A-Adl.webp"
+  },
+  "_IMG_9170-CUnIibuj.webp": {
+    "file": "assets/IMG_9170-CUnIibuj.webp",
+    "src": "_IMG_9170-CUnIibuj.webp"
+  },
+  "_IMG_9173-BYP998vi.webp": {
+    "file": "assets/IMG_9173-BYP998vi.webp",
+    "src": "_IMG_9173-BYP998vi.webp"
+  },
+  "_IMG_9173-C5dXmpUF.webp": {
+    "file": "assets/IMG_9173-C5dXmpUF.webp",
+    "src": "_IMG_9173-C5dXmpUF.webp"
+  },
+  "_IMG_9174-CEy9zEb5.webp": {
+    "file": "assets/IMG_9174-CEy9zEb5.webp",
+    "src": "_IMG_9174-CEy9zEb5.webp"
+  },
+  "_IMG_9174-im2-wPfc.webp": {
+    "file": "assets/IMG_9174-im2-wPfc.webp",
+    "src": "_IMG_9174-im2-wPfc.webp"
+  },
+  "_IMG_9175-BI7Uy8F3.webp": {
+    "file": "assets/IMG_9175-BI7Uy8F3.webp",
+    "src": "_IMG_9175-BI7Uy8F3.webp"
+  },
+  "_IMG_9175-BeoBdd4h.webp": {
+    "file": "assets/IMG_9175-BeoBdd4h.webp",
+    "src": "_IMG_9175-BeoBdd4h.webp"
+  },
+  "_IMG_9177-CBE6xy1O.webp": {
+    "file": "assets/IMG_9177-CBE6xy1O.webp",
+    "src": "_IMG_9177-CBE6xy1O.webp"
+  },
+  "_IMG_9177-DcuvrvlD.webp": {
+    "file": "assets/IMG_9177-DcuvrvlD.webp",
+    "src": "_IMG_9177-DcuvrvlD.webp"
+  },
+  "_IMG_9179-CXsj51jz.webp": {
+    "file": "assets/IMG_9179-CXsj51jz.webp",
+    "src": "_IMG_9179-CXsj51jz.webp"
+  },
+  "_IMG_9179-Dx26w1-B.webp": {
+    "file": "assets/IMG_9179-Dx26w1-B.webp",
+    "src": "_IMG_9179-Dx26w1-B.webp"
+  },
+  "_IMG_9182-DrCoL6vX.webp": {
+    "file": "assets/IMG_9182-DrCoL6vX.webp",
+    "src": "_IMG_9182-DrCoL6vX.webp"
+  },
+  "_IMG_9182-L0S0m3Kk.webp": {
+    "file": "assets/IMG_9182-L0S0m3Kk.webp",
+    "src": "_IMG_9182-L0S0m3Kk.webp"
+  },
+  "_IMG_9183-CFXxngj5.webp": {
+    "file": "assets/IMG_9183-CFXxngj5.webp",
+    "src": "_IMG_9183-CFXxngj5.webp"
+  },
+  "_IMG_9183-kCNh0tT7.webp": {
+    "file": "assets/IMG_9183-kCNh0tT7.webp",
+    "src": "_IMG_9183-kCNh0tT7.webp"
+  },
+  "_IMG_9186-CKc7iM68.webp": {
+    "file": "assets/IMG_9186-CKc7iM68.webp",
+    "src": "_IMG_9186-CKc7iM68.webp"
+  },
+  "_IMG_9186-DtaHRqS4.webp": {
+    "file": "assets/IMG_9186-DtaHRqS4.webp",
+    "src": "_IMG_9186-DtaHRqS4.webp"
+  },
+  "_IMG_9198-CI-W0oNj.webp": {
+    "file": "assets/IMG_9198-CI-W0oNj.webp",
+    "src": "_IMG_9198-CI-W0oNj.webp"
+  },
+  "_IMG_9198-CsutzDKp.webp": {
+    "file": "assets/IMG_9198-CsutzDKp.webp",
+    "src": "_IMG_9198-CsutzDKp.webp"
+  },
+  "_IMG_9200-CnJZVHD_.webp": {
+    "file": "assets/IMG_9200-CnJZVHD_.webp",
+    "src": "_IMG_9200-CnJZVHD_.webp"
+  },
+  "_IMG_9200-D-2TG3iA.webp": {
+    "file": "assets/IMG_9200-D-2TG3iA.webp",
+    "src": "_IMG_9200-D-2TG3iA.webp"
+  },
+  "_IMG_9206-BIsitZSM.webp": {
+    "file": "assets/IMG_9206-BIsitZSM.webp",
+    "src": "_IMG_9206-BIsitZSM.webp"
+  },
+  "_IMG_9206-CG9fgoG6.webp": {
+    "file": "assets/IMG_9206-CG9fgoG6.webp",
+    "src": "_IMG_9206-CG9fgoG6.webp"
+  },
+  "_MediaSelect-DQqc3_0I.js": {
+    "file": "assets/MediaSelect-DQqc3_0I.js",
     "name": "MediaSelect",
     "imports": [
       "index.html",
-      "_popover-CA0CYrgK.js",
-      "_image-2CMvHWvR.js",
-      "_index-C9hQ-nAF.js"
+      "_popover-BimkGHAr.js",
+      "_image-DW_hz9-u.js",
+      "_index-BSPBU1af.js"
     ]
   },
-  "_PageHeader-dp6DJzVT.js": {
-    "file": "assets/PageHeader-dp6DJzVT.js",
+  "_PageHeader-D40-ObSU.js": {
+    "file": "assets/PageHeader-D40-ObSU.js",
     "name": "PageHeader",
     "imports": [
       "index.html"
     ]
   },
-  "_Pagination-CtfVP1fO.js": {
-    "file": "assets/Pagination-CtfVP1fO.js",
+  "_Pagination-hcH3AWDk.js": {
+    "file": "assets/Pagination-hcH3AWDk.js",
     "name": "Pagination",
     "imports": [
       "index.html",
-      "_input-CAqkiX1N.js",
-      "_index-C9hQ-nAF.js"
+      "_input-DkiOh51c.js",
+      "_index-BSPBU1af.js"
     ]
   },
-  "_TagsInput-DL96QvGD.js": {
-    "file": "assets/TagsInput-DL96QvGD.js",
+  "_TagsInput-Dj0KX40v.js": {
+    "file": "assets/TagsInput-Dj0KX40v.js",
     "name": "TagsInput",
     "imports": [
       "index.html"
     ]
   },
-  "_alert-dialog-CexX6M5T.js": {
-    "file": "assets/alert-dialog-CexX6M5T.js",
+  "_alert-dialog-BzxLQznp.js": {
+    "file": "assets/alert-dialog-BzxLQznp.js",
     "name": "alert-dialog",
     "imports": [
       "index.html",
-      "_input-CAqkiX1N.js"
+      "_input-DkiOh51c.js"
     ]
   },
-  "_card-DLdH019I.js": {
-    "file": "assets/card-DLdH019I.js",
+  "_card-BpmTmk6r.js": {
+    "file": "assets/card-BpmTmk6r.js",
     "name": "card",
     "imports": [
       "index.html"
     ]
   },
-  "_external-link-d6b4eOVx.js": {
-    "file": "assets/external-link-d6b4eOVx.js",
+  "_external-link-CCkA3WZg.js": {
+    "file": "assets/external-link-CCkA3WZg.js",
     "name": "external-link",
     "imports": [
       "index.html"
     ]
   },
-  "_eye-kkm19hRK.js": {
-    "file": "assets/eye-kkm19hRK.js",
+  "_eye-vt3y740o.js": {
+    "file": "assets/eye-vt3y740o.js",
     "name": "eye",
     "imports": [
       "index.html"
     ]
   },
-  "_file-text-BaW2ftTw.js": {
-    "file": "assets/file-text-BaW2ftTw.js",
+  "_file-text-zmDOIJoD.js": {
+    "file": "assets/file-text-zmDOIJoD.js",
     "name": "file-text",
     "imports": [
       "index.html"
     ]
   },
-  "_image-2CMvHWvR.js": {
-    "file": "assets/image-2CMvHWvR.js",
+  "_image-DW_hz9-u.js": {
+    "file": "assets/image-DW_hz9-u.js",
     "name": "image",
     "imports": [
       "index.html"
     ]
   },
-  "_index-C9hQ-nAF.js": {
-    "file": "assets/index-C9hQ-nAF.js",
+  "_index-BSPBU1af.js": {
+    "file": "assets/index-BSPBU1af.js",
     "name": "index",
     "imports": [
       "index.html"
     ]
   },
-  "_input-CAqkiX1N.js": {
-    "file": "assets/input-CAqkiX1N.js",
+  "_input-DkiOh51c.js": {
+    "file": "assets/input-DkiOh51c.js",
     "name": "input",
     "imports": [
       "index.html"
     ]
   },
-  "_label-2yB2VAfT.js": {
-    "file": "assets/label-2yB2VAfT.js",
+  "_label-CVCFKVl3.js": {
+    "file": "assets/label-CVCFKVl3.js",
     "name": "label",
     "imports": [
       "index.html"
     ]
   },
-  "_loader-circle-CFXM9UCn.js": {
-    "file": "assets/loader-circle-CFXM9UCn.js",
+  "_loader-circle-O3Z2V2TS.js": {
+    "file": "assets/loader-circle-O3Z2V2TS.js",
     "name": "loader-circle",
     "imports": [
       "index.html"
     ]
   },
-  "_popover-CA0CYrgK.js": {
-    "file": "assets/popover-CA0CYrgK.js",
+  "_popover-BimkGHAr.js": {
+    "file": "assets/popover-BimkGHAr.js",
     "name": "popover",
     "imports": [
       "index.html",
-      "_input-CAqkiX1N.js",
-      "_index-C9hQ-nAF.js"
+      "_input-DkiOh51c.js",
+      "_index-BSPBU1af.js"
     ]
+  },
+  "_portfolio-1-B7WGsTL0.webp": {
+    "file": "assets/portfolio-1-B7WGsTL0.webp",
+    "src": "_portfolio-1-B7WGsTL0.webp"
+  },
+  "_portfolio-2-B3n3vOcY.webp": {
+    "file": "assets/portfolio-2-B3n3vOcY.webp",
+    "src": "_portfolio-2-B3n3vOcY.webp"
+  },
+  "_portfolio-3-DRGDINWx.webp": {
+    "file": "assets/portfolio-3-DRGDINWx.webp",
+    "src": "_portfolio-3-DRGDINWx.webp"
   },
   "_ru-CVN3f-jD.js": {
     "file": "assets/ru-CVN3f-jD.js",
     "name": "ru"
   },
+  "_service-brand-styling-C9vx8Dmq.webp": {
+    "file": "assets/service-brand-styling-C9vx8Dmq.webp",
+    "src": "_service-brand-styling-C9vx8Dmq.webp"
+  },
+  "_service-client-shoot-DIekA6ZC.webp": {
+    "file": "assets/service-client-shoot-DIekA6ZC.webp",
+    "src": "_service-client-shoot-DIekA6ZC.webp"
+  },
+  "_service-photographer-Bnk4EIfb.webp": {
+    "file": "assets/service-photographer-Bnk4EIfb.webp",
+    "src": "_service-photographer-Bnk4EIfb.webp"
+  },
+  "_service-stylist-U-whSheG.webp": {
+    "file": "assets/service-stylist-U-whSheG.webp",
+    "src": "_service-stylist-U-whSheG.webp"
+  },
+  "_service-ugc-CDDdwLi7.webp": {
+    "file": "assets/service-ugc-CDDdwLi7.webp",
+    "src": "_service-ugc-CDDdwLi7.webp"
+  },
+  "_service-wardrobe-DmJiD8Dn.webp": {
+    "file": "assets/service-wardrobe-DmJiD8Dn.webp",
+    "src": "_service-wardrobe-DmJiD8Dn.webp"
+  },
   "_types-DHgsoueE.js": {
     "file": "assets/types-DHgsoueE.js",
     "name": "types"
   },
-  "_use-resolved-media-BpC3x4qw.js": {
-    "file": "assets/use-resolved-media-BpC3x4qw.js",
+  "_use-resolved-media-ByL5SGRu.js": {
+    "file": "assets/use-resolved-media-ByL5SGRu.js",
     "name": "use-resolved-media",
     "imports": [
       "index.html"
     ]
   },
-  "_useMutation-4xJkSS90.js": {
-    "file": "assets/useMutation-4xJkSS90.js",
+  "_useMutation-CNG4SVP4.js": {
+    "file": "assets/useMutation-CNG4SVP4.js",
     "name": "useMutation",
     "imports": [
       "index.html"
     ]
   },
   "index.html": {
-    "file": "assets/index-Di4jSpBN.js",
+    "file": "assets/index-i1FRmkCG.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -174,181 +566,416 @@
       "src/pages/Terms.tsx",
       "src/pages/Consent.tsx",
       "src/pages/Feedback.tsx",
-      "src/pages/VKLanding.tsx"
+      "src/pages/VKLanding.tsx",
+      "src/pages/Services.tsx",
+      "src/pages/ServicePage.tsx",
+      "src/pages/Portfolio.tsx",
+      "src/pages/Contacts.tsx"
     ],
     "css": [
-      "assets/index-B7DFC_c5.css"
+      "assets/index-DTUDtyqZ.css"
+    ],
+    "assets": [
+      "assets/logo-hJVtLVG3.svg",
+      "assets/IMG_0979-BsfkcTCl.webp",
+      "assets/IMG_0980-CbA9GoCy.webp",
+      "assets/IMG_0983-8Xu_KLz0.webp",
+      "assets/IMG_0988-Gm7tg2-U.webp",
+      "assets/IMG_1082-CS20hXPk.webp",
+      "assets/IMG_1559-CDKM7Nnf.webp",
+      "assets/IMG_2241-B-6_gqYB.webp",
+      "assets/IMG_2434-BDQoGDUL.webp",
+      "assets/IMG_2443-CzffJRUq.webp",
+      "assets/IMG_2559-D9xgi9Du.webp",
+      "assets/IMG_6409-BkCUOt8I.webp",
+      "assets/IMG_6412-Diplm5fO.webp",
+      "assets/IMG_6414-DvlXJZvQ.webp",
+      "assets/IMG_6417-CGYceq50.webp",
+      "assets/IMG_6419-vehUzVZ6.webp",
+      "assets/IMG_6421-CL6NC-L0.webp",
+      "assets/IMG_6422-VftG7g23.webp",
+      "assets/IMG_6424-D_-4AhK5.webp",
+      "assets/IMG_6426-QXVvj1Tx.webp",
+      "assets/IMG_6428-D8FILx91.webp",
+      "assets/IMG_6430-C1eTIRky.webp",
+      "assets/IMG_6439-CevFxtad.webp",
+      "assets/IMG_9006-DsFrx0_Y.webp",
+      "assets/IMG_9008-CParfsqz.webp",
+      "assets/IMG_9011-DTbaNbF7.webp",
+      "assets/IMG_9012-CT8s5-8A.webp",
+      "assets/IMG_9013-mm_Qvz80.webp",
+      "assets/IMG_9016-DN8nLylW.webp",
+      "assets/IMG_9017-CY3Yedjd.webp",
+      "assets/IMG_9018-D1fPJK6o.webp",
+      "assets/IMG_9019-BGjbTZbC.webp",
+      "assets/IMG_9023-Btsr05ck.webp",
+      "assets/IMG_9167-BykMQQ_m.webp",
+      "assets/IMG_9170-BT3A-Adl.webp",
+      "assets/IMG_9173-BYP998vi.webp",
+      "assets/IMG_9174-im2-wPfc.webp",
+      "assets/IMG_9175-BeoBdd4h.webp",
+      "assets/IMG_9177-CBE6xy1O.webp",
+      "assets/IMG_9179-Dx26w1-B.webp",
+      "assets/IMG_9182-L0S0m3Kk.webp",
+      "assets/IMG_9183-kCNh0tT7.webp",
+      "assets/IMG_9186-DtaHRqS4.webp",
+      "assets/IMG_9198-CI-W0oNj.webp",
+      "assets/IMG_9200-D-2TG3iA.webp",
+      "assets/IMG_9206-BIsitZSM.webp",
+      "assets/IMG_0979-W359SGNf.webp",
+      "assets/IMG_0980-FDLQx_BE.webp",
+      "assets/IMG_0983-BybnfOh8.webp",
+      "assets/IMG_0988-DyWlVFDt.webp",
+      "assets/IMG_1082-B7WYYsZ9.webp",
+      "assets/IMG_1559-Dnj7nuti.webp",
+      "assets/IMG_2241-BWuoSTWM.webp",
+      "assets/IMG_2434-BYfONNyB.webp",
+      "assets/IMG_2443-D0tlvpjR.webp",
+      "assets/IMG_2559-D4CgZRwy.webp",
+      "assets/IMG_6409-C5Tt0iag.webp",
+      "assets/IMG_6412-Dfw6VATy.webp",
+      "assets/IMG_6414-B1nPMdeb.webp",
+      "assets/IMG_6417-cPNHodom.webp",
+      "assets/IMG_6419-DQK5b5IJ.webp",
+      "assets/IMG_6421-BtMV2A3w.webp",
+      "assets/IMG_6422-C58ussng.webp",
+      "assets/IMG_6424-D5WH48zC.webp",
+      "assets/IMG_6426-BHEblqkT.webp",
+      "assets/IMG_6428-DjfeZY0B.webp",
+      "assets/IMG_6430-DZiZA4gX.webp",
+      "assets/IMG_6439-Bohmev6T.webp",
+      "assets/IMG_9006-BpciUjEg.webp",
+      "assets/IMG_9008-Bbd8xJLj.webp",
+      "assets/IMG_9011-CB2yQ0MK.webp",
+      "assets/IMG_9012-5p1IHQfk.webp",
+      "assets/IMG_9013-BRKhFOZ2.webp",
+      "assets/IMG_9016-lMkDR57t.webp",
+      "assets/IMG_9017-DqbccdE5.webp",
+      "assets/IMG_9018-DwFrapMX.webp",
+      "assets/IMG_9019-CBJmsts9.webp",
+      "assets/IMG_9167-CFD0irOc.webp",
+      "assets/IMG_9170-CUnIibuj.webp",
+      "assets/IMG_9173-C5dXmpUF.webp",
+      "assets/IMG_9174-CEy9zEb5.webp",
+      "assets/IMG_9175-BI7Uy8F3.webp",
+      "assets/IMG_9177-DcuvrvlD.webp",
+      "assets/IMG_9179-CXsj51jz.webp",
+      "assets/IMG_9182-DrCoL6vX.webp",
+      "assets/IMG_9183-CFXxngj5.webp",
+      "assets/IMG_9186-CKc7iM68.webp",
+      "assets/IMG_9198-CsutzDKp.webp",
+      "assets/IMG_9200-CnJZVHD_.webp",
+      "assets/IMG_9206-CG9fgoG6.webp",
+      "assets/service-brand-styling-C9vx8Dmq.webp",
+      "assets/service-client-shoot-DIekA6ZC.webp",
+      "assets/service-photographer-Bnk4EIfb.webp",
+      "assets/service-stylist-U-whSheG.webp",
+      "assets/service-ugc-CDDdwLi7.webp",
+      "assets/service-wardrobe-DmJiD8Dn.webp",
+      "assets/portfolio-1-B7WGsTL0.webp",
+      "assets/portfolio-2-B3n3vOcY.webp",
+      "assets/portfolio-3-DRGDINWx.webp",
+      "assets/inter-cyrillic-300-normal-BnqRxXuy.woff2",
+      "assets/inter-cyrillic-300-normal-LR1W_oT8.woff",
+      "assets/inter-cyrillic-400-normal-obahsSVq.woff2",
+      "assets/inter-cyrillic-400-normal-HOLc17fK.woff",
+      "assets/inter-cyrillic-500-normal-BasfLYem.woff2",
+      "assets/inter-cyrillic-500-normal-CxZf_p3X.woff",
+      "assets/inter-cyrillic-600-normal-CWCymEST.woff2",
+      "assets/inter-cyrillic-600-normal-4D_pXhcN.woff",
+      "assets/inter-latin-300-normal-BVlfKGgI.woff2",
+      "assets/inter-latin-300-normal-i8F0SvXL.woff",
+      "assets/inter-latin-400-normal-C38fXH4l.woff2",
+      "assets/inter-latin-400-normal-CyCys3Eg.woff",
+      "assets/inter-latin-500-normal-Cerq10X2.woff2",
+      "assets/inter-latin-500-normal-BL9OpVg8.woff",
+      "assets/inter-latin-600-normal-LgqL8muc.woff2",
+      "assets/inter-latin-600-normal-CiBQ2DWP.woff",
+      "assets/plus-jakarta-sans-latin-300-normal-ubitlNZx.woff2",
+      "assets/plus-jakarta-sans-latin-300-normal-n-kmFdAV.woff",
+      "assets/plus-jakarta-sans-latin-400-normal-Dhut76fR.woff2",
+      "assets/plus-jakarta-sans-latin-400-normal-BDKaGhyp.woff",
+      "assets/plus-jakarta-sans-latin-500-normal-Bf-nb4oT.woff2",
+      "assets/plus-jakarta-sans-latin-500-normal-DYtqi0QS.woff",
+      "assets/plus-jakarta-sans-latin-600-normal-DLTa1BUW.woff2",
+      "assets/plus-jakarta-sans-latin-600-normal-BR_Ojra4.woff",
+      "assets/plus-jakarta-sans-latin-700-normal-CfpNZvy6.woff2",
+      "assets/plus-jakarta-sans-latin-700-normal-DqEcQeE5.woff"
     ]
   },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-300-normal.woff": {
+    "file": "assets/inter-cyrillic-300-normal-LR1W_oT8.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-300-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-300-normal.woff2": {
+    "file": "assets/inter-cyrillic-300-normal-BnqRxXuy.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-300-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-400-normal.woff": {
+    "file": "assets/inter-cyrillic-400-normal-HOLc17fK.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-400-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-400-normal.woff2": {
+    "file": "assets/inter-cyrillic-400-normal-obahsSVq.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-400-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-500-normal.woff": {
+    "file": "assets/inter-cyrillic-500-normal-CxZf_p3X.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-500-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-500-normal.woff2": {
+    "file": "assets/inter-cyrillic-500-normal-BasfLYem.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-500-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-600-normal.woff": {
+    "file": "assets/inter-cyrillic-600-normal-4D_pXhcN.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-600-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-cyrillic-600-normal.woff2": {
+    "file": "assets/inter-cyrillic-600-normal-CWCymEST.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-cyrillic-600-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-300-normal.woff": {
+    "file": "assets/inter-latin-300-normal-i8F0SvXL.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-300-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-300-normal.woff2": {
+    "file": "assets/inter-latin-300-normal-BVlfKGgI.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-300-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff": {
+    "file": "assets/inter-latin-400-normal-CyCys3Eg.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2": {
+    "file": "assets/inter-latin-400-normal-C38fXH4l.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff": {
+    "file": "assets/inter-latin-500-normal-BL9OpVg8.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2": {
+    "file": "assets/inter-latin-500-normal-Cerq10X2.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff": {
+    "file": "assets/inter-latin-600-normal-CiBQ2DWP.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2": {
+    "file": "assets/inter-latin-600-normal-LgqL8muc.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-300-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-300-normal-n-kmFdAV.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-300-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-300-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-300-normal-ubitlNZx.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-300-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-400-normal-BDKaGhyp.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-400-normal-Dhut76fR.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-500-normal-DYtqi0QS.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-500-normal-Bf-nb4oT.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-600-normal-BR_Ojra4.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-600-normal-DLTa1BUW.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-700-normal-DqEcQeE5.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-700-normal-CfpNZvy6.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff2"
+  },
   "src/admin/pages/Audit.tsx": {
-    "file": "assets/Audit-UoQvuW5T.js",
+    "file": "assets/Audit-DDlI_Eh0.js",
     "name": "Audit",
     "src": "src/admin/pages/Audit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_input-CAqkiX1N.js",
-      "_Pagination-CtfVP1fO.js",
-      "_loader-circle-CFXM9UCn.js",
-      "_index-C9hQ-nAF.js",
-      "_eye-kkm19hRK.js"
+      "_input-DkiOh51c.js",
+      "_Pagination-hcH3AWDk.js",
+      "_loader-circle-O3Z2V2TS.js",
+      "_index-BSPBU1af.js",
+      "_eye-vt3y740o.js"
     ]
   },
   "src/admin/pages/Cases.tsx": {
-    "file": "assets/Cases-4DZ_8kbT.js",
+    "file": "assets/Cases-CI_eOIMx.js",
     "name": "Cases",
     "src": "src/admin/pages/Cases.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_useMutation-4xJkSS90.js",
-      "_input-CAqkiX1N.js",
-      "_card-DLdH019I.js",
-      "_TagsInput-DL96QvGD.js",
-      "_image-2CMvHWvR.js",
-      "_alert-dialog-CexX6M5T.js",
-      "_external-link-d6b4eOVx.js",
+      "_useMutation-CNG4SVP4.js",
+      "_input-DkiOh51c.js",
+      "_card-BpmTmk6r.js",
+      "_TagsInput-Dj0KX40v.js",
+      "_image-DW_hz9-u.js",
+      "_alert-dialog-BzxLQznp.js",
+      "_external-link-CCkA3WZg.js",
       "_ru-CVN3f-jD.js",
-      "_label-2yB2VAfT.js",
-      "_popover-CA0CYrgK.js",
-      "_Pagination-CtfVP1fO.js",
-      "_index-C9hQ-nAF.js",
-      "_loader-circle-CFXM9UCn.js",
-      "_ConfirmDialog-Biddy94J.js",
-      "_use-resolved-media-BpC3x4qw.js"
+      "_label-CVCFKVl3.js",
+      "_popover-BimkGHAr.js",
+      "_Pagination-hcH3AWDk.js",
+      "_index-BSPBU1af.js",
+      "_loader-circle-O3Z2V2TS.js",
+      "_ConfirmDialog-Bt3PjSN_.js",
+      "_use-resolved-media-ByL5SGRu.js"
     ]
   },
   "src/admin/pages/Dashboard.tsx": {
-    "file": "assets/Dashboard-8XFmiUhn.js",
+    "file": "assets/Dashboard-Bdcb5mMm.js",
     "name": "Dashboard",
     "src": "src/admin/pages/Dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_card-DLdH019I.js",
-      "_image-2CMvHWvR.js",
-      "_file-text-BaW2ftTw.js",
+      "_card-BpmTmk6r.js",
+      "_image-DW_hz9-u.js",
+      "_file-text-zmDOIJoD.js",
       "_ru-CVN3f-jD.js",
-      "_external-link-d6b4eOVx.js"
+      "_external-link-CCkA3WZg.js"
     ]
   },
   "src/admin/pages/Login.tsx": {
-    "file": "assets/Login-JLqnphXN.js",
+    "file": "assets/Login-D6J5WJPB.js",
     "name": "Login",
     "src": "src/admin/pages/Login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_input-CAqkiX1N.js",
-      "_label-2yB2VAfT.js"
+      "_input-DkiOh51c.js",
+      "_label-CVCFKVl3.js"
     ]
   },
   "src/admin/pages/Media.tsx": {
-    "file": "assets/Media-CZAZM1ZA.js",
+    "file": "assets/Media-CN5P9sVt.js",
     "name": "Media",
     "src": "src/admin/pages/Media.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_useMutation-4xJkSS90.js",
-      "_input-CAqkiX1N.js",
-      "_Pagination-CtfVP1fO.js",
-      "_index-C9hQ-nAF.js",
-      "_card-DLdH019I.js",
-      "_alert-dialog-CexX6M5T.js",
-      "_label-2yB2VAfT.js",
-      "_use-resolved-media-BpC3x4qw.js",
-      "_loader-circle-CFXM9UCn.js"
+      "_useMutation-CNG4SVP4.js",
+      "_input-DkiOh51c.js",
+      "_Pagination-hcH3AWDk.js",
+      "_index-BSPBU1af.js",
+      "_card-BpmTmk6r.js",
+      "_alert-dialog-BzxLQznp.js",
+      "_label-CVCFKVl3.js",
+      "_use-resolved-media-ByL5SGRu.js",
+      "_loader-circle-O3Z2V2TS.js"
     ]
   },
   "src/admin/pages/Pages.tsx": {
-    "file": "assets/Pages-BrzfaFIK.js",
+    "file": "assets/Pages-CGMpbJWB.js",
     "name": "Pages",
     "src": "src/admin/pages/Pages.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_useMutation-4xJkSS90.js",
-      "_input-CAqkiX1N.js",
-      "_label-2yB2VAfT.js",
-      "_card-DLdH019I.js",
-      "_file-text-BaW2ftTw.js",
-      "_alert-dialog-CexX6M5T.js",
-      "_external-link-d6b4eOVx.js",
+      "_useMutation-CNG4SVP4.js",
+      "_input-DkiOh51c.js",
+      "_label-CVCFKVl3.js",
+      "_card-BpmTmk6r.js",
+      "_file-text-zmDOIJoD.js",
+      "_alert-dialog-BzxLQznp.js",
+      "_external-link-CCkA3WZg.js",
       "_ru-CVN3f-jD.js",
-      "_Pagination-CtfVP1fO.js",
-      "_popover-CA0CYrgK.js",
-      "_MediaSelect-vIvElwPn.js",
-      "_ConfirmDialog-Biddy94J.js",
-      "_eye-kkm19hRK.js",
-      "_use-resolved-media-BpC3x4qw.js",
-      "_loader-circle-CFXM9UCn.js",
-      "_index-C9hQ-nAF.js",
-      "_image-2CMvHWvR.js"
+      "_Pagination-hcH3AWDk.js",
+      "_popover-BimkGHAr.js",
+      "_MediaSelect-DQqc3_0I.js",
+      "_ConfirmDialog-Bt3PjSN_.js",
+      "_eye-vt3y740o.js",
+      "_use-resolved-media-ByL5SGRu.js",
+      "_loader-circle-O3Z2V2TS.js",
+      "_index-BSPBU1af.js",
+      "_image-DW_hz9-u.js"
     ]
   },
   "src/admin/pages/SEO.tsx": {
-    "file": "assets/SEO-BVVxZYiG.js",
+    "file": "assets/SEO-BVKIyMar.js",
     "name": "SEO",
     "src": "src/admin/pages/SEO.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_useMutation-4xJkSS90.js",
-      "_input-CAqkiX1N.js",
-      "_label-2yB2VAfT.js",
-      "_card-DLdH019I.js",
-      "_popover-CA0CYrgK.js",
-      "_index-C9hQ-nAF.js",
-      "_MediaSelect-vIvElwPn.js",
-      "_external-link-d6b4eOVx.js",
-      "_use-resolved-media-BpC3x4qw.js",
-      "_loader-circle-CFXM9UCn.js",
-      "_image-2CMvHWvR.js"
+      "_useMutation-CNG4SVP4.js",
+      "_input-DkiOh51c.js",
+      "_label-CVCFKVl3.js",
+      "_card-BpmTmk6r.js",
+      "_popover-BimkGHAr.js",
+      "_index-BSPBU1af.js",
+      "_MediaSelect-DQqc3_0I.js",
+      "_external-link-CCkA3WZg.js",
+      "_use-resolved-media-ByL5SGRu.js",
+      "_loader-circle-O3Z2V2TS.js",
+      "_image-DW_hz9-u.js"
     ]
   },
   "src/admin/pages/Services.tsx": {
-    "file": "assets/Services-DES5AOmk.js",
+    "file": "assets/Services-GFy_h-tu.js",
     "name": "Services",
     "src": "src/admin/pages/Services.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_useMutation-4xJkSS90.js",
-      "_input-CAqkiX1N.js",
-      "_card-DLdH019I.js",
-      "_TagsInput-DL96QvGD.js",
-      "_image-2CMvHWvR.js",
-      "_alert-dialog-CexX6M5T.js",
+      "_useMutation-CNG4SVP4.js",
+      "_input-DkiOh51c.js",
+      "_card-BpmTmk6r.js",
+      "_TagsInput-Dj0KX40v.js",
+      "_image-DW_hz9-u.js",
+      "_alert-dialog-BzxLQznp.js",
       "_ru-CVN3f-jD.js",
-      "_label-2yB2VAfT.js",
-      "_popover-CA0CYrgK.js",
-      "_Pagination-CtfVP1fO.js",
-      "_MediaSelect-vIvElwPn.js",
-      "_loader-circle-CFXM9UCn.js",
-      "_ConfirmDialog-Biddy94J.js",
-      "_use-resolved-media-BpC3x4qw.js",
-      "_index-C9hQ-nAF.js"
+      "_label-CVCFKVl3.js",
+      "_popover-BimkGHAr.js",
+      "_Pagination-hcH3AWDk.js",
+      "_MediaSelect-DQqc3_0I.js",
+      "_loader-circle-O3Z2V2TS.js",
+      "_ConfirmDialog-Bt3PjSN_.js",
+      "_use-resolved-media-ByL5SGRu.js",
+      "_index-BSPBU1af.js"
     ]
   },
   "src/admin/pages/Settings.tsx": {
-    "file": "assets/Settings-DfFqx5-f.js",
+    "file": "assets/Settings-BxcFqpec.js",
     "name": "Settings",
     "src": "src/admin/pages/Settings.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_AdminPageShell-8z8TmyDU.js"
+      "_AdminPageShell-DTzAeEMI.js"
     ]
   },
   "src/admin/pages/Stats.tsx": {
-    "file": "assets/Stats-FMW3wrWR.js",
+    "file": "assets/Stats-Bmd2nHNn.js",
     "name": "Stats",
     "src": "src/admin/pages/Stats.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_AdminPageShell-8z8TmyDU.js"
+      "_AdminPageShell-DTzAeEMI.js"
     ]
   },
   "src/assets/hero/hero-left.jpg": {
@@ -363,185 +990,9 @@
     "file": "assets/photo-3-DWr-H7ec.jpg",
     "src": "src/assets/hero/hero-right.jpg"
   },
-  "src/assets/portfolio/IMG_0979.WEBP": {
-    "file": "assets/IMG_0979-CAfhgCVb.WEBP",
-    "src": "src/assets/portfolio/IMG_0979.WEBP"
-  },
-  "src/assets/portfolio/IMG_0980.WEBP": {
-    "file": "assets/IMG_0980-VhaKdKrr.WEBP",
-    "src": "src/assets/portfolio/IMG_0980.WEBP"
-  },
-  "src/assets/portfolio/IMG_0983.WEBP": {
-    "file": "assets/IMG_0983-DnW6rfd7.WEBP",
-    "src": "src/assets/portfolio/IMG_0983.WEBP"
-  },
-  "src/assets/portfolio/IMG_0988.WEBP": {
-    "file": "assets/IMG_0988-BSunUxeQ.WEBP",
-    "src": "src/assets/portfolio/IMG_0988.WEBP"
-  },
-  "src/assets/portfolio/IMG_1082.JPG": {
-    "file": "assets/IMG_1082-CFofzBOd.JPG",
-    "src": "src/assets/portfolio/IMG_1082.JPG"
-  },
-  "src/assets/portfolio/IMG_1559.JPG": {
-    "file": "assets/IMG_1559-CV31QvoV.JPG",
-    "src": "src/assets/portfolio/IMG_1559.JPG"
-  },
-  "src/assets/portfolio/IMG_2241.JPG": {
-    "file": "assets/IMG_2241-ChsNMIyZ.JPG",
-    "src": "src/assets/portfolio/IMG_2241.JPG"
-  },
-  "src/assets/portfolio/IMG_2434.JPG": {
-    "file": "assets/IMG_2434-CVkH2ka_.JPG",
-    "src": "src/assets/portfolio/IMG_2434.JPG"
-  },
-  "src/assets/portfolio/IMG_2443.JPG": {
-    "file": "assets/IMG_2443-Cy_JFH_U.JPG",
-    "src": "src/assets/portfolio/IMG_2443.JPG"
-  },
-  "src/assets/portfolio/IMG_2559.WEBP": {
-    "file": "assets/IMG_2559-DwoSkW_X.WEBP",
-    "src": "src/assets/portfolio/IMG_2559.WEBP"
-  },
-  "src/assets/portfolio/IMG_6409.JPG": {
-    "file": "assets/IMG_6409-DdcdhXZ5.JPG",
-    "src": "src/assets/portfolio/IMG_6409.JPG"
-  },
-  "src/assets/portfolio/IMG_6412.JPG": {
-    "file": "assets/IMG_6412-Cgj3I_L9.JPG",
-    "src": "src/assets/portfolio/IMG_6412.JPG"
-  },
-  "src/assets/portfolio/IMG_6414.JPG": {
-    "file": "assets/IMG_6414-CbwUqx9V.JPG",
-    "src": "src/assets/portfolio/IMG_6414.JPG"
-  },
-  "src/assets/portfolio/IMG_6417.JPG": {
-    "file": "assets/IMG_6417-DFNhkB2G.JPG",
-    "src": "src/assets/portfolio/IMG_6417.JPG"
-  },
-  "src/assets/portfolio/IMG_6419.JPG": {
-    "file": "assets/IMG_6419-D9dIe2dx.JPG",
-    "src": "src/assets/portfolio/IMG_6419.JPG"
-  },
-  "src/assets/portfolio/IMG_6421.JPG": {
-    "file": "assets/IMG_6421-JrdWL2zw.JPG",
-    "src": "src/assets/portfolio/IMG_6421.JPG"
-  },
-  "src/assets/portfolio/IMG_6422.JPG": {
-    "file": "assets/IMG_6422-CP-nFvrR.JPG",
-    "src": "src/assets/portfolio/IMG_6422.JPG"
-  },
-  "src/assets/portfolio/IMG_6424.JPG": {
-    "file": "assets/IMG_6424-DYKW6AOv.JPG",
-    "src": "src/assets/portfolio/IMG_6424.JPG"
-  },
-  "src/assets/portfolio/IMG_6426.JPG": {
-    "file": "assets/IMG_6426-FMndeqBL.JPG",
-    "src": "src/assets/portfolio/IMG_6426.JPG"
-  },
-  "src/assets/portfolio/IMG_6428.JPG": {
-    "file": "assets/IMG_6428-D9SeOTPk.JPG",
-    "src": "src/assets/portfolio/IMG_6428.JPG"
-  },
-  "src/assets/portfolio/IMG_6430.JPG": {
-    "file": "assets/IMG_6430-wsO7AuGx.JPG",
-    "src": "src/assets/portfolio/IMG_6430.JPG"
-  },
-  "src/assets/portfolio/IMG_6439.JPG": {
-    "file": "assets/IMG_6439-Ct_1RvqY.JPG",
-    "src": "src/assets/portfolio/IMG_6439.JPG"
-  },
-  "src/assets/portfolio/IMG_9006.JPG": {
-    "file": "assets/IMG_9006-C8QIeCSV.JPG",
-    "src": "src/assets/portfolio/IMG_9006.JPG"
-  },
-  "src/assets/portfolio/IMG_9008.JPG": {
-    "file": "assets/IMG_9008-CWasxkCX.JPG",
-    "src": "src/assets/portfolio/IMG_9008.JPG"
-  },
-  "src/assets/portfolio/IMG_9011.WEBP": {
-    "file": "assets/IMG_9011-C9Yq8vlK.WEBP",
-    "src": "src/assets/portfolio/IMG_9011.WEBP"
-  },
-  "src/assets/portfolio/IMG_9012.WEBP": {
-    "file": "assets/IMG_9012-75B_awKN.WEBP",
-    "src": "src/assets/portfolio/IMG_9012.WEBP"
-  },
-  "src/assets/portfolio/IMG_9013.JPG": {
-    "file": "assets/IMG_9013-DnIHHhsP.JPG",
-    "src": "src/assets/portfolio/IMG_9013.JPG"
-  },
-  "src/assets/portfolio/IMG_9016.JPG": {
-    "file": "assets/IMG_9016-CzudLB4a.JPG",
-    "src": "src/assets/portfolio/IMG_9016.JPG"
-  },
-  "src/assets/portfolio/IMG_9017.WEBP": {
-    "file": "assets/IMG_9017-CNKxYwI5.WEBP",
-    "src": "src/assets/portfolio/IMG_9017.WEBP"
-  },
-  "src/assets/portfolio/IMG_9018.WEBP": {
-    "file": "assets/IMG_9018-BppbK0xh.WEBP",
-    "src": "src/assets/portfolio/IMG_9018.WEBP"
-  },
-  "src/assets/portfolio/IMG_9019.WEBP": {
-    "file": "assets/IMG_9019-C_t5-YCk.WEBP",
-    "src": "src/assets/portfolio/IMG_9019.WEBP"
-  },
-  "src/assets/portfolio/IMG_9023.PNG": {
-    "file": "assets/IMG_9023-BJoaRtr0.PNG",
-    "src": "src/assets/portfolio/IMG_9023.PNG"
-  },
-  "src/assets/portfolio/IMG_9167.JPG": {
-    "file": "assets/IMG_9167-DEJhQ8X4.JPG",
-    "src": "src/assets/portfolio/IMG_9167.JPG"
-  },
-  "src/assets/portfolio/IMG_9170.JPG": {
-    "file": "assets/IMG_9170-B2rfxagz.JPG",
-    "src": "src/assets/portfolio/IMG_9170.JPG"
-  },
-  "src/assets/portfolio/IMG_9173.JPG": {
-    "file": "assets/IMG_9173-SCeziqUr.JPG",
-    "src": "src/assets/portfolio/IMG_9173.JPG"
-  },
-  "src/assets/portfolio/IMG_9174.JPG": {
-    "file": "assets/IMG_9174-BYHDjNh7.JPG",
-    "src": "src/assets/portfolio/IMG_9174.JPG"
-  },
-  "src/assets/portfolio/IMG_9175.JPG": {
-    "file": "assets/IMG_9175-VHilRRh9.JPG",
-    "src": "src/assets/portfolio/IMG_9175.JPG"
-  },
-  "src/assets/portfolio/IMG_9177.JPG": {
-    "file": "assets/IMG_9177-BooI9w3v.JPG",
-    "src": "src/assets/portfolio/IMG_9177.JPG"
-  },
-  "src/assets/portfolio/IMG_9179.JPG": {
-    "file": "assets/IMG_9179-B_gFbChs.JPG",
-    "src": "src/assets/portfolio/IMG_9179.JPG"
-  },
-  "src/assets/portfolio/IMG_9182.JPG": {
-    "file": "assets/IMG_9182-BJBPAfCc.JPG",
-    "src": "src/assets/portfolio/IMG_9182.JPG"
-  },
-  "src/assets/portfolio/IMG_9183.JPG": {
-    "file": "assets/IMG_9183-Brqmr0nK.JPG",
-    "src": "src/assets/portfolio/IMG_9183.JPG"
-  },
-  "src/assets/portfolio/IMG_9186.JPG": {
-    "file": "assets/IMG_9186-D_mGqjLk.JPG",
-    "src": "src/assets/portfolio/IMG_9186.JPG"
-  },
-  "src/assets/portfolio/IMG_9198.JPG": {
-    "file": "assets/IMG_9198-BEqucZeG.JPG",
-    "src": "src/assets/portfolio/IMG_9198.JPG"
-  },
-  "src/assets/portfolio/IMG_9200.JPG": {
-    "file": "assets/IMG_9200-7wLk6eYz.JPG",
-    "src": "src/assets/portfolio/IMG_9200.JPG"
-  },
-  "src/assets/portfolio/IMG_9206.JPG": {
-    "file": "assets/IMG_9206-Doh0v2S9.JPG",
-    "src": "src/assets/portfolio/IMG_9206.JPG"
+  "src/assets/logo.svg": {
+    "file": "assets/logo-hJVtLVG3.svg",
+    "src": "src/assets/logo.svg"
   },
   "src/assets/portfolio/work-1.jpg": {
     "file": "assets/work-1-uAJM2vJG.jpg",
@@ -556,149 +1007,102 @@
     "src": "src/assets/portfolio/work-3.jpg"
   },
   "src/pages/CasePage.tsx": {
-    "file": "assets/CasePage-BqGpUXV6.js",
+    "file": "assets/CasePage-CafuWTHd.js",
     "name": "CasePage",
     "src": "src/pages/CasePage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-resolved-media-BpC3x4qw.js",
-      "_image-2CMvHWvR.js"
+      "_use-resolved-media-ByL5SGRu.js",
+      "_image-DW_hz9-u.js"
     ]
   },
   "src/pages/Consent.tsx": {
-    "file": "assets/Consent-CW-GgTvD.js",
+    "file": "assets/Consent--IM8EWFJ.js",
     "name": "Consent",
     "src": "src/pages/Consent.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js"
+      "_PageHeader-D40-ObSU.js"
     ]
   },
   "src/pages/Contacts.tsx": {
-    "file": "assets/Contacts-Dsoo690I.js",
+    "file": "assets/Contacts--uE2-gUi.js",
     "name": "Contacts",
     "src": "src/pages/Contacts.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js",
+      "_PageHeader-D40-ObSU.js",
       "_types-DHgsoueE.js"
     ]
   },
   "src/pages/Feedback.tsx": {
-    "file": "assets/Feedback-T2kaUgR0.js",
+    "file": "assets/Feedback-C63Cz34C.js",
     "name": "Feedback",
     "src": "src/pages/Feedback.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js",
+      "_PageHeader-D40-ObSU.js",
       "_types-DHgsoueE.js"
     ]
   },
   "src/pages/Portfolio.tsx": {
-    "file": "assets/Portfolio-BMDR2g1C.js",
+    "file": "assets/Portfolio-B5TlIlnB.js",
     "name": "Portfolio",
     "src": "src/pages/Portfolio.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js"
-    ],
-    "assets": [
-      "assets/IMG_0979-CAfhgCVb.WEBP",
-      "assets/IMG_0980-VhaKdKrr.WEBP",
-      "assets/IMG_0983-DnW6rfd7.WEBP",
-      "assets/IMG_0988-BSunUxeQ.WEBP",
-      "assets/IMG_1082-CFofzBOd.JPG",
-      "assets/IMG_1559-CV31QvoV.JPG",
-      "assets/IMG_2241-ChsNMIyZ.JPG",
-      "assets/IMG_2434-CVkH2ka_.JPG",
-      "assets/IMG_2443-Cy_JFH_U.JPG",
-      "assets/IMG_2559-DwoSkW_X.WEBP",
-      "assets/IMG_6409-DdcdhXZ5.JPG",
-      "assets/IMG_6412-Cgj3I_L9.JPG",
-      "assets/IMG_6414-CbwUqx9V.JPG",
-      "assets/IMG_6417-DFNhkB2G.JPG",
-      "assets/IMG_6419-D9dIe2dx.JPG",
-      "assets/IMG_6421-JrdWL2zw.JPG",
-      "assets/IMG_6422-CP-nFvrR.JPG",
-      "assets/IMG_6424-DYKW6AOv.JPG",
-      "assets/IMG_6426-FMndeqBL.JPG",
-      "assets/IMG_6428-D9SeOTPk.JPG",
-      "assets/IMG_6430-wsO7AuGx.JPG",
-      "assets/IMG_6439-Ct_1RvqY.JPG",
-      "assets/IMG_9006-C8QIeCSV.JPG",
-      "assets/IMG_9008-CWasxkCX.JPG",
-      "assets/IMG_9011-C9Yq8vlK.WEBP",
-      "assets/IMG_9012-75B_awKN.WEBP",
-      "assets/IMG_9013-DnIHHhsP.JPG",
-      "assets/IMG_9016-CzudLB4a.JPG",
-      "assets/IMG_9017-CNKxYwI5.WEBP",
-      "assets/IMG_9018-BppbK0xh.WEBP",
-      "assets/IMG_9019-C_t5-YCk.WEBP",
-      "assets/IMG_9023-BJoaRtr0.PNG",
-      "assets/IMG_9167-DEJhQ8X4.JPG",
-      "assets/IMG_9170-B2rfxagz.JPG",
-      "assets/IMG_9173-SCeziqUr.JPG",
-      "assets/IMG_9174-BYHDjNh7.JPG",
-      "assets/IMG_9175-VHilRRh9.JPG",
-      "assets/IMG_9177-BooI9w3v.JPG",
-      "assets/IMG_9179-B_gFbChs.JPG",
-      "assets/IMG_9182-BJBPAfCc.JPG",
-      "assets/IMG_9183-Brqmr0nK.JPG",
-      "assets/IMG_9186-D_mGqjLk.JPG",
-      "assets/IMG_9198-BEqucZeG.JPG",
-      "assets/IMG_9200-7wLk6eYz.JPG",
-      "assets/IMG_9206-Doh0v2S9.JPG"
+      "_PageHeader-D40-ObSU.js"
     ]
   },
   "src/pages/Privacy.tsx": {
-    "file": "assets/Privacy-D4zGJZEf.js",
+    "file": "assets/Privacy-C4SMTPPh.js",
     "name": "Privacy",
     "src": "src/pages/Privacy.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js"
+      "_PageHeader-D40-ObSU.js"
     ]
   },
   "src/pages/ServicePage.tsx": {
-    "file": "assets/ServicePage-Ch0qSJl1.js",
+    "file": "assets/ServicePage-C4tWsPrG.js",
     "name": "ServicePage",
     "src": "src/pages/ServicePage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js",
-      "_loader-circle-CFXM9UCn.js"
+      "_PageHeader-D40-ObSU.js",
+      "_loader-circle-O3Z2V2TS.js"
     ]
   },
   "src/pages/Services.tsx": {
-    "file": "assets/Services-ChojkE6k.js",
+    "file": "assets/Services-9tH369GS.js",
     "name": "Services",
     "src": "src/pages/Services.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js",
-      "_loader-circle-CFXM9UCn.js"
+      "_PageHeader-D40-ObSU.js",
+      "_loader-circle-O3Z2V2TS.js"
     ]
   },
   "src/pages/Terms.tsx": {
-    "file": "assets/Terms-BrAD-f0D.js",
+    "file": "assets/Terms-BkuJUy8d.js",
     "name": "Terms",
     "src": "src/pages/Terms.tsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_PageHeader-dp6DJzVT.js"
+      "_PageHeader-D40-ObSU.js"
     ]
   },
   "src/pages/VKLanding.tsx": {
-    "file": "assets/VKLanding-COBaJZSl.js",
+    "file": "assets/VKLanding-DJkKJf7b.js",
     "name": "VKLanding",
     "src": "src/pages/VKLanding.tsx",
     "isDynamicEntry": true,

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { casesApi } from '@/lib/api/cases.api';
+import { PORTFOLIO_WORKS } from '@/lib/localImages';
 import type { CaseItem } from '@/admin/types/case';
 
 const FEATURED_COUNT = 6; // Number of featured cases to show
@@ -46,7 +47,7 @@ const PortfolioSection = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const { data: casesResponse, isLoading: loading, isError } = useQuery({
+  const { data: casesResponse } = useQuery({
     queryKey: ['cases', 'public', { status: 'published', per_page: 50 }],
     queryFn: () => casesApi.list({ 
       status: 'published',
@@ -80,6 +81,13 @@ const PortfolioSection = () => {
     }).filter((work) => work.src); // Only show cases with images
   }, [cases]);
 
+  // Пока в админке нет кейсов с фото — показываем последние работы из репозитория.
+  // Блок рендерится сразу (без скелетона), поэтому ничего не «прыгает».
+  const works = useMemo(() => {
+    if (featuredWorks.length > 0) return featuredWorks as { id: string | number; src: string; full?: string; title: string; slug: string }[];
+    return PORTFOLIO_WORKS.slice(-FEATURED_COUNT).reverse().map((w) => ({ id: w.id, src: w.thumb, full: w.full, title: w.alt, slug: '' }));
+  }, [featuredWorks]);
+
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
@@ -92,12 +100,12 @@ const PortfolioSection = () => {
   }, []);
 
   const nextImage = useCallback(() => {
-    setLightboxIndex((prev) => (prev + 1) % featuredWorks.length);
-  }, [featuredWorks.length]);
+    setLightboxIndex((prev) => (prev + 1) % works.length);
+  }, [works.length]);
 
   const prevImage = useCallback(() => {
-    setLightboxIndex((prev) => (prev - 1 + featuredWorks.length) % featuredWorks.length);
-  }, [featuredWorks.length]);
+    setLightboxIndex((prev) => (prev - 1 + works.length) % works.length);
+  }, [works.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -109,59 +117,6 @@ const PortfolioSection = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, closeLightbox, nextImage, prevImage]);
-
-  // Loading skeleton
-  if (loading) {
-    return (
-      <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
-        <div className="container-luxury">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-h2 text-foreground">
-              Портфолио
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-2xl md:rounded-3xl" />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Error state
-  if (isError) {
-    return (
-      <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
-        <div className="container-luxury">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-h2 text-foreground mb-4">
-              Портфолио
-            </h2>
-            <p className="text-muted-foreground">Не удалось загрузить портфолио</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (featuredWorks.length === 0) {
-    return (
-      <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
-        <div className="container-luxury">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-h2 text-foreground">
-              Портфолио
-            </h2>
-          </div>
-          <div className="text-center py-12 text-muted-foreground">
-            Нет работ в портфолио
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="portfolio" className="py-12 md:py-16 px-6 md:px-10 lg:px-16 bg-background">
@@ -187,7 +142,7 @@ const PortfolioSection = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
-          {featuredWorks.map((work, index) => (
+          {works.map((work, index) => (
             <motion.button
               key={work.id}
               variants={itemVariants}
@@ -229,7 +184,7 @@ const PortfolioSection = () => {
       </div>
 
       {/* Lightbox */}
-      {lightboxOpen && featuredWorks[lightboxIndex] && (
+      {lightboxOpen && works[lightboxIndex] && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -266,7 +221,7 @@ const PortfolioSection = () => {
           <div className="absolute top-20 left-4 font-sans text-sm text-white/60 z-10">
             <span className="text-white font-medium">{String(lightboxIndex + 1).padStart(2, '0')}</span>
             <span className="mx-2">/</span>
-            <span>{String(featuredWorks.length).padStart(2, '0')}</span>
+            <span>{String(works.length).padStart(2, '0')}</span>
           </div>
 
           {/* Navigation arrows - hidden on mobile, swipe instead */}
@@ -296,8 +251,8 @@ const PortfolioSection = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={featuredWorks[lightboxIndex].src}
-              alt={featuredWorks[lightboxIndex].title}
+              src={works[lightboxIndex].full || works[lightboxIndex].src}
+              alt={works[lightboxIndex].title}
               className="max-w-full max-h-[75vh] object-contain"
               draggable={false}
             />
@@ -311,7 +266,7 @@ const PortfolioSection = () => {
           {/* Image title */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
             <span className="font-display text-base md:text-lg text-white/80">
-              {featuredWorks[lightboxIndex].title}
+              {works[lightboxIndex].title}
             </span>
           </div>
         </motion.div>
