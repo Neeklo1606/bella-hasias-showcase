@@ -60,8 +60,8 @@ const LeadForm = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'bella@bellahasias.com', href: 'mailto:bella@bellahasias.com' },
-    { icon: Phone, label: 'Телефон', value: '+7 (999) 123-45-67', href: 'tel:+79991234567' },
+    { icon: Mail, label: 'Email', value: 'anastasirezepova@yandex.ru', href: 'mailto:anastasirezepova@yandex.ru' },
+    { icon: Phone, label: 'Телефон', value: '+7 (977) 588-74-70', href: 'tel:+79775887470' },
     { icon: MapPin, label: 'Локация', value: 'Москва, Россия', href: null },
   ];
 
@@ -219,7 +219,7 @@ const LeadForm = () => {
                   </a>
                 ))}
                 <a
-                  href="mailto:bella@bellahasias.com"
+                  href="mailto:anastasirezepova@yandex.ru"
                   aria-label="Email"
                   className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                 >

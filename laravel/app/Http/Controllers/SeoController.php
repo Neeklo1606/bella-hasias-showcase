@@ -95,7 +95,7 @@ class SeoController extends Controller
             $lines = [
                 '# Bella Hasias — стилист и контент-креатор в Москве',
                 '',
-                '> '.SeoResolver::DEFAULT_DESCRIPTION.' Работает в Москве и онлайн. Связь — через Telegram.',
+                '> '.SeoResolver::DEFAULT_DESCRIPTION.' Работает в Москве и онлайн. Связь — Telegram, телефон или email.',
                 '',
                 '## Услуги',
             ];
@@ -113,6 +113,8 @@ class SeoController extends Controller
                 '',
                 '## Контакты',
                 '- Telegram: https://t.me/bellahasias',
+                '- Телефон: '.SeoResolver::PHONE,
+                '- Email: '.SeoResolver::EMAIL,
                 '- VK: https://vk.com/bella_hasias',
                 '- Город: Москва (возможна работа онлайн)',
                 '',

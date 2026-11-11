@@ -10,7 +10,7 @@ const Privacy = () => {
         <title>Политика конфиденциальности — Bella Hasias</title>
         <meta name="description" content="Политика конфиденциальности и обработки персональных данных Bella Hasias" />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href="https://bellahasias.com/privacy" />
+        <link rel="canonical" href="https://bellahasias.ru/privacy" />
       </Helmet>
 
       <main className="min-h-screen bg-background">

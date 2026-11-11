@@ -56,7 +56,7 @@ const Portfolio = () => {
         <meta property="og:title" content="Портфолио — Bella Hasias" />
         <meta property="og:description" content="Стилизация, UGC-контент и фотосъёмка для брендов." />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://bellahasias.com/portfolio" />
+        <link rel="canonical" href="https://bellahasias.ru/portfolio" />
       </Helmet>
 
       <main className="min-h-screen bg-background">

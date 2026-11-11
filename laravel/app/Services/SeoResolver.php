@@ -16,6 +16,8 @@ use Throwable;
  */
 class SeoResolver
 {
+    public const PHONE = '+7 977 588-74-70';
+    public const EMAIL = 'anastasirezepova@yandex.ru';
     public const BRAND = 'Bella Hasias';
 
     public const DEFAULT_DESCRIPTION = 'Стилист и контент-креатор в Москве. Стилизация съёмок, разбор и капсульный гардероб, персональный шопинг, UGC и AI-контент для брендов и людей.';
@@ -262,6 +264,8 @@ class SeoResolver
             'description' => self::DEFAULT_DESCRIPTION,
             'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Москва', 'addressCountry' => 'RU'],
             'knowsAbout' => ['Стилизация съёмок', 'Капсульный гардероб', 'Персональный шопинг', 'UGC-контент', 'AI-контент', 'Визуальный стиль бренда'],
+            'telephone' => self::PHONE,
+            'email' => self::EMAIL,
             'sameAs' => self::SAME_AS,
         ];
     }

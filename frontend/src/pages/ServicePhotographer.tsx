@@ -98,7 +98,7 @@ const ServicePhotographer = () => {
                 </div>
 
                 <a
-                  href="https://wa.me/79991234567"
+                  href="https://wa.me/79775887470"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-luxury"

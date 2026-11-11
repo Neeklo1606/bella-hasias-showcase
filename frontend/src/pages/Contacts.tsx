@@ -194,6 +194,21 @@ const Contacts = () => {
                   </div>
                 </div>
 
+                {/* Phone & email */}
+                <div className="card-luxury p-6">
+                  <h2 className="font-display text-xl text-foreground mb-4">Связаться напрямую</h2>
+                  <ul className="space-y-3 font-sans text-sm">
+                    <li>
+                      <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Телефон</span>
+                      <a href="tel:+79775887470" className="text-foreground hover:opacity-70 transition-opacity">+7 (977) 588-74-70</a>
+                    </li>
+                    <li>
+                      <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Email</span>
+                      <a href="mailto:anastasirezepova@yandex.ru" className="text-foreground hover:opacity-70 transition-opacity break-all">anastasirezepova@yandex.ru</a>
+                    </li>
+                  </ul>
+                </div>
+
                 {/* Telegram Channel CTA */}
                 <div className="card-luxury p-6">
                   <h2 className="font-display text-xl text-foreground mb-4">

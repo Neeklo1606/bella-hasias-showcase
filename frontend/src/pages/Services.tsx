@@ -78,7 +78,7 @@ const Services = () => {
         <meta property="og:title" content="Услуги стилиста и контент-креатора — Bella Hasias" />
         <meta property="og:description" content="Стилизация съёмок, персональный шоппинг, UGC-контент и визуальный контент для брендов в Москве." />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://bellahasias.com/services" />
+        <link rel="canonical" href="https://bellahasias.ru/services" />
       </Helmet>
 
       <main className="min-h-screen bg-background">
