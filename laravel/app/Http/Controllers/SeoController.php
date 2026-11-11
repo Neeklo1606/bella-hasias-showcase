@@ -72,15 +72,12 @@ class SeoController extends Controller
     {
         $base = $this->seo->siteUrl();
         $body = implode("\n", [
+            // /api/ не закрываем: SPA подгружает данные из API, иначе боты не смогут отрисовать страницы
             'User-agent: *',
             'Disallow: /admin',
-            'Disallow: /api/',
-            'Disallow: /*?*utm_',
-            'Allow: /api/media/',
             '',
             'User-agent: Yandex',
             'Disallow: /admin',
-            'Disallow: /api/',
             'Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid&fbclid',
             '',
             "Sitemap: {$base}/sitemap.xml",
