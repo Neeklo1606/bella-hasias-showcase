@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         ]);
         
+        // Маршрута "login" нет: гостей API не редиректим (будет 401 JSON), остальных — на вход в админку
+        $middleware->redirectGuestsTo(fn ($request) => $request->is('api/*') ? null : '/admin/login');
+
         // Configure CORS for API
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
