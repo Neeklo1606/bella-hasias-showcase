@@ -109,10 +109,10 @@ const PortfolioSection = () => {
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+         
+         
+         
+         
           className="text-center mb-12"
         >
           <h2 className="font-display text-h2 text-foreground">
@@ -150,10 +150,10 @@ const PortfolioSection = () => {
 
         {/* View All Link */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+         
+         
+         
+         
           className="text-center mt-12"
         >
           <Link
@@ -227,9 +227,9 @@ const PortfolioSection = () => {
           {/* Image */}
           <motion.div
             key={lightboxIndex}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
+           
+           
+           
             className="max-w-[92vw] max-h-[75vh] overflow-hidden rounded-2xl md:rounded-3xl"
             onClick={(e) => e.stopPropagation()}
           >

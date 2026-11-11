@@ -24,9 +24,9 @@ const Privacy = () => {
         {/* Content */}
         <section className="pt-32 md:pt-36 pb-20 px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+           
+           
+           
             className="max-w-3xl mx-auto"
           >
             <h1 className="font-display text-h1 text-foreground mb-8">

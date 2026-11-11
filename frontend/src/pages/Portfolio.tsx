@@ -93,9 +93,9 @@ const Portfolio = () => {
           <div className="max-w-7xl mx-auto">
             {/* Page Title */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+             
+             
+             
               className="text-center mb-12"
             >
               <h1 className="font-display text-h1 text-foreground">
@@ -136,9 +136,9 @@ const Portfolio = () => {
 
             {/* CTA */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+             
+             
+             
               className="text-center mt-16"
             >
               <div className="card-luxury p-8 max-w-lg mx-auto">
@@ -232,9 +232,9 @@ const Portfolio = () => {
             {allWorks[lightboxIndex] && (
               <motion.div
                 key={lightboxIndex}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
+               
+               
+               
                 className="max-w-[92vw] max-h-[80vh] overflow-hidden rounded-2xl"
                 onClick={(e) => e.stopPropagation()}
               >

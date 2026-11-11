@@ -87,9 +87,9 @@ const Contacts = () => {
           <div className="max-w-5xl mx-auto">
             {/* Page Title */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+             
+             
+             
               className="text-center mb-16"
             >
               <h1 className="font-display text-h1 text-foreground">
@@ -100,9 +100,9 @@ const Contacts = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Form */}
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
+               
+               
+               
                 className="card-luxury p-8"
               >
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -162,9 +162,9 @@ const Contacts = () => {
 
               {/* Contact Info */}
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
+               
+               
+               
                 className="space-y-8"
               >
                 {/* Social Links */}

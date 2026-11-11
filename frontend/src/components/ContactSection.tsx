@@ -8,10 +8,10 @@ const ContactSection = () => {
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+         
+         
+         
+         
           className="text-center mb-16"
         >
           <h2 className="font-display text-h2 text-foreground">
@@ -21,10 +21,10 @@ const ContactSection = () => {
 
         {/* Contact Cards - Only Telegram and Instagram */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+         
+         
+         
+         
           className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12"
         >
           {/* Telegram */}
@@ -58,10 +58,10 @@ const ContactSection = () => {
 
         {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+         
+         
+         
+         
           className="text-center"
         >
           <Link

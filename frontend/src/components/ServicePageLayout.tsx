@@ -67,9 +67,9 @@ const ServicePageLayout = ({
         {/* Hero Section - Full Width Image */}
         <section className="pt-28 md:pt-32">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
+           
+           
+           
             className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] overflow-hidden"
           >
             <img
@@ -87,9 +87,9 @@ const ServicePageLayout = ({
           <div className="max-w-3xl mx-auto">
             {/* Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+             
+             
+             
               className="font-display text-h1 text-foreground mb-6 md:mb-8"
             >
               {title}
@@ -97,9 +97,9 @@ const ServicePageLayout = ({
 
             {/* Intro */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+             
+             
+             
               className="font-sans text-lg md:text-xl text-foreground/80 leading-relaxed mb-10 md:mb-12"
             >
               {intro}
@@ -107,9 +107,9 @@ const ServicePageLayout = ({
 
             {/* Case Blocks */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+             
+             
+             
               className="space-y-6 mb-16"
             >
               {caseBlocks.map((block, index) => (
@@ -124,9 +124,9 @@ const ServicePageLayout = ({
 
             {/* CTA Form */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+             
+             
+             
               className="bg-secondary/30 rounded-3xl p-8 md:p-10"
             >
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">

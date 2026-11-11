@@ -34,9 +34,9 @@ const VKLanding = () => {
         {/* Hero - Mobile optimized */}
         <section className="pt-12 pb-8 px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+           
+           
+           
             className="text-center"
           >
             <p className="font-sans text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-3">
@@ -65,9 +65,9 @@ const VKLanding = () => {
         {/* Recent Works Feed */}
         <section className="py-8 px-4">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+           
+           
+           
           >
             <div className="flex items-center justify-between mb-6 px-2">
               <h2 className="font-display text-lg text-foreground">
@@ -87,9 +87,9 @@ const VKLanding = () => {
               {recentWorks.map((work, index) => (
                 <motion.div
                   key={work.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                 
+                 
+                 
                   className="aspect-square overflow-hidden rounded-2xl bg-secondary"
                 >
                   <img
@@ -107,9 +107,9 @@ const VKLanding = () => {
         {/* Services Quick Links */}
         <section className="py-8 px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+           
+           
+           
             className="space-y-4"
           >
             <h2 className="font-display text-lg text-foreground mb-4">

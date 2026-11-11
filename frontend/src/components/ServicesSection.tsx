@@ -131,10 +131,10 @@ const ServicesSection = () => {
       <div className="container-luxury">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+         
+         
+         
+         
           className="text-center mb-10"
         >
           <h2 
@@ -196,10 +196,10 @@ const ServicesSection = () => {
 
         {/* View All Button */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+         
+         
+         
+         
           className="text-center mt-10"
         >
           <Link
