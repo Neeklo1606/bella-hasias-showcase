@@ -5,12 +5,10 @@
  */
 import brandStyling from "@/assets/service-brand-styling.jpg?w=800&format=webp";
 import clientShoot from "@/assets/service-client-shoot.jpg?w=800&format=webp";
-import photographer from "@/assets/service-photographer.jpg?w=800&format=webp";
 import stylist from "@/assets/service-stylist.jpg?w=800&format=webp";
 import ugc from "@/assets/service-ugc.jpg?w=800&format=webp";
 import wardrobe from "@/assets/service-wardrobe.jpg?w=800&format=webp";
 import portfolio1 from "@/assets/portfolio-1.jpg?w=800&format=webp";
-import portfolio2 from "@/assets/portfolio-2.jpg?w=800&format=webp";
 import portfolio3 from "@/assets/portfolio-3.jpg?w=800&format=webp";
 
 import brandStylingFull from "@/assets/service-brand-styling.jpg?w=1600&format=webp";
@@ -27,9 +25,8 @@ export const SERVICE_IMAGES: Record<string, string> = {
   "capsule-wardrobe": wardrobe,
   "event-look": portfolio1,
   "client-shoot": clientShoot,
+  "styling-support": clientShoot,
   ugc,
-  "ai-content": portfolio2,
-  "photo-video": photographer,
 };
 
 export const serviceImage = (slug?: string | null) => (slug && SERVICE_IMAGES[slug]) || "";
