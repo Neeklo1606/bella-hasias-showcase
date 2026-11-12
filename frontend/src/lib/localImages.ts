@@ -15,12 +15,8 @@ import portfolio3 from "@/assets/portfolio-3.jpg?w=800&format=webp";
 
 import brandStylingFull from "@/assets/service-brand-styling.jpg?w=1600&format=webp";
 import clientShootFull from "@/assets/service-client-shoot.jpg?w=1600&format=webp";
-import photographerFull from "@/assets/service-photographer.jpg?w=1600&format=webp";
 import stylistFull from "@/assets/service-stylist.jpg?w=1600&format=webp";
-import ugcFull from "@/assets/service-ugc.jpg?w=1600&format=webp";
 import wardrobeFull from "@/assets/service-wardrobe.jpg?w=1600&format=webp";
-import portfolio1Full from "@/assets/portfolio-1.jpg?w=1600&format=webp";
-import portfolio2Full from "@/assets/portfolio-2.jpg?w=1600&format=webp";
 import portfolio3Full from "@/assets/portfolio-3.jpg?w=1600&format=webp";
 
 /** Картинка услуги по slug (используется, если у услуги в админке нет обложки). */
@@ -58,11 +54,7 @@ const SERVICE_WORKS: Work[] = [
   [stylist, stylistFull, "Разбор гардероба"],
   [portfolio3, portfolio3Full, "Персональный шоппинг"],
   [wardrobe, wardrobeFull, "Капсульный гардероб"],
-  [portfolio1, portfolio1Full, "Образ на мероприятие"],
   [clientShoot, clientShootFull, "Съёмка для клиента"],
-  [ugc, ugcFull, "UGC-контент"],
-  [portfolio2, portfolio2Full, "AI-контент"],
-  [photographer, photographerFull, "Фото и видео"],
 ].map(([thumb, full, alt], i) => ({ id: `service-${i}`, thumb, full, alt: `${alt} — Bella Hasias` }));
 
 /** Все работы портфолио из репозитория (по имени файла) + фото услуг. */

@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Send, Instagram, Phone, Mail } from 'lucide-react';
+import { ArrowRight, Send, Instagram } from 'lucide-react';
 
 const CONTACTS = [
   { icon: Send, title: 'Telegram', value: '@Bella_hasias', href: 'https://t.me/Bella_hasias', external: true },
-  { icon: Phone, title: 'Телефон и WhatsApp', value: '+7 977 588-74-70', href: 'tel:+79775887470', external: false },
-  { icon: Mail, title: 'E-mail', value: 'anastasirezepova@yandex.ru', href: 'mailto:anastasirezepova@yandex.ru', external: false },
   { icon: Instagram, title: 'Instagram', value: '@bellahasias', href: 'https://www.instagram.com/bellahasias/', external: true },
 ];
 
