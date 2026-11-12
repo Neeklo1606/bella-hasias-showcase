@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Instagram, Send } from 'lucide-react';
+import { MapPin, Instagram, Send } from 'lucide-react';
 import { z } from 'zod';
 import { Checkbox } from '@/components/ui/checkbox';
 
@@ -60,8 +60,7 @@ const LeadForm = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'anastasirezepova@yandex.ru', href: 'mailto:anastasirezepova@yandex.ru' },
-    { icon: Phone, label: 'Телефон', value: '+7 (977) 588-74-70', href: 'tel:+79775887470' },
+    { icon: Send, label: 'Telegram', value: '@Bella_hasias', href: 'https://t.me/Bella_hasias' },
     { icon: MapPin, label: 'Локация', value: 'Москва, Россия', href: null },
   ];
 
@@ -218,13 +217,6 @@ const LeadForm = () => {
                     <link.icon size={20} />
                   </a>
                 ))}
-                <a
-                  href="mailto:anastasirezepova@yandex.ru"
-                  aria-label="Email"
-                  className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                >
-                  <Mail size={20} />
-                </a>
               </div>
             </div>
 

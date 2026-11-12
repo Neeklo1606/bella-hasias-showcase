@@ -83,8 +83,7 @@ const Footer = () => {
               </a>
             </div>
             <div className="flex flex-col items-center md:items-end gap-1 font-sans text-sm text-muted-foreground">
-              <a href="tel:+79775887470" className="hover:text-foreground transition-colors">+7 (977) 588-74-70</a>
-              <a href="mailto:anastasirezepova@yandex.ru" className="hover:text-foreground transition-colors">anastasirezepova@yandex.ru</a>
+              <a href="https://t.me/Bella_hasias" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Написать в Telegram: @Bella_hasias</a>
             </div>
             <p className="font-sans text-[10px] text-muted-foreground/60 text-center md:text-right">
               * Meta запрещена на территории РФ

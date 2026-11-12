@@ -149,7 +149,7 @@ https://t.me/Bella_hasias?text=Привет!_Я_[Имя]._Интересует_�
 - Telegram: https://t.me/Bella_hasias
 - Instagram: https://instagram.com/bellahasias
 - VK: https://vk.com/bella_hasias
-- Email: anastasirezepova@yandex.ru
+- Telegram: @Bella_hasias
 
 ---
 

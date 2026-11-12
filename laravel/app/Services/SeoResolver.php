@@ -16,8 +16,7 @@ use Throwable;
  */
 class SeoResolver
 {
-    public const PHONE = '+7 977 588-74-70';
-    public const EMAIL = 'anastasirezepova@yandex.ru';
+    public const TELEGRAM = 'https://t.me/Bella_hasias';
     public const BRAND = 'Bella Hasias';
 
     public const DEFAULT_DESCRIPTION = 'Стилист и контент-креатор в Москве. Стилизация съёмок, разбор и капсульный гардероб, персональный шопинг, UGC и AI-контент для брендов и людей.';
@@ -126,13 +125,13 @@ class SeoResolver
         $seo['text'] = $seo['description'];
         // Факты для поисковиков и ИИ-ассистентов, видимые без JavaScript
         $extra = [
-            '' => 'Bella Hasias — стилист и контент-креатор из Москвы. Работаю лично и онлайн. Телефон: '.self::PHONE.', e-mail: '.self::EMAIL.', также пишите в Telegram.',
-            'contacts' => 'Телефон и WhatsApp: '.self::PHONE.'. E-mail: '.self::EMAIL.'. Также можно написать в Telegram. Город: Москва, консультации также онлайн. Обычно отвечаю в течение дня. Чтобы записаться, напишите, какая услуга нужна, удобные даты и бюджет.',
+            '' => 'Bella Hasias — стилист и контент-креатор из Москвы. Работаю лично и онлайн. Для записи напишите в Telegram @Bella_hasias или в Instagram @bellahasias.',
+            'contacts' => 'Написать можно в Telegram @Bella_hasias ('.self::TELEGRAM.') или в Instagram @bellahasias. Город: Москва, консультации также онлайн. Обычно отвечаю в течение дня. Чтобы записаться, напишите, какая услуга нужна, удобные даты и бюджет.',
             'portfolio' => 'Здесь собраны реальные проекты стилиста Bella Hasias: стилизация съёмок для брендов и людей, образы на мероприятия, капсульные гардеробы, UGC и AI-контент. Каждая работа — от идеи и подбора образа до готовых фото и видео.',
-            'feedback' => 'Опишите задачу: съёмка, разбор гардероба, шопинг, образ на мероприятие или контент для бренда. Укажите удобные даты и способ связи. Телефон: '.self::PHONE.', e-mail: '.self::EMAIL.'.',
-            'privacy' => 'Сайт собирает только данные, которые вы указываете в заявке (имя, телефон, e-mail, сообщение), и использует их, чтобы связаться с вами по вашему запросу. Данные не передаются третьим лицам. Вопросы по данным: '.self::EMAIL.'.',
-            'terms' => 'Сайт bellahasias.ru носит информационный характер. Условия, сроки и стоимость услуг согласуются индивидуально после заявки. Материалы сайта (фото, тексты) принадлежат автору. Связь: '.self::EMAIL.'.',
-            'consent' => 'Отправляя заявку, вы соглашаетесь на обработку имени, телефона, e-mail и текста сообщения стилистом Bella Hasias для ответа на ваш запрос. Согласие можно отозвать письмом на '.self::EMAIL.'.',
+            'feedback' => 'Опишите задачу: съёмка, разбор гардероба, шопинг, образ на мероприятие или контент для бренда. Укажите удобные даты и способ связи. Связь: Telegram @Bella_hasias.',
+            'privacy' => 'Сайт собирает только данные, которые вы указываете в заявке (имя, телефон, e-mail, сообщение), и использует их, чтобы связаться с вами по вашему запросу. Данные не передаются третьим лицам. Вопросы по данным: Telegram @Bella_hasias.',
+            'terms' => 'Сайт bellahasias.ru носит информационный характер. Условия, сроки и стоимость услуг согласуются индивидуально после заявки. Материалы сайта (фото, тексты) принадлежат автору. Связь: Telegram @Bella_hasias.',
+            'consent' => 'Отправляя заявку, вы соглашаетесь на обработку имени, телефона, e-mail и текста сообщения стилистом Bella Hasias для ответа на ваш запрос. Согласие можно отозвать, написав в Telegram @Bella_hasias.',
         ];
         if (isset($extra[$path])) {
             $seo['text'] .= ' '.$extra[$path];
@@ -284,8 +283,6 @@ class SeoResolver
             'description' => self::DEFAULT_DESCRIPTION,
             'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Москва', 'addressCountry' => 'RU'],
             'knowsAbout' => ['Стилизация съёмок', 'Капсульный гардероб', 'Персональный шопинг', 'UGC-контент', 'AI-контент', 'Визуальный стиль бренда'],
-            'telephone' => self::PHONE,
-            'email' => self::EMAIL,
             'sameAs' => self::SAME_AS,
         ];
     }
@@ -301,8 +298,6 @@ class SeoResolver
             'image' => $base.'/build/og-image.jpg',
             'logo' => $base.'/build/icons/icon-512.png',
             'description' => self::DEFAULT_DESCRIPTION,
-            'telephone' => self::PHONE,
-            'email' => self::EMAIL,
             'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Москва', 'addressRegion' => 'Москва', 'addressCountry' => 'RU'],
             'areaServed' => [
                 ['@type' => 'City', 'name' => 'Москва'],
@@ -312,8 +307,7 @@ class SeoResolver
             'sameAs' => self::SAME_AS,
             'contactPoint' => [[
                 '@type' => 'ContactPoint',
-                'telephone' => self::PHONE,
-                'email' => self::EMAIL,
+                'url' => self::TELEGRAM,
                 'contactType' => 'customer service',
                 'availableLanguage' => ['ru'],
             ]],

@@ -194,17 +194,17 @@ const Contacts = () => {
                   </div>
                 </div>
 
-                {/* Phone & email */}
+                {/* Direct message */}
                 <div className="card-luxury p-6">
                   <h2 className="font-display text-xl text-foreground mb-4">Связаться напрямую</h2>
                   <ul className="space-y-3 font-sans text-sm">
                     <li>
-                      <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Телефон</span>
-                      <a href="tel:+79775887470" className="text-foreground hover:opacity-70 transition-opacity">+7 (977) 588-74-70</a>
+                      <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Telegram</span>
+                      <a href="https://t.me/Bella_hasias" target="_blank" rel="noopener noreferrer" className="text-foreground hover:opacity-70 transition-opacity">@Bella_hasias</a>
                     </li>
                     <li>
-                      <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Email</span>
-                      <a href="mailto:anastasirezepova@yandex.ru" className="text-foreground hover:opacity-70 transition-opacity break-all">anastasirezepova@yandex.ru</a>
+                      <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Instagram</span>
+                      <a href="https://www.instagram.com/bellahasias/" target="_blank" rel="noopener noreferrer" className="text-foreground hover:opacity-70 transition-opacity">@bellahasias</a>
                     </li>
                   </ul>
                 </div>
