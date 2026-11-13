@@ -3,6 +3,7 @@ import Hero from '@/components/Hero';
 import PortfolioSection from '@/components/PortfolioSection';
 import ServicesSection from '@/components/ServicesSection';
 import TelegramCTA from '@/components/TelegramCTA';
+import ClosedChatSection from '@/components/ClosedChatSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
@@ -22,6 +23,7 @@ const Index = () => {
         <Hero />
         <ServicesSection />
         <PortfolioSection />
+        <ClosedChatSection />
         <TelegramCTA />
         <ContactSection />
         <Footer />
